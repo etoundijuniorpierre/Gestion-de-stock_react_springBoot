@@ -1,0 +1,15 @@
+.commandes-clients {
+  padding: 20px;
+}
+.commandes-clients h1 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+.commandes-clients .commandes-clients-content {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}/*# sourceMappingURL=commandes-clients.css.map */

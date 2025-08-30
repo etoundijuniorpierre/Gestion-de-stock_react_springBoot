@@ -1,0 +1,111 @@
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  min-height: 80px;
+}
+.header-container .search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 400px;
+  width: 100%;
+}
+.header-container .search-container .search-input {
+  width: 100%;
+  padding: 12px 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 25px 0 0 25px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 14px;
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+.header-container .search-container .search-input::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+.header-container .search-container .search-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+.header-container .search-container .search-input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+.header-container .search-container .search-button {
+  padding: 12px 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-left: none;
+  border-radius: 0 25px 25px 0;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+}
+.header-container .search-container .search-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.8);
+  transform: translateY(-2px);
+}
+.header-container .search-container .search-button i {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+}
+.header-container .user-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.header-container .user-section .user-info {
+  text-align: right;
+}
+.header-container .user-section .user-info .user-name {
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+.header-container .user-section .user-info .user-role {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.header-container .user-section .user-avatar {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.header-container .user-section .user-avatar:hover {
+  border-color: rgba(255, 255, 255, 0.8);
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+@media (max-width: 768px) {
+  .header-container {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .header-container .search-container {
+    max-width: 100%;
+  }
+  .header-container .user-section .user-info {
+    text-align: center;
+  }
+}/*# sourceMappingURL=header.css.map */

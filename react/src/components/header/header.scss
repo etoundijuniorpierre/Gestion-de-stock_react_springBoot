@@ -1,0 +1,125 @@
+// Styles pour le composant Header
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  min-height: 80px;
+
+  // Barre de recherche personnalisée
+  .search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: 400px;
+    width: 100%;
+
+    .search-input {
+      width: 100%;
+      padding: 12px 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 25px 0 0 25px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 14px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+      }
+      
+      &:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0.8);
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      }
+    }
+    
+    .search-button {
+      padding: 12px 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-left: none;
+      border-radius: 0 25px 25px 0;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.8);
+        transform: translateY(-2px);
+      }
+      
+      i {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.9);
+      }
+    }
+  }
+  
+  // Section utilisateur
+  .user-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .user-info {
+      text-align: right;
+      
+      .user-name {
+        color: white;
+        font-weight: 600;
+        font-size: 16px;
+        margin: 0;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      
+      .user-role {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 12px;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+    
+    .user-avatar {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      object-fit: cover;
+      transition: all 0.3s ease;
+      cursor: pointer;
+        
+      &:hover {
+        border-color: rgba(255, 255, 255, 0.8);
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+
+  // Responsive design
+  @media (max-width: 768px) {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+    
+    .search-container {
+      max-width: 100%;
+    }
+    
+    .user-section {
+      .user-info {
+        text-align: center;
+      }
+    }
+  }
+}

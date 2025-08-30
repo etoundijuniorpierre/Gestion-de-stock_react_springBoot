@@ -1,0 +1,454 @@
+// Variables
+$primary-color: #007bff;
+$danger-color: #dc3545;
+$success-color: #28a745;
+$warning-color: #ffc107;
+$info-color: #17a2b8;
+$light-color: #f8f9fa;
+$dark-color: #343a40;
+$border-color: #dee2e6;
+$shadow-color: rgba(0, 0, 0, 0.1);
+$modal-overlay-bg: rgba(0, 0, 0, 0.5);
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin button-reset {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+// Styles existants pour le composant principal
+.detail-mvt-stk-article {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  // Section image produit
+  .product-image-section {
+    flex: 0 0 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    
+    img {
+      border-radius: 8px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+      
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+  
+  // Section détails article
+  .article-details-section {
+    flex: 0 0 35%;
+    padding: 0.5rem;
+    
+    .details-container {
+      .detail-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
+        
+        .detail-icon {
+          margin-right: 0.5rem;
+          width: 20px;
+          text-align: center;
+        }
+        
+        .detail-text {
+          font-size: 0.9rem;
+          color: $dark-color;
+        }
+      }
+    }
+  }
+  
+  // Section stock
+  .stock-section {
+    flex: 0 0 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0.25rem;
+    height: 90%;
+    
+    .stock-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      
+      .stock-title {
+        margin-bottom: 0.25rem;
+        
+        h3 {
+          margin: 0;
+          font-size: 1rem;
+          font-weight: normal;
+          color: #6c757d;
+          line-height: 1.2;
+        }
+      }
+      
+      .stock-value {
+        h3 {
+          margin: 0;
+          font-size: 2rem;
+          font-weight: bold;
+          color: $primary-color;
+          line-height: 1.2;
+        }
+      }
+    }
+  }
+  
+  // Section action
+  .action-section {
+    flex: 0 0 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 90%;
+    
+    .action-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      
+      .correction-btn {
+        text-decoration: none;
+        color: $primary-color;
+        border: none;
+        background: none;
+        padding: 0.25rem;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        font-size: 1rem;
+        line-height: 1.2;
+        cursor: pointer;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        &:hover {
+          color: darken($primary-color, 15%);
+          transform: scale(1.05);
+        }
+        
+        &:active {
+          transform: scale(0.95);
+        }
+      }
+    }
+  }
+  
+  .custom-border-right {
+    border-right: 1px solid $border-color;
+  }
+  
+  .blue-color {
+    color: $primary-color;
+  }
+}
+
+// Styles pour le modal de correction de stock
+.correction-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $modal-overlay-bg;
+  z-index: 9999;
+  @include flex-center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.correction-modal {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideInUp 0.3s ease-out;
+  
+  // Header du modal
+  .correction-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 1.5rem 1rem;
+    border-bottom: 1px solid $border-color;
+    
+    .correction-modal-title {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: $dark-color;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      
+      i {
+        color: $primary-color;
+        font-size: 1.1rem;
+      }
+    }
+    
+    .correction-modal-close {
+      @include button-reset;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      @include flex-center;
+      color: #6c757d;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: $light-color;
+        color: $dark-color;
+        transform: scale(1.1);
+      }
+      
+      i {
+        font-size: 1.1rem;
+      }
+    }
+  }
+  
+  // Body du modal
+  .correction-modal-body {
+    padding: 1.5rem;
+    
+    .correction-form-group {
+      margin-bottom: 1.5rem;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+      
+      .correction-form-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: $dark-color;
+        
+        i {
+          color: $primary-color;
+          width: 16px;
+          text-align: center;
+        }
+      }
+      
+      .correction-form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid $border-color;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #fff;
+        
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+          transform: translateY(-1px);
+        }
+        
+        &:hover {
+          border-color: lighten($primary-color, 20%);
+        }
+        
+        &::placeholder {
+          color: #6c757d;
+        }
+      }
+      
+      .correction-form-help {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+        color: #6c757d;
+        
+        i {
+          color: $info-color;
+          width: 14px;
+          text-align: center;
+        }
+      }
+    }
+  }
+  
+  // Footer du modal
+  .correction-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1rem 1.5rem 1.5rem;
+    border-top: 1px solid $border-color;
+    
+    .correction-btn-secondary,
+    .correction-btn-primary {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
+      
+      i {
+        font-size: 0.9rem;
+      }
+    }
+    
+    .correction-btn-secondary {
+      background: #6c757d;
+      color: #fff;
+      
+      &:hover {
+        background: darken(#6c757d, 10%);
+      }
+    }
+    
+    .correction-btn-primary {
+      background: $primary-color;
+      color: #fff;
+      
+      &:hover {
+        background: darken($primary-color, 10%);
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .correction-modal {
+    width: 95%;
+    margin: 1rem;
+    
+    .correction-modal-header {
+      padding: 1rem;
+      
+      .correction-modal-title {
+        font-size: 1.1rem;
+      }
+    }
+    
+    .correction-modal-body {
+      padding: 1rem;
+    }
+    
+    .correction-modal-footer {
+      padding: 1rem;
+      flex-direction: column;
+      
+      .correction-btn-secondary,
+      .correction-btn-primary {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
+  
+  .detail-mvt-stk-article {
+    flex-direction: column;
+    text-align: center;
+    
+    .product-image-section,
+    .article-details-section,
+    .stock-section,
+    .action-section {
+      flex: none;
+      width: 100%;
+      margin-bottom: 1rem;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+    
+    .custom-border-right {
+      border-right: none;
+      border-bottom: 1px solid $border-color;
+      padding-bottom: 1rem;
+    }
+  }
+}

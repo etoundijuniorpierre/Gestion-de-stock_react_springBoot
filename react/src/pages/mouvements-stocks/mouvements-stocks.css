@@ -1,0 +1,131 @@
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+.mouvements-stocks {
+  animation: slideInFromTop 0.6s ease-out;
+}
+.mouvements-stocks h1 {
+  color: #007bff;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+.mouvements-stocks h1:hover {
+  transform: scale(1.05);
+  text-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+}
+.mouvements-stocks .accordion .card {
+  border: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mouvements-stocks .accordion .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+.mouvements-stocks .accordion .card .card-body {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+.mouvements-stocks .accordion .card .card-body button {
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+.mouvements-stocks .accordion .card .card-body button:hover {
+  transform: scale(1.01);
+}
+.mouvements-stocks .accordion .card .card-body button:focus {
+  box-shadow: none;
+  outline: none;
+}
+.mouvements-stocks .accordion .card .collapse {
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+}
+.mouvements-stocks .accordion .card .collapse .card-body {
+  padding: 1rem;
+  background: #ffffff;
+}
+.mouvements-stocks .accordion .card .collapse .card-body > div {
+  animation: fadeInUp 0.4s ease-out;
+  margin-bottom: 0.5rem;
+}
+.mouvements-stocks .accordion .card .collapse .card-body > div:last-child {
+  margin-bottom: 0;
+}
+.mouvements-stocks .btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+.mouvements-stocks .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+.mouvements-stocks .btn:hover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 0.6s ease-out;
+}
+.mouvements-stocks .btn:active {
+  transform: translateY(0);
+}
+.mouvements-stocks .pagination {
+  animation: fadeInUp 0.8s ease-out 0.3s both;
+}
+
+@media (max-width: 768px) {
+  .mouvements-stocks .accordion .card {
+    margin-bottom: 0.5rem;
+  }
+  .mouvements-stocks .accordion .card .card-body {
+    padding: 1rem;
+  }
+}/*# sourceMappingURL=mouvements-stocks.css.map */

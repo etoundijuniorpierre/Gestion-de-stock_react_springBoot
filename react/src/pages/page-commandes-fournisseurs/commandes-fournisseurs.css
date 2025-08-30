@@ -1,0 +1,18 @@
+.commandes-fournisseurs {
+  padding: 20px;
+}
+.commandes-fournisseurs .card {
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.commandes-fournisseurs .card .card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+.commandes-fournisseurs .card .card-header h4 {
+  margin: 0;
+  color: #495057;
+}
+.commandes-fournisseurs .card .card-body {
+  padding: 20px;
+}/*# sourceMappingURL=commandes-fournisseurs.css.map */

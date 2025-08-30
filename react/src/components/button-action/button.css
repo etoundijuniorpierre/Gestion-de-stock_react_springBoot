@@ -1,0 +1,86 @@
+@keyframes buttonPop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes iconSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes buttonGlow {
+  0% {
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 123, 255, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  }
+}
+.d-flex {
+  animation: fadeIn 0.8s ease-out;
+}
+
+.btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: buttonPop 0.6s ease-out;
+}
+.btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+.btn:hover i {
+  animation: iconSpin 0.6s ease-in-out;
+}
+.btn:active {
+  transform: translateY(-1px) scale(1.02);
+  animation: buttonPop 0.2s ease-out;
+}
+.btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s;
+}
+.btn:hover::before {
+  left: 100%;
+}
+.btn.btn-primary:hover {
+  animation: buttonGlow 1.5s ease-in-out infinite;
+}
+.btn.btn-success:hover {
+  background: linear-gradient(45deg, #28a745, #20c997);
+}
+.btn.btn-warning:hover {
+  background: linear-gradient(45deg, #ffc107, #fd7e14);
+}
+.btn i {
+  transition: all 0.3s ease;
+}
+.btn i:hover {
+  transform: scale(1.2);
+}
+
+.p-2.flex-fill {
+  transition: all 0.3s ease;
+}
+.p-2.flex-fill:hover {
+  transform: scale(1.02);
+}/*# sourceMappingURL=button.css.map */

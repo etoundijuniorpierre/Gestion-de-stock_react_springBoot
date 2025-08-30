@@ -1,0 +1,19 @@
+// Styles pour le composant Utilisateurs
+.utilisateurs {
+  padding: 20px;
+  
+  h1 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+  
+  // Styles pour le contenu de la page utilisateurs
+  .utilisateurs-content {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}

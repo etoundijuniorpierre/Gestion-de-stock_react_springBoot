@@ -1,0 +1,164 @@
+
+
+// Animations keyframes
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+// Styles pour la page MouvementsStocks
+.mouvements-stocks {
+  animation: slideInFromTop 0.6s ease-out;
+  
+  h1 {
+    color: #007bff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.05);
+      text-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+    }
+  }
+  
+  .accordion {
+    .card {
+      border: none;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1rem;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      }
+      
+      .card-body {
+        padding: 1.5rem;
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        
+        button {
+          border: none;
+          background: transparent;
+          width: 100%;
+          text-align: left;
+          padding: 0;
+          transition: all 0.3s ease;
+          
+          &:hover {
+            transform: scale(1.01);
+          }
+          
+          &:focus {
+            box-shadow: none;
+            outline: none;
+          }
+        }
+      }
+      
+      .collapse {
+        background: #f8f9fa;
+        border-top: 1px solid #e9ecef;
+        
+        .card-body {
+          padding: 1rem;
+          background: #ffffff;
+          
+          > div {
+            animation: fadeInUp 0.4s ease-out;
+            margin-bottom: 0.5rem;
+            
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  // Styles pour les boutons d'action
+  .btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        animation: shimmer 0.6s ease-out;
+      }
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+  
+  // Animation pour la pagination
+  .pagination {
+    animation: fadeInUp 0.8s ease-out 0.3s both;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .mouvements-stocks {
+    .accordion .card {
+      margin-bottom: 0.5rem;
+      
+      .card-body {
+        padding: 1rem;
+      }
+    }
+  }
+}

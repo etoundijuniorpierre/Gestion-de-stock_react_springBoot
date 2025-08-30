@@ -1,0 +1,84 @@
+// Animations keyframes
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Styles pour le composant Article
+.blue-color {
+  color: #007bff;
+}
+
+.container-fluid {
+  animation: fadeIn 0.8s ease-out;
+}
+
+// Animation pour le header
+.row.align-items-center {
+  animation: slideInFromTop 0.6s ease-out;
+  
+  h1 {
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.05);
+      color: #007bff;
+    }
+  }
+}
+
+// Animation pour les boutons d'action
+.btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Animation pour les alertes
+.alert {
+  animation: scaleIn 0.5s ease-out;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+// Animation pour la pagination
+.pagination {
+  animation: fadeIn 1s ease-out 0.5s both;
+}
+  
