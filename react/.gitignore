@@ -328,5 +328,38 @@ test-data/
 **/build/
 
 # =============================================================================
+# ADDITIONAL IGNORE RULES
+# =============================================================================
+# Fichiers de cache de développement
+.cache/
+.temp/
+.tmp/
+
+# Fichiers de build spécifiques aux composants
+src/**/dist/
+src/**/build/
+
+# Fichiers de test et développement
+**/test-*.js
+**/test-*.jsx
+**/test-*.ts
+**/test-*.tsx
+**/*.test.js
+**/*.test.jsx
+**/*.test.ts
+**/*.test.tsx
+
+# Fichiers de données temporaires
+**/temp-*/
+**/tmp-*/
+**/*.tmp
+**/*.temp
+
+# Fichiers de logs spécifiques au projet
+**/hs_err_pid*.log
+**/error-*.log
+**/debug-*.log
+
+# =============================================================================
 # END OF GITIGNORE
 # =============================================================================
