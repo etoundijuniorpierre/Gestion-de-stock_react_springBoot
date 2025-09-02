@@ -1,5 +1,5 @@
 # =============================================================================
-# GITIGNORE - GESTION DE STAGE (REACT + VITE + TYPESCRIPT)
+# GITIGNORE - GESTION DE STOCK (REACT + VITE + SPRING BOOT)
 # =============================================================================
 
 # =============================================================================
@@ -62,6 +62,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+hs_err_pid*.log
 
 # =============================================================================
 # RUNTIME DATA
@@ -186,7 +187,7 @@ gradle/wrapper/gradle-wrapper.jar
 .gradle/
 
 # =============================================================================
-# PROJECT SPECIFIC - GESTION DE STAGE
+# PROJECT SPECIFIC - GESTION DE STOCK
 # =============================================================================
 # Fichiers de données temporaires
 *.json.bak
@@ -299,6 +300,32 @@ appveyor.yml
 .devtools/
 # Hot reload cache
 .hot/
+
+# =============================================================================
+# SCSS/SASS BUILD FILES
+# =============================================================================
+# Fichiers CSS compilés (générés automatiquement)
+*.css.map
+# Dossiers de build SCSS
+**/dist/
+# Fichiers de cache SCSS
+.sass-cache/
+.scss-cache/
+
+# =============================================================================
+# PROJECT SPECIFIC FILES TO IGNORE
+# =============================================================================
+# Fichiers de correction et documentation temporaires
+CORRECTIONS_*.md
+# Fichiers de logs d'erreur Java
+hs_err_pid*.log
+# Fichiers de configuration de test
+test-*.js
+# Fichiers de données de test
+test-data/
+# Fichiers de cache de build
+**/dist/
+**/build/
 
 # =============================================================================
 # END OF GITIGNORE
