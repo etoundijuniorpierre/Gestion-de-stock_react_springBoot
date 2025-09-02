@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { loginUser } from '../../services/loginService';
+import './login.scss';
 
 export default function Login() {
     const navigate = useNavigate();
@@ -43,73 +44,68 @@ export default function Login() {
     };
 
     return (
-        <div className="container d-flex justify-content-center align-items-center min-vh-100">
-            <div className="card shadow-lg" style={{ maxWidth: '450px', width: '100%' }}>
-                <div className="card-body p-5">
-                    <div className="text-center mb-4">
-                        <i className="fas fa-user-circle fa-3x text-primary mb-3"></i>
+        <div className="login-container">
+            <div className="login-card card">
+                <div className="card-body">
+                    <div className="login-header">
+                        <div className="login-icon">
+                            <i className="fas fa-user-circle"></i>
+                        </div>
                         <h2>Connexion</h2>
                     </div>
 
                     {/* Messages d'erreur/succès */}
                     {message.text && (
-                        <div className={`alert alert-${message.type === 'error' ? 'danger' : 'success'} mb-4`} role="alert">
+                        <div className={`alert alert-${message.type === 'error' ? 'danger' : 'success'}`} role="alert">
                             <i className={`fas fa-${message.type === 'error' ? 'exclamation-triangle' : 'check-circle'} me-2`}></i>
                             {message.text}
                         </div>
                     )}
 
                     <form onSubmit={handleSubmit}>
-                        <div className="mb-4">
-                            <div className="form-outline">
-                                <div className="input-group">
-                                    <span className="input-group-text">
-                                        <i className="fas fa-envelope"></i>
-                                    </span>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        className="form-control"
-                                        name="email"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        placeholder="Entrez votre email"
-                                    />
-                                </div>
-                                <label className="form-label" htmlFor="email">Email</label>
+                        <div className="form-group">
+                            <label className="form-label" htmlFor="email">Email</label>
+                            <div className="input-group">
+                                <span className="input-group-text">
+                                    <i className="fas fa-envelope"></i>
+                                </span>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    className="form-control"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    placeholder="Entrez votre email"
+                                    required
+                                />
                             </div>
                         </div>
 
-                        <div className="mb-4">
-                            <div className="form-outline">
-                                <div className="input-group">
-                                    <span className="input-group-text">
-                                        <i className="fas fa-lock"></i>
-                                    </span>
-                                    <input
-                                        type="password"
-                                        id="password"
-                                        className="form-control"
-                                        name="password"
-                                        value={formData.password}
-                                        onChange={handleChange}
-                                        placeholder="Entrez votre mot de passe"
-                                    />
-                                </div>
-                                <label className="form-label" htmlFor="password">Mot de passe</label>
+                        <div className="form-group">
+                            <label className="form-label" htmlFor="password">Mot de passe</label>
+                            <div className="input-group">
+                                <span className="input-group-text">
+                                    <i className="fas fa-lock"></i>
+                                </span>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    className="form-control"
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    placeholder="Entrez votre mot de passe"
+                                    required
+                                />
                             </div>
                         </div>
 
-                        <div className="d-flex justify-content-between gap-3">
+                        <div className="button-group">
                             {/* Register button */}
-                            <NavLink to="/register">
-                                <button
-                                    type="button"
-                                    className="btn btn-outline-primary"
-                                >
-                                    <i className="fas fa-user-plus me-2"></i>
-                                    S'inscrire
-                                </button>
+                            <NavLink to="/register" className="btn btn-outline-primary">
+                                <i className="fas fa-user-plus me-2"></i>
+                                S'inscrire
                             </NavLink>
 
                             {/* Login button */}

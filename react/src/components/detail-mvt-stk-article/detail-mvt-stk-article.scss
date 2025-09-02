@@ -1,3 +1,5 @@
+@use "sass:color";
+
 // Variables
 $primary-color: #007bff;
 $danger-color: #dc3545;
@@ -167,7 +169,7 @@ $modal-overlay-bg: rgba(0, 0, 0, 0.5);
         justify-content: center;
         
         &:hover {
-          color: darken($primary-color, 15%);
+          color: color.adjust($primary-color, $lightness: -15%);
           transform: scale(1.05);
         }
         
@@ -297,7 +299,7 @@ $modal-overlay-bg: rgba(0, 0, 0, 0.5);
         }
         
         &:hover {
-          border-color: lighten($primary-color, 20%);
+          border-color: color.adjust($primary-color, $lightness: 20%);
         }
         
         &::placeholder {
@@ -362,7 +364,7 @@ $modal-overlay-bg: rgba(0, 0, 0, 0.5);
       color: #fff;
       
       &:hover {
-        background: darken(#6c757d, 10%);
+        background: color.adjust(#6c757d, $lightness: -10%);
       }
     }
     
@@ -371,7 +373,7 @@ $modal-overlay-bg: rgba(0, 0, 0, 0.5);
       color: #fff;
       
       &:hover {
-        background: darken($primary-color, 10%);
+        background: color.adjust($primary-color, $lightness: -10%);
       }
     }
   }
