@@ -15,7 +15,7 @@ class CategoryService {
       return data?.content || data?.data || [data] || [];
     } catch (error) {
       console.error('Erreur lors de la récupération des catégories:', error);
-      return [];
+      throw new Error('Impossible de récupérer les catégories');
     }
   }
 
@@ -26,27 +26,56 @@ class CategoryService {
       return { success: true };
     } catch (error) {
       console.error('Erreur lors de la suppression de la catégorie:', error);
-      return { success: false, error };
+      if (error.response?.status === 404) {
+        throw new Error('Catégorie non trouvée');
+      }
+      throw new Error('Erreur lors de la suppression de la catégorie');
     }
   }
 
-  // Sauvegarder une catégorie
+  // Sauvegarder une catégorie (création ou modification)
   async save(category) {
     try {
-      return await httpInterceptor.post('/api/gestionDeStock/categories/create', category);
+      const response = await httpInterceptor.post('/api/gestionDeStock/categories/create', category);
+      return response;
     } catch (error) {
       console.error('Erreur lors de la sauvegarde de la catégorie:', error);
-      throw error;
+      if (error.response?.status === 400) {
+        const errorData = error.response.data;
+        if (errorData.errors && Array.isArray(errorData.errors)) {
+          throw new Error(errorData.errors.join(', '));
+        }
+        throw new Error(errorData.message || 'Données invalides');
+      }
+      throw new Error('Erreur lors de la sauvegarde de la catégorie');
     }
   }
 
   // Récupérer une catégorie par ID
   async findById(id) {
     try {
-      return await httpInterceptor.get(`/api/gestionDeStock/categories/${id}`);
+      const response = await httpInterceptor.get(`/api/gestionDeStock/categories/${id}`);
+      return response;
     } catch (error) {
       console.error('Erreur lors de la récupération de la catégorie:', error);
-      return {};
+      if (error.response?.status === 404) {
+        throw new Error('Catégorie non trouvée');
+      }
+      throw new Error('Erreur lors de la récupération de la catégorie');
+    }
+  }
+
+  // Rechercher une catégorie par code
+  async findByCode(code) {
+    try {
+      const response = await httpInterceptor.get(`/api/gestionDeStock/categories/filter/${code}`);
+      return response;
+    } catch (error) {
+      console.error('Erreur lors de la recherche par code:', error);
+      if (error.response?.status === 404) {
+        return null; // Catégorie non trouvée
+      }
+      throw new Error('Erreur lors de la recherche par code');
     }
   }
 }

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { CltfrsService } from '../../services/cltfrs/cltfrs.service';
 import { CmdcltfrsService } from '../../services/cmdcltfrs.service';
 import { ArticleService } from '../../services/article/article.service';
+import DetailCmd from '../detail-cmd/detail-cmd';
 import './nouveau-cmd-frs.scss';
 
 const NouveauCmdFrs = () => {
@@ -18,12 +19,13 @@ const NouveauCmdFrs = () => {
   const [articleNotYetSelected, setArticleNotYetSelected] = useState(false);
   const [errorMsg, setErrorMsg] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [successMsg, setSuccessMsg] = useState('');
 
   const navigate = useNavigate();
   const cltFrsService = new CltfrsService();
   const cmdCltFrsService = new CmdcltfrsService();
   const articleService = new ArticleService();
+
+  const origin = 'fournisseur';
 
   useEffect(() => {
     findAllFournisseurs();
@@ -55,7 +57,8 @@ const NouveauCmdFrs = () => {
       findAllArticles();
     } else {
       const filteredArticles = listArticle.filter(art => 
-        art.codeArticle?.includes(codeArticle) || art.designation?.includes(codeArticle)
+        art.codeArticle?.toLowerCase().includes(codeArticle.toLowerCase()) || 
+        art.designation?.toLowerCase().includes(codeArticle.toLowerCase())
       );
       setListArticle(filteredArticles);
     }
@@ -70,9 +73,11 @@ const NouveauCmdFrs = () => {
   const ajouterLigneCommande = () => {
     if (checkLigneCommande()) {
       const newLigne = {
+        id: Date.now(), // ID temporaire
         article: searchedArticle,
         quantite: parseFloat(quantite),
-        prixUnitaire: searchedArticle.prixUnitaireTtc
+        prixUnitaire: searchedArticle.prixUnitaireTtc,
+        prixTotal: parseFloat(quantite) * searchedArticle.prixUnitaireTtc
       };
       
       setLignesCommande([...lignesCommande, newLigne]);
@@ -107,238 +112,224 @@ const NouveauCmdFrs = () => {
   };
 
   const calculerTotalCommande = () => {
-    const total = lignesCommande.reduce((sum, ligne) => 
-      sum + (ligne.prixUnitaire * ligne.quantite), 0
-    );
+    const total = lignesCommande.reduce((sum, ligne) => sum + ligne.prixTotal, 0);
     setTotalCommande(total);
   };
 
   const enregistrerCommande = async () => {
-    if (lignesCommande.length === 0) {
-      setErrorMsg(['Veuillez ajouter au moins une ligne de commande']);
-      return;
-    }
-
     if (!selectedFournisseur.id) {
       setErrorMsg(['Veuillez sélectionner un fournisseur']);
       return;
     }
 
-    setIsLoading(true);
+    if (lignesCommande.length === 0) {
+      setErrorMsg(['Veuillez ajouter au moins une ligne de commande']);
+      return;
+    }
+
     try {
+      setIsLoading(true);
       const commande = {
-        code: codeCommande,
+        codeCommande: codeCommande,
+        client: null,
         fournisseur: selectedFournisseur,
         lignesCommande: lignesCommande,
-        etatCommande: 'EN_PREPARATION'
+        totalCommande: totalCommande,
+        dateCommande: new Date().toISOString()
       };
 
       await cmdCltFrsService.saveCommandeFournisseur(commande);
-      setSuccessMsg('Commande enregistrée avec succès');
-      setTimeout(() => {
-        navigate('/dashboard/commandes-fournisseurs');
-      }, 2000);
+      navigate('/dashboard/commandes-fournisseurs');
     } catch (error) {
-      setErrorMsg(['Erreur lors de l\'enregistrement de la commande']);
+      console.error('Erreur lors de la sauvegarde de la commande:', error);
+      setErrorMsg(['Erreur lors de la sauvegarde de la commande']);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const annuler = () => {
+    navigate('/dashboard/commandes-fournisseurs');
+  };
+
   return (
-    <div className="nouveau-cmd-frs">
-      <div className="nouveau-cmd-frs__header">
-        <h2>Nouvelle commande fournisseur</h2>
-      </div>
-
-      {errorMsg.length > 0 && (
-        <div className="nouveau-cmd-frs__errors">
-          {errorMsg.map((msg, index) => (
-            <div key={index} className="nouveau-cmd-frs__error">
-              <span>{msg}</span>
-            </div>
-          ))}
+    <div className="col mb-3">
+      <div className="col-md-12">
+        <div className="col-md-12 mb-3 mt-3">
+          <h2>Nouvelle commande {origin}</h2>
         </div>
-      )}
+        
+        {errorMsg.length > 0 && (
+          <div className="alert alert-danger">
+            {errorMsg.map((msg, index) => (
+              <div key={index}>
+                <span>{msg}</span>
+              </div>
+            ))}
+          </div>
+        )}
 
-      <div className="nouveau-cmd-frs__form-section">
-        <div className="nouveau-cmd-frs__form-left">
-          <form>
-            <div className="nouveau-cmd-frs__form-group">
+        <div className="row p-3 custom-border">
+          <div className="col-md-5 custom-border-right">
+            <form>
+              <div className="form-group">
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  name="codeCmd" 
+                  placeholder="Code commande" 
+                  value={codeCommande}
+                  onChange={(e) => setCodeCommande(e.target.value)}
+                />
+              </div>
+              <div className="form-group">
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="Date commande"
+                  value={new Date().toLocaleDateString()}
+                  readOnly
+                />
+              </div>
+              <div className="form-group">
+                <select 
+                  className="form-control" 
+                  name="cltFrs" 
+                  value={selectedFournisseur.id || ''}
+                  onChange={(e) => {
+                    const selected = listFournisseurs.find(f => f.id === parseInt(e.target.value));
+                    setSelectedFournisseur(selected || {});
+                  }}
+                >
+                  <option value="">Sélectionner un {origin}</option>
+                  {listClientsFournisseurs.map((obj) => (
+                    <option key={obj.id} value={obj.id}>
+                      {obj.nom}&nbsp;{obj.prenom}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </form>
+          </div>
+          
+          {selectedFournisseur.nom && (
+            <>
+              <div className="col-md-5 custom-border-right">
+                <div className="col">
+                  <div className="row">
+                    <div className="col-md-1"><i className="fas fa-info-circle blue-color"></i></div>
+                    <div className="col-md-10">{selectedFournisseur.nom}</div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-1"><i className="fas fa-info-circle blue-color"></i></div>
+                    <div className="col-md-10">{selectedFournisseur.prenom}</div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-1"><i className="fas fa-phone-alt blue-color"></i></div>
+                    <div className="col-md-10">{selectedFournisseur.numTel}</div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-1"><i className="fas fa-hourglass-half blue-color"></i></div>
+                    <div className="col-md-10 text-primary">EN PREPARATION</div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-2 text-center">
+                <img 
+                  src={selectedFournisseur.photo ? selectedFournisseur.photo : '/src/assets/product.png'} 
+                  className="rounded-circle" 
+                  width="150px"
+                  height="150px" 
+                  alt="Photo fournisseur"
+                />
+              </div>
+            </>
+          )}
+        </div>
+
+        <div className="row mt-2 p-3 custom-border">
+          <div className="form-row col-md-12">
+            <div className="col-md-4">
               <input 
                 type="text" 
-                className="nouveau-cmd-frs__input" 
-                name="codeCmd" 
-                placeholder="Code commande" 
-                value={codeCommande}
-                onChange={(e) => setCodeCommande(e.target.value)}
+                className="form-control" 
+                placeholder="Code article" 
+                value={codeArticle}
+                onChange={(e) => setCodeArticle(e.target.value)}
+                onInput={filtrerArticle}
+              />
+              {codeArticle.length > 0 && !articleNotYetSelected && (
+                <div className="autocomplete shadow p-3 mb-5 bg-white rounded">
+                  {listArticle.map((article) => (
+                    <p 
+                      key={article.id} 
+                      className="p-1"
+                      onClick={() => selectArticleClick(article)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {article.codeArticle}&nbsp;{article.designation}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="col-md-4">
+              <input 
+                type="text" 
+                className="form-control" 
+                placeholder="Quantite" 
+                value={quantite}
+                onChange={(e) => setQuantite(e.target.value)}
               />
             </div>
-            <div className="nouveau-cmd-frs__form-group">
+            <div className="col-md-3">
               <input 
                 type="text" 
-                className="nouveau-cmd-frs__input" 
-                placeholder="Date commande" 
-                value={new Date().toLocaleDateString('fr-FR')}
+                className="form-control" 
+                placeholder="Prix unitaire" 
+                value={searchedArticle.prixUnitaireTtc || ''}
                 readOnly
               />
             </div>
-            <div className="nouveau-cmd-frs__form-group">
-              <select 
-                className="nouveau-cmd-frs__select" 
-                name="frs" 
-                value={selectedFournisseur.id || ''}
-                onChange={(e) => {
-                  const fournisseur = listFournisseurs.find(f => f.id === parseInt(e.target.value));
-                  setSelectedFournisseur(fournisseur || {});
-                }}
+            <div className="col-md-1">
+              <button 
+                type="button" 
+                className="btn btn-success" 
+                onClick={ajouterLigneCommande}
               >
-                <option value="">Sélectionner un fournisseur</option>
-                {listFournisseurs.map((fournisseur) => (
-                  <option key={fournisseur.id} value={fournisseur.id}>
-                    {fournisseur.nom}&nbsp;{fournisseur.prenom}
-                  </option>
-                ))}
-              </select>
+                <i className="fas fa-plus"></i>
+              </button>
             </div>
-          </form>
+          </div>
         </div>
 
-        {selectedFournisseur.nom && (
-          <>
-            <div className="nouveau-cmd-frs__fournisseur-info">
-              <div className="nouveau-cmd-frs__info-item">
-                <i className="fas fa-info-circle nouveau-cmd-frs__icon"></i>
-                <span>{selectedFournisseur.nom}</span>
-              </div>
-              <div className="nouveau-cmd-frs__info-item">
-                <i className="fas fa-info-circle nouveau-cmd-frs__icon"></i>
-                <span>{selectedFournisseur.prenom}</span>
-              </div>
-              <div className="nouveau-cmd-frs__info-item">
-                <i className="fas fa-phone-alt nouveau-cmd-frs__icon"></i>
-                <span>{selectedFournisseur.numTel}</span>
-              </div>
-              <div className="nouveau-cmd-frs__info-item">
-                <i className="fas fa-hourglass-half nouveau-cmd-frs__icon"></i>
-                <span className="nouveau-cmd-frs__status">EN PREPARATION</span>
-              </div>
-            </div>
-            <div className="nouveau-cmd-frs__fournisseur-photo">
-              <img 
-                src={selectedFournisseur.photo ? selectedFournisseur.photo : 'assets/product.png'} 
-                alt="Photo fournisseur"
-                width="150"
-                height="150" 
-              />
-            </div>
-          </>
-        )}
-      </div>
+        <div className="row mt-2 p-3 custom-border" style={{ maxHeight: '300px', overflowY: 'scroll' }}>
+          <div className="col-md-12">
+            {lignesCommande.map((ligne) => (
+              <DetailCmd key={ligne.id} ligneCommande={ligne} />
+            ))}
+          </div>
+        </div>
 
-      <div className="nouveau-cmd-frs__article-section">
-        <div className="nouveau-cmd-frs__article-form">
-          <div className="nouveau-cmd-frs__article-input">
-            <input 
-              type="text" 
-              className="nouveau-cmd-frs__input" 
-              placeholder="Code article" 
-              value={codeArticle}
-              onChange={(e) => setCodeArticle(e.target.value)}
-              onInput={filtrerArticle}
-            />
-            {codeArticle.length > 0 && !articleNotYetSelected && (
-              <div className="nouveau-cmd-frs__autocomplete">
-                {listArticle.map((article) => (
-                  <p 
-                    key={article.id} 
-                    className="nouveau-cmd-frs__autocomplete-item"
-                    onClick={() => selectArticleClick(article)}
-                  >
-                    {article.codeArticle}&nbsp;{article.designation}
-                  </p>
-                ))}
-              </div>
-            )}
-          </div>
-          <div className="nouveau-cmd-frs__article-input">
-            <input 
-              type="text" 
-              className="nouveau-cmd-frs__input" 
-              placeholder="Quantite" 
-              value={quantite}
-              onChange={(e) => setQuantite(e.target.value)}
-            />
-          </div>
-          <div className="nouveau-cmd-frs__article-input">
-            <input 
-              type="text" 
-              className="nouveau-cmd-frs__input" 
-              placeholder="Prix unitaire" 
-              value={searchedArticle.prixUnitaireTtc || ''}
-              readOnly
-            />
-          </div>
-          <div className="nouveau-cmd-frs__article-input">
-            <button 
-              type="button" 
-              className="nouveau-cmd-frs__btn nouveau-cmd-frs__btn--success"
-              onClick={ajouterLigneCommande}
-            >
-              <i className="fas fa-plus"></i>
-            </button>
+        <div className="row mt-2 p-3 custom-border">
+          <div className="col-md-12 text-right">
+            <h3>Total de la commande: {totalCommande.toFixed(2)}€</h3>
           </div>
         </div>
       </div>
 
-      <div className="nouveau-cmd-frs__lignes-section">
-        <div className="nouveau-cmd-frs__lignes-header">
-          <h3>Lignes de commande</h3>
-        </div>
-        <div className="nouveau-cmd-frs__lignes-list">
-          {lignesCommande.map((ligne, index) => (
-            <div key={index} className="nouveau-cmd-frs__ligne">
-              <div className="nouveau-cmd-frs__ligne-item">
-                <strong>Article:</strong> {ligne.article?.codeArticle}
-              </div>
-              <div className="nouveau-cmd-frs__ligne-item">
-                <strong>Désignation:</strong> {ligne.article?.designation}
-              </div>
-              <div className="nouveau-cmd-frs__ligne-item">
-                <strong>Quantité:</strong> {ligne.quantite}
-              </div>
-              <div className="nouveau-cmd-frs__ligne-item">
-                <strong>Prix:</strong> {ligne.prixUnitaire}
-              </div>
-              <div className="nouveau-cmd-frs__ligne-item">
-                <strong>Total:</strong> {ligne.prixUnitaire * ligne.quantite}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="nouveau-cmd-frs__total-section">
-        <div className="nouveau-cmd-frs__total">
-          <strong>Total de la commande: {totalCommande} €</strong>
-        </div>
-      </div>
-
-      <div className="nouveau-cmd-frs__actions">
-        <button 
-          type="button" 
-          className="nouveau-cmd-frs__btn nouveau-cmd-frs__btn--secondary"
-          onClick={() => navigate('/dashboard/commandes-fournisseurs')}
-        >
+      <div className="col-md-12 text-right mt-2">
+        <button className="btn btn-danger mr-3" onClick={annuler}>
+          <i className="fas fa-ban"></i>&nbsp;
           Annuler
         </button>
         <button 
-          type="button" 
-          className="nouveau-cmd-frs__btn nouveau-cmd-frs__btn--primary"
+          className="btn btn-primary" 
           onClick={enregistrerCommande}
           disabled={isLoading}
         >
-          {isLoading ? 'Enregistrement...' : 'Enregistrer la commande'}
+          <i className="fas fa-save"></i>&nbsp;
+          {isLoading ? 'Enregistrement...' : 'Enregistrer'}
         </button>
       </div>
     </div>

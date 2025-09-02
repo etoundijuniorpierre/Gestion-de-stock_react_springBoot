@@ -5,7 +5,14 @@ import { CategoryService } from '../../../services/category/category.service';
 import './nouvel-article.scss';
 
 const NouvelArticle = () => {
-  const [article, setArticle] = useState({});
+  const [article, setArticle] = useState({
+    codeArticle: '',
+    designation: '',
+    prixUnitaireHt: null,
+    tauxTva: null,
+    prixUnitaireTtc: null,
+    categorie: null
+  });
   const [categories, setCategories] = useState([]);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
@@ -37,7 +44,16 @@ const NouvelArticle = () => {
       setIsEditMode(true);
       try {
         const art = await articleService.findArticleById(Number(id));
-        setArticle(art || {});
+        if (art && art.id) {
+          setArticle({
+            codeArticle: art.codeArticle || '',
+            designation: art.designation || '',
+            prixUnitaireHt: art.prixUnitaireHt || null,
+            tauxTva: art.tauxTva || null,
+            prixUnitaireTtc: art.prixUnitaireTtc || null,
+            categorie: art.categorie || null
+          });
+        }
       } catch (error) {
         console.error('Erreur lors de la récupération de l\'article:', error);
         setErrorMsg('Erreur lors de la récupération de l\'article');
@@ -48,7 +64,7 @@ const NouvelArticle = () => {
   const annuler = () => navigate('/dashboard/articles');
 
   const validateForm = () => {
-    if (!article.code || !article.designation || !article.prixUnitaireHt) {
+    if (!article.codeArticle || !article.designation || !article.prixUnitaireHt) {
       setErrorMsg('Veuillez remplir tous les champs obligatoires');
       return false;
     }
@@ -75,7 +91,12 @@ const NouvelArticle = () => {
   };
 
   const onChange = (field, value) => {
-    setArticle(prev => ({ ...prev, [field]: value }));
+    // Convertir les champs numériques
+    let processedValue = value;
+    if (['prixUnitaireHt', 'tauxTva', 'prixUnitaireTtc'].includes(field)) {
+      processedValue = value === '' ? null : Number(value);
+    }
+    setArticle(prev => ({ ...prev, [field]: processedValue }));
   };
 
   return (
@@ -112,8 +133,8 @@ const NouvelArticle = () => {
                 className="nouvel-article__input"
                 name="codearticle"
                 placeholder="Code article"
-                value={article.code || ''}
-                onChange={e => onChange('code', e.target.value)}
+                value={article.codeArticle || ''}
+                onChange={e => onChange('codeArticle', e.target.value)}
                 required
               />
             </div>

@@ -15,27 +15,39 @@ class UserService {
       return data?.content || data?.data || [data] || [];
     } catch (error) {
       console.error('Erreur lors de la récupération des utilisateurs:', error);
-      return [];
+      throw new Error('Impossible de récupérer les utilisateurs');
     }
   }
 
   // Récupérer un utilisateur par ID
   async findById(id) {
     try {
-      return await httpInterceptor.get(`/api/gestionDeStock/utilisateurs/${id}`);
+      const response = await httpInterceptor.get(`/api/gestionDeStock/utilisateurs/${id}`);
+      return response;
     } catch (error) {
       console.error('Erreur lors de la récupération de l\'utilisateur:', error);
-      return {};
+      if (error.response?.status === 404) {
+        throw new Error('Utilisateur non trouvé');
+      }
+      throw new Error('Erreur lors de la récupération de l\'utilisateur');
     }
   }
 
-  // Sauvegarder un utilisateur
+  // Sauvegarder un utilisateur (création)
   async save(utilisateur) {
     try {
-      return await httpInterceptor.post('/api/gestionDeStock/utilisateurs/create', utilisateur);
+      const response = await httpInterceptor.post('/api/gestionDeStock/utilisateurs/create', utilisateur);
+      return response;
     } catch (error) {
       console.error('Erreur lors de la sauvegarde de l\'utilisateur:', error);
-      throw error;
+      if (error.response?.status === 400) {
+        const errorData = error.response.data;
+        if (errorData.errors && Array.isArray(errorData.errors)) {
+          throw new Error(errorData.errors.join(', '));
+        }
+        throw new Error(errorData.message || 'Données invalides');
+      }
+      throw new Error('Erreur lors de la sauvegarde de l\'utilisateur');
     }
   }
 
@@ -45,10 +57,18 @@ class UserService {
       // D'après swagger.json, l'endpoint create peut être utilisé pour créer ET modifier
       // On ajoute l'ID à l'utilisateur pour la modification
       const utilisateurAvecId = { ...utilisateur, id };
-      return await httpInterceptor.post('/api/gestionDeStock/utilisateurs/create', utilisateurAvecId);
+      const response = await httpInterceptor.post('/api/gestionDeStock/utilisateurs/create', utilisateurAvecId);
+      return response;
     } catch (error) {
       console.error('Erreur lors de la mise à jour de l\'utilisateur:', error);
-      throw error;
+      if (error.response?.status === 400) {
+        const errorData = error.response.data;
+        if (errorData.errors && Array.isArray(errorData.errors)) {
+          throw new Error(errorData.errors.join(', '));
+        }
+        throw new Error(errorData.message || 'Données invalides');
+      }
+      throw new Error('Erreur lors de la mise à jour de l\'utilisateur');
     }
   }
 
@@ -59,7 +79,24 @@ class UserService {
       return { success: true };
     } catch (error) {
       console.error('Erreur lors de la suppression de l\'utilisateur:', error);
-      return { success: false, error };
+      if (error.response?.status === 404) {
+        throw new Error('Utilisateur non trouvé');
+      }
+      throw new Error('Erreur lors de la suppression de l\'utilisateur');
+    }
+  }
+
+  // Rechercher un utilisateur par email
+  async findByEmail(email) {
+    try {
+      const response = await httpInterceptor.get(`/api/gestionDeStock/utilisateurs/find/${email}`);
+      return response;
+    } catch (error) {
+      console.error('Erreur lors de la recherche par email:', error);
+      if (error.response?.status === 404) {
+        return null; // Utilisateur non trouvé
+      }
+      throw new Error('Erreur lors de la recherche par email');
     }
   }
 
@@ -90,15 +127,15 @@ class UserService {
         data: changerMotDePasseDto
       });
       
-      return { 
-        success: false, 
-        error: `Changement de mot de passe échoué: ${error.message}`,
-        status: error.status || 'unknown',
-        details: {
-          endpoint: '/api/gestionDeStock/utilisateurs/update/password',
-          data: changerMotDePasseDto
+      if (error.response?.status === 400) {
+        const errorData = error.response.data;
+        if (errorData.errors && Array.isArray(errorData.errors)) {
+          throw new Error(errorData.errors.join(', '));
         }
-      };
+        throw new Error(errorData.message || 'Données invalides');
+      }
+      
+      throw new Error('Erreur lors du changement de mot de passe');
     }
   }
 

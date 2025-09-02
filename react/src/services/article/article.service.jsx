@@ -6,7 +6,7 @@ class ArticleService {
   // Enregistrer un article
   async enregistrerArticle(articleDto) {
     try {
-      return await httpInterceptor.post('/api/gestionDeStock/articles/save', articleDto);
+      return await httpInterceptor.post('/api/gestionDeStock/articles/create', articleDto);
     } catch (error) {
       console.error('Erreur lors de la sauvegarde de l\'article:', error);
       throw error;
@@ -35,7 +35,7 @@ class ArticleService {
       return {};
     }
     try {
-      return await httpInterceptor.get(`/api/gestionDeStock/articles/find/${idArticle}`);
+      return await httpInterceptor.get(`/api/gestionDeStock/articles/${idArticle}`);
     } catch (error) {
       console.error('Erreur lors de la récupération de l\'article:', error);
       return {};
@@ -59,7 +59,7 @@ class ArticleService {
   // Rechercher un article par code
   async findArticleByCode(codeArticle) {
     try {
-      return await httpInterceptor.get(`/api/gestionDeStock/articles/findbycode/${codeArticle}`);
+      return await httpInterceptor.get(`/api/gestionDeStock/articles/filter/${codeArticle}`);
     } catch (error) {
       console.error('Erreur lors de la recherche de l\'article par code:', error);
       return {};

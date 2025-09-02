@@ -1,70 +1,84 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CategoryService } from '../../services/category/category.service';
+import { UserService } from '../../services/user/user.service';
 import ButtonAction from '../../components/button-action/button.jsx';
 import Pagination from '../../components/pagination/pagination.jsx';
 
-const PageCategories = () => {
-  const [listCategories, setListCategories] = useState([]);
-  const [selectedCatIdToDelete, setSelectedCatIdToDelete] = useState(-1);
+const PageUtilisateur = () => {
+  const [listUtilisateurs, setListUtilisateurs] = useState([]);
+  const [selectedUserIdToDelete, setSelectedUserIdToDelete] = useState(-1);
   const [errorMsgs, setErrorMsgs] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const categoryService = new CategoryService();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const navigate = useNavigate();
+  const userService = new UserService();
 
   useEffect(() => {
-    findAllCategories();
+    findAllUtilisateurs();
   }, []);
 
-  const findAllCategories = async () => {
+  const findAllUtilisateurs = async () => {
     try {
       setLoading(true);
-      const categories = await categoryService.findAll();
-      setListCategories(categories);
+      const utilisateurs = await userService.findAll();
+      setListUtilisateurs(utilisateurs);
       setErrorMsgs('');
     } catch (error) {
-      console.error('Erreur lors de la récupération des catégories:', error);
-      setErrorMsgs(error.message || 'Erreur lors de la récupération des catégories');
+      console.error('Erreur lors de la récupération des utilisateurs:', error);
+      setErrorMsgs(error.message || 'Erreur lors de la récupération des utilisateurs');
     } finally {
       setLoading(false);
     }
   };
 
-  const nouvelleCategory = () => {
-    navigate('/dashboard/nouvellecategorie');
+  const nouvelUtilisateur = () => {
+    navigate('/dashboard/nouvelutilisateur');
   };
 
-  const modifierCategory = (id) => {
-    navigate(`/dashboard/nouvellecategorie/${id}`);
+  const modifierUtilisateur = (id) => {
+    navigate(`/dashboard/nouvelutilisateur/${id}`);
   };
 
-  const confirmerEtSupprimerCat = async () => {
-    if (selectedCatIdToDelete !== -1) {
+  const voirDetailsUtilisateur = (id) => {
+    // Pour l'instant, on navigue vers la page de modification
+    // Vous pouvez créer une page de détails séparée plus tard
+    navigate(`/dashboard/utilisateur-details/${id}`);
+  };
+
+  const confirmerEtSupprimerUser = async () => {
+    if (selectedUserIdToDelete !== -1) {
       try {
-        await categoryService.delete(selectedCatIdToDelete);
-        setSelectedCatIdToDelete(-1);
-        findAllCategories();
+        await userService.delete(selectedUserIdToDelete);
+        setSelectedUserIdToDelete(-1);
         setShowDeleteModal(false);
+        findAllUtilisateurs();
       } catch (error) {
         console.error('Erreur lors de la suppression:', error);
-        setErrorMsgs(error.message || 'Erreur lors de la suppression de la catégorie');
+        setErrorMsgs(error.message || 'Erreur lors de la suppression de l\'utilisateur');
       }
     }
   };
 
-  const annulerSuppressionCat = () => {
-    setSelectedCatIdToDelete(-1);
+  const annulerSuppressionUser = () => {
+    setSelectedUserIdToDelete(-1);
     setShowDeleteModal(false);
   };
 
-  const selectCatPourSupprimer = (id) => {
-    setSelectedCatIdToDelete(id);
+  const selectUserPourSupprimer = (id) => {
+    setSelectedUserIdToDelete(id);
     setShowDeleteModal(true);
   };
 
-  const voirDetailsCategorie = (id) => {
-    navigate(`/dashboard/categorie-details/${id}`);
+  const formatAdresse = (adresse) => {
+    if (!adresse) return 'N/A';
+    const parts = [
+      adresse.adresse1,
+      adresse.adresse2,
+      adresse.ville,
+      adresse.codePostale,
+      adresse.pays
+    ].filter(Boolean);
+    return parts.length > 0 ? parts.join(' ') : 'N/A';
   };
 
   if (loading) {
@@ -81,12 +95,12 @@ const PageCategories = () => {
     <div className="col">
       <div className="row m-3">
         <div className="col-md-8 p-0">
-          <h1>Liste des catégories</h1>
+          <h1>Liste des utilisateurs</h1>
         </div>
         <div className="col-md-4 text-right">
           <ButtonAction
-            onClick={nouvelleCategory}
-            text="Nouvelle catégorie"
+            onClick={nouvelUtilisateur}
+            text="Nouvel utilisateur"
           />
         </div>
       </div>
@@ -98,20 +112,26 @@ const PageCategories = () => {
           </div>
         )}
         
-        {listCategories.length === 0 ? (
+        {listUtilisateurs.length === 0 ? (
           <div className="row col-md-12 custom-border mb-3 p-3">
             <div className="col-md-12 text-center">
-              Aucune catégorie trouvée
+              Aucun utilisateur trouvé
             </div>
           </div>
         ) : (
-          listCategories.map((cat) => (
-            <div key={cat.id} className="row col-md-12 custom-border mb-3 p-3">
-              <div className="col-md-3 custom-border-right">
-                {cat.code}
+          listUtilisateurs.map((utilisateur) => (
+            <div key={utilisateur.id} className="row col-md-12 custom-border mb-3 p-3">
+              <div className="col-md-2 custom-border-right">
+                <strong>Nom:</strong> {utilisateur.nom || 'N/A'}
               </div>
-              <div className="col-md-4 custom-border-right">
-                {cat.designation}
+              <div className="col-md-2 custom-border-right">
+                <strong>Prénom:</strong> {utilisateur.prenom || 'N/A'}
+              </div>
+              <div className="col-md-2 custom-border-right">
+                <strong>Email:</strong> {utilisateur.email || 'N/A'}
+              </div>
+              <div className="col-md-3 custom-border-right">
+                <strong>Adresse:</strong> {formatAdresse(utilisateur.adresse)}
               </div>
               <div className="col-md-3">
                 <div className="row">
@@ -119,7 +139,7 @@ const PageCategories = () => {
                     <button 
                       type="button" 
                       className="btn btn-link text-primary" 
-                      onClick={() => voirDetailsCategorie(cat.id)}
+                      onClick={() => voirDetailsUtilisateur(utilisateur.id)}
                     >
                       <i className="far fa-list-alt"></i>&nbsp;Détails
                     </button>
@@ -128,7 +148,7 @@ const PageCategories = () => {
                     <button 
                       type="button" 
                       className="btn btn-link text-warning" 
-                      onClick={() => modifierCategory(cat.id)}
+                      onClick={() => modifierUtilisateur(utilisateur.id)}
                     >
                       <i className="fas fa-pencil-alt"></i>&nbsp;Modifier
                     </button>
@@ -137,7 +157,7 @@ const PageCategories = () => {
                     <button 
                       type="button" 
                       className="btn btn-link text-danger" 
-                      onClick={() => selectCatPourSupprimer(cat.id)}
+                      onClick={() => selectUserPourSupprimer(utilisateur.id)}
                     >
                       <i className="fas fa-trash-alt"></i>&nbsp;Supprimer
                     </button>
@@ -149,7 +169,7 @@ const PageCategories = () => {
         )}
       </div>
       
-      {listCategories.length > 0 && (
+      {listUtilisateurs.length > 0 && (
         <div className="row mb-3">
           <div className="col-md-12 text-center">
             <Pagination />
@@ -167,27 +187,27 @@ const PageCategories = () => {
                 <button 
                   type="button" 
                   className="close" 
-                  onClick={annulerSuppressionCat}
+                  onClick={annulerSuppressionUser}
                   aria-label="Close"
                 >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div className="modal-body">
-                Êtes-vous sûr de vouloir supprimer cette catégorie ?
+                Êtes-vous sûr de vouloir supprimer cet utilisateur ?
               </div>
               <div className="modal-footer">
                 <button 
                   type="button" 
                   className="btn btn-secondary" 
-                  onClick={annulerSuppressionCat}
+                  onClick={annulerSuppressionUser}
                 >
                   <i className="fas fa-ban"></i>&nbsp;Annuler
                 </button>
                 <button 
                   type="button" 
                   className="btn btn-danger" 
-                  onClick={confirmerEtSupprimerCat}
+                  onClick={confirmerEtSupprimerUser}
                 >
                   <i className="fas fa-trash-alt"></i>&nbsp;Supprimer
                 </button>
@@ -200,4 +220,4 @@ const PageCategories = () => {
   );
 };
 
-export default PageCategories;
+export default PageUtilisateur;

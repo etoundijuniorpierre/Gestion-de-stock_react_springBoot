@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { CltfrsService } from '../../services/cltfrs/cltfrs.service';
 import { CmdcltfrsService } from '../../services/cmdcltfrs.service';
 import { ArticleService } from '../../services/article/article.service';
+import DetailCmd from '../detail-cmd/detail-cmd';
 import './nouveau-cmd-clt.scss';
 
 const NouveauCmdClt = () => {
@@ -13,18 +14,18 @@ const NouveauCmdClt = () => {
   const [codeArticle, setCodeArticle] = useState('');
   const [quantite, setQuantite] = useState('');
   const [codeCommande, setCodeCommande] = useState('');
-
   const [lignesCommande, setLignesCommande] = useState([]);
   const [totalCommande, setTotalCommande] = useState(0);
   const [articleNotYetSelected, setArticleNotYetSelected] = useState(false);
   const [errorMsg, setErrorMsg] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [successMsg, setSuccessMsg] = useState('');
 
   const navigate = useNavigate();
   const cltFrsService = new CltfrsService();
   const cmdCltFrsService = new CmdcltfrsService();
   const articleService = new ArticleService();
+
+  const origin = 'client';
 
   useEffect(() => {
     findAllClients();
@@ -56,7 +57,8 @@ const NouveauCmdClt = () => {
       findAllArticles();
     } else {
       const filteredArticles = listArticle.filter(art => 
-        art.codeArticle?.includes(codeArticle) || art.designation?.includes(codeArticle)
+        art.codeArticle?.toLowerCase().includes(codeArticle.toLowerCase()) || 
+        art.designation?.toLowerCase().includes(codeArticle.toLowerCase())
       );
       setListArticle(filteredArticles);
     }
@@ -64,22 +66,22 @@ const NouveauCmdClt = () => {
 
   const selectArticleClick = (article) => {
     setSearchedArticle(article);
-    setCodeArticle(article.codeArticle || '');
+    setCodeArticle(article.codeArticle);
     setArticleNotYetSelected(false);
   };
 
   const ajouterLigneCommande = () => {
-    checkLigneCommande();
-    if (errorMsg.length === 0) {
+    if (checkLigneCommande()) {
       const newLigne = {
+        id: Date.now(), // ID temporaire
         article: searchedArticle,
         quantite: parseFloat(quantite),
-        prixUnitaire: searchedArticle.prixUnitaireTtc || 0
+        prixUnitaire: searchedArticle.prixUnitaireTtc,
+        prixTotal: parseFloat(quantite) * searchedArticle.prixUnitaireTtc
       };
       
       setLignesCommande([...lignesCommande, newLigne]);
       calculerTotalCommande();
-      
       setSearchedArticle({});
       setQuantite('');
       setCodeArticle('');
@@ -89,28 +91,28 @@ const NouveauCmdClt = () => {
   };
 
   const checkLigneCommande = () => {
-    setErrorMsg([]);
+    const errors = [];
     
     if (!searchedArticle.id) {
-      setErrorMsg(['Veuillez sélectionner un article']);
-      return;
+      errors.push('Veuillez sélectionner un article');
+      setArticleNotYetSelected(true);
     }
     
     if (!quantite || parseFloat(quantite) <= 0) {
-      setErrorMsg(['Veuillez entrer une quantité valide']);
-      return;
+      errors.push('Veuillez entrer une quantité valide');
     }
     
-    if (lignesCommande.some(ligne => ligne.article?.id === searchedArticle.id)) {
-      setErrorMsg(['Cet article est déjà dans la commande']);
-      return;
+    if (errors.length > 0) {
+      setErrorMsg(errors);
+      return false;
     }
+    
+    setErrorMsg([]);
+    return true;
   };
 
   const calculerTotalCommande = () => {
-    const total = lignesCommande.reduce((sum, ligne) => {
-      return sum + ((ligne.prixUnitaire || 0) * (ligne.quantite || 0));
-    }, 0);
+    const total = lignesCommande.reduce((sum, ligne) => sum + ligne.prixTotal, 0);
     setTotalCommande(total);
   };
 
@@ -119,234 +121,210 @@ const NouveauCmdClt = () => {
       setErrorMsg(['Veuillez sélectionner un client']);
       return;
     }
-    
+
     if (lignesCommande.length === 0) {
       setErrorMsg(['Veuillez ajouter au moins une ligne de commande']);
       return;
     }
 
-    setIsLoading(true);
-    
     try {
-      const commandeData = {
-        code: codeCommande,
+      setIsLoading(true);
+      const commande = {
+        codeCommande: codeCommande,
         client: selectedClient,
+        fournisseur: null,
         lignesCommande: lignesCommande,
         totalCommande: totalCommande,
-        etatCommande: 'EN_PREPARATION'
+        dateCommande: new Date().toISOString()
       };
 
-      await cmdCltFrsService.saveCommandeClient(commandeData);
-      setSuccessMsg('Commande enregistrée avec succès');
-      
-      // Redirection après un délai
-      setTimeout(() => {
-        navigate('/dashboard/commandes-clients');
-      }, 2000);
-      
+      await cmdCltFrsService.saveCommandeClient(commande);
+      navigate('/dashboard/commandes-clients');
     } catch (error) {
-      setErrorMsg(['Erreur lors de l\'enregistrement de la commande']);
+      console.error('Erreur lors de la sauvegarde de la commande:', error);
+      setErrorMsg(['Erreur lors de la sauvegarde de la commande']);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const annulerCommande = () => {
+  const annuler = () => {
     navigate('/dashboard/commandes-clients');
   };
 
   return (
-    <div className="nouveau-cmd-clt">
-      <div className="nouveau-cmd-clt__header">
-        <h2>Nouvelle commande client</h2>
-      </div>
-
-      {errorMsg.length > 0 && (
-        <div className="nouveau-cmd-clt__errors">
-          {errorMsg.map((msg, index) => (
-            <div key={index} className="nouveau-cmd-clt__error">
-              <span>{msg}</span>
-            </div>
-          ))}
+    <div className="col mb-3">
+      <div className="col-md-12">
+        <div className="col-md-12 mb-3 mt-3">
+          <h2>Nouvelle commande {origin}</h2>
         </div>
-      )}
+        
+        {errorMsg.length > 0 && (
+          <div className="alert alert-danger">
+            {errorMsg.map((msg, index) => (
+              <div key={index}>
+                <span>{msg}</span>
+              </div>
+            ))}
+          </div>
+        )}
 
-      {successMsg && (
-        <div className="nouveau-cmd-clt__success">
-          <span>{successMsg}</span>
+        <div className="row p-3 custom-border">
+          <div className="col-md-5 custom-border-right">
+            <form>
+              <div className="form-group">
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  name="codeCmd" 
+                  placeholder="Code commande" 
+                  value={codeCommande}
+                  onChange={(e) => setCodeCommande(e.target.value)}
+                />
+              </div>
+              <div className="form-group">
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="Date commande"
+                  value={new Date().toLocaleDateString()}
+                  readOnly
+                />
+              </div>
+              <div className="form-group">
+                <select 
+                  className="form-control" 
+                  name="cltFrs" 
+                  value={selectedClient.id || ''}
+                  onChange={(e) => {
+                    const selected = listClients.find(c => c.id === parseInt(e.target.value));
+                    setSelectedClient(selected || {});
+                  }}
+                >
+                  <option value="">Sélectionner un {origin}</option>
+                  {listClientsFournisseurs.map((obj) => (
+                    <option key={obj.id} value={obj.id}>
+                      {obj.nom}&nbsp;{obj.prenom}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </form>
+          </div>
+          
+          {selectedClient.nom && (
+            <>
+              <div className="col-md-5 custom-border-right">
+                <div className="col">
+                  <div className="row">
+                    <div className="col-md-1"><i className="fas fa-info-circle blue-color"></i></div>
+                    <div className="col-md-10">{selectedClient.nom}</div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-1"><i className="fas fa-info-circle blue-color"></i></div>
+                    <div className="col-md-10">{selectedClient.prenom}</div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-1"><i className="fas fa-phone-alt blue-color"></i></div>
+                    <div className="col-md-10">{selectedClient.numTel}</div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-1"><i className="fas fa-hourglass-half blue-color"></i></div>
+                    <div className="col-md-10 text-primary">EN PREPARATION</div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-2 text-center">
+                <img 
+                  src={selectedClient.photo ? selectedClient.photo : '/src/assets/product.png'} 
+                  className="rounded-circle" 
+                  width="150px"
+                  height="150px" 
+                  alt="Photo client"
+                />
+              </div>
+            </>
+          )}
         </div>
-      )}
 
-      <div className="nouveau-cmd-clt__client-section">
-        <div className="nouveau-cmd-clt__form-section">
-          <form>
-            <div className="nouveau-cmd-clt__form-group">
+        <div className="row mt-2 p-3 custom-border">
+          <div className="form-row col-md-12">
+            <div className="col-md-4">
               <input 
                 type="text" 
-                className="nouveau-cmd-clt__input" 
-                name="codeCmd" 
-                placeholder="Code commande" 
-                value={codeCommande}
-                onChange={(e) => setCodeCommande(e.target.value)}
+                className="form-control" 
+                placeholder="Code article" 
+                value={codeArticle}
+                onChange={(e) => setCodeArticle(e.target.value)}
+                onInput={filtrerArticle}
+              />
+              {codeArticle.length > 0 && !articleNotYetSelected && (
+                <div className="autocomplete shadow p-3 mb-5 bg-white rounded">
+                  {listArticle.map((article) => (
+                    <p 
+                      key={article.id} 
+                      className="p-1"
+                      onClick={() => selectArticleClick(article)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {article.codeArticle}&nbsp;{article.designation}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="col-md-4">
+              <input 
+                type="text" 
+                className="form-control" 
+                placeholder="Quantite" 
+                value={quantite}
+                onChange={(e) => setQuantite(e.target.value)}
               />
             </div>
-            <div className="nouveau-cmd-clt__form-group">
+            <div className="col-md-3">
               <input 
                 type="text" 
-                className="nouveau-cmd-clt__input" 
-                placeholder="Date commande" 
-                value={new Date().toLocaleDateString('fr-FR')}
+                className="form-control" 
+                placeholder="Prix unitaire" 
+                value={searchedArticle.prixUnitaireTtc || ''}
                 readOnly
               />
             </div>
-            <div className="nouveau-cmd-clt__form-group">
-              <select 
-                className="nouveau-cmd-clt__select" 
-                name="clt" 
-                value={selectedClient.id || ''}
-                onChange={(e) => {
-                  const client = listClients.find(c => c.id === parseInt(e.target.value));
-                  setSelectedClient(client || {});
-                }}
+            <div className="col-md-1">
+              <button 
+                type="button" 
+                className="btn btn-success" 
+                onClick={ajouterLigneCommande}
               >
-                <option value="">Sélectionner un client</option>
-                {listClients.map((client) => (
-                  <option key={client.id} value={client.id}>
-                    {client.nom}&nbsp;{client.prenom}
-                  </option>
-                ))}
-              </select>
+                <i className="fas fa-plus"></i>
+              </button>
             </div>
-          </form>
+          </div>
         </div>
 
-        {selectedClient.nom && (
-          <>
-            <div className="nouveau-cmd-clt__client-info">
-              <div className="nouveau-cmd-clt__client-detail">
-                <i className="fas fa-info-circle nouveau-cmd-clt__icon"></i>
-                <span>{selectedClient.nom}</span>
-              </div>
-              <div className="nouveau-cmd-clt__client-detail">
-                <i className="fas fa-info-circle nouveau-cmd-clt__icon"></i>
-                <span>{selectedClient.prenom}</span>
-              </div>
-              <div className="nouveau-cmd-clt__client-detail">
-                <i className="fas fa-phone-alt nouveau-cmd-clt__icon"></i>
-                <span>{selectedClient.numTel}</span>
-              </div>
-              <div className="nouveau-cmd-clt__client-detail">
-                <i className="fas fa-hourglass-half nouveau-cmd-clt__icon"></i>
-                <span className="nouveau-cmd-clt__status">EN PREPARATION</span>
-              </div>
-            </div>
-            <div className="nouveau-cmd-clt__client-photo">
-              <img 
-                src={selectedClient.photo ? selectedClient.photo : 'assets/product.png'} 
-                className="nouveau-cmd-clt__photo" 
-                alt="Photo client"
-              />
-            </div>
-          </>
-        )}
-      </div>
+        <div className="row mt-2 p-3 custom-border" style={{ maxHeight: '300px', overflowY: 'scroll' }}>
+          <div className="col-md-12">
+            {lignesCommande.map((ligne) => (
+              <DetailCmd key={ligne.id} ligneCommande={ligne} />
+            ))}
+          </div>
+        </div>
 
-      <div className="nouveau-cmd-clt__article-section">
-        <div className="nouveau-cmd-clt__article-form">
-          <div className="nouveau-cmd-clt__article-input">
-            <input 
-              type="text" 
-              className="nouveau-cmd-clt__input" 
-              placeholder="Code article" 
-              value={codeArticle}
-              onChange={(e) => {
-                setCodeArticle(e.target.value);
-                filtrerArticle();
-              }}
-            />
-            {codeArticle.length > 0 && !articleNotYetSelected && (
-              <div className="nouveau-cmd-clt__autocomplete">
-                {listArticle.map((article) => (
-                  <p 
-                    key={article.id} 
-                    className="nouveau-cmd-clt__autocomplete-item"
-                    onClick={() => selectArticleClick(article)}
-                  >
-                    {article.codeArticle}&nbsp;{article.designation}
-                  </p>
-                ))}
-              </div>
-            )}
-          </div>
-          <div className="nouveau-cmd-clt__article-input">
-            <input 
-              type="text" 
-              className="nouveau-cmd-clt__input" 
-              placeholder="Quantite" 
-              value={quantite}
-              onChange={(e) => setQuantite(e.target.value)}
-            />
-          </div>
-          <div className="nouveau-cmd-clt__article-input">
-            <input 
-              type="text" 
-              className="nouveau-cmd-clt__input" 
-              placeholder="Prix unitaire" 
-              value={searchedArticle.prixUnitaireTtc || ''}
-              readOnly
-            />
-          </div>
-          <div className="nouveau-cmd-clt__article-input">
-            <button 
-              type="button" 
-              className="nouveau-cmd-clt__btn nouveau-cmd-clt__btn--add"
-              onClick={ajouterLigneCommande}
-            >
-              <i className="fas fa-plus"></i>
-            </button>
+        <div className="row mt-2 p-3 custom-border">
+          <div className="col-md-12 text-right">
+            <h3>Total de la commande: {totalCommande.toFixed(2)}€</h3>
           </div>
         </div>
       </div>
 
-      <div className="nouveau-cmd-clt__lignes-section">
-        <div className="nouveau-cmd-clt__lignes-header">
-          <h3>Lignes de commande</h3>
-        </div>
-        <div className="nouveau-cmd-clt__lignes-list">
-          {lignesCommande.map((ligne, index) => (
-            <div key={index} className="nouveau-cmd-clt__ligne">
-              <div className="nouveau-cmd-clt__ligne-item">
-                <strong>Article:</strong> {ligne.article?.codeArticle}
-              </div>
-              <div className="nouveau-cmd-clt__ligne-item">
-                <strong>Désignation:</strong> {ligne.article?.designation}
-              </div>
-              <div className="nouveau-cmd-clt__ligne-item">
-                <strong>Quantité:</strong> {ligne.quantite}
-              </div>
-              <div className="nouveau-cmd-clt__ligne-item">
-                <strong>Prix:</strong> {ligne.prixUnitaire}
-              </div>
-              <div className="nouveau-cmd-clt__ligne-item">
-                <strong>Total:</strong> {(ligne.prixUnitaire || 0) * (ligne.quantite || 0)}
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="nouveau-cmd-clt__total">
-          <strong>Total de la commande: {totalCommande} €</strong>
-        </div>
-      </div>
-
-      <div className="nouveau-cmd-clt__actions">
-        <button 
-          className="nouveau-cmd-clt__btn nouveau-cmd-clt__btn--secondary"
-          onClick={annulerCommande}
-        >
-          <i className="fas fa-ban"></i>&nbsp;Annuler
+      <div className="col-md-12 text-right mt-2">
+        <button className="btn btn-danger mr-3" onClick={annuler}>
+          <i className="fas fa-ban"></i>&nbsp;
+          Annuler
         </button>
         <button 
-          className="nouveau-cmd-clt__btn nouveau-cmd-clt__btn--primary"
+          className="btn btn-primary" 
           onClick={enregistrerCommande}
           disabled={isLoading}
         >

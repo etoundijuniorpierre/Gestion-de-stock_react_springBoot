@@ -5,11 +5,15 @@ export default function ButtonAction({
   isNouveauVisible = true, 
   isExporterVisible = true, 
   isImporterVisible = true,
-  onNouveauClick 
+  onNouveauClick,
+  onClick,
+  text = "Nouveau"
 }) {
   
-  const handleNouveauClick = () => {
-    if (onNouveauClick) {
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    } else if (onNouveauClick) {
       onNouveauClick('Nouveau');
     }
   };
@@ -34,9 +38,9 @@ export default function ButtonAction({
       )}
       {isNouveauVisible && (
         <div className="button-action__item">
-          <button type="button" className="button-action__btn button-action__btn--primary" onClick={handleNouveauClick}>
+          <button type="button" className="button-action__btn button-action__btn--primary" onClick={handleClick}>
             <i className="fas fa-plus"></i>&nbsp;
-            Nouveau
+            {text}
           </button>
         </div>
       )}
