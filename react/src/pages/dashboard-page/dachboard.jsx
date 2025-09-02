@@ -8,10 +8,13 @@ import NouvelArticle from '../page-articles/nouvel-article/nouvel-articles';
 import MouvementsStocks from '../mouvements-stocks/mouvements-stocks';
 import Clients from '../page-clients/clients';
 import Fournisseurs from '../page-fournisseurs/fournisseurs';
-import Categories from '../page-categories/categories';
-import Utilisateurs from '../page-utilisateur/utilisateurs';
+import PageCategories from '../page-categories/page-categories';
+import NouvelleCategorie from '../page-categories/nouvelle-categorie';
+import PageUtilisateur from '../page-utilisateur/page-utilisateur';
+import NouvelUtilisateur from '../page-utilisateur/nouvel-utilisateur';
 import CommandesClients from '../page-commandes-clients/commandes-clients';
 import CommandesFournisseurs from '../page-commandes-fournisseurs/commandes-fournisseurs';
+import ChangerMotPasse from '../profil/changer-mot-passe/changer-mot-passe';
 import Header from '../../components/header/header';
 import "./dashboard.css";
 
@@ -71,10 +74,15 @@ export default function Dashboard() {
                     <Route path="mouvements-stocks" element={<MouvementsStocks />} />
                     <Route path="clients" element={<Clients />} />
                     <Route path="fournisseurs" element={<Fournisseurs />} />
-                    <Route path="categories" element={<Categories />} />
-                    <Route path="utilisateurs" element={<Utilisateurs />} />
+                    <Route path="categories" element={<PageCategories />} />
+                    <Route path="nouvellecategorie" element={<NouvelleCategorie />} />
+                    <Route path="nouvellecategorie/:id" element={<NouvelleCategorie />} />
+                    <Route path="utilisateurs" element={<PageUtilisateur />} />
+                    <Route path="nouvelutilisateur" element={<NouvelUtilisateur />} />
+                    <Route path="nouvelutilisateur/:id" element={<NouvelUtilisateur />} />
                     <Route path="commandes-clients" element={<CommandesClients />} />
                     <Route path="commandes-fournisseurs" element={<CommandesFournisseurs />} />
+                    <Route path="changer-mot-passe" element={<ChangerMotPasse />} />
                     <Route path="*" element={<VueEnsemble />} />
                   </Routes>
                 </div>

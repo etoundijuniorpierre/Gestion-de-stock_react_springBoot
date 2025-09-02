@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import Login from './pages/login-page/login';
 import Register from './pages/register-page/register';
 import Dashboard from './pages/dashboard-page/dachboard';
+import AuthGuard from './components/guard/auth-guard';
 
 // Composant de débogage pour tracer les changements d'URL
 function DebugRouter() {
@@ -24,7 +25,11 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard/*" element={<Dashboard />} />
+          <Route path="/dashboard/*" element={
+            <AuthGuard>
+              <Dashboard />
+            </AuthGuard>
+          } />
         </Routes>
       </Router>
     </>

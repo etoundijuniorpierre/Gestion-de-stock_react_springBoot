@@ -48,12 +48,13 @@ const MouvementsStocks = () => {
           <div className="accordion" id="mvtStkDetails">
             <div className="card">
               <div className="card-body" id="headingOne">
-                <button className="btn btn-block text-left" type="button" 
+                <div className="btn btn-block text-left" 
                   onClick={toggleCollapseOne}
                   aria-expanded={getAriaExpandedOne()} 
-                  aria-controls="collapseOne">
+                  aria-controls="collapseOne"
+                  style={{cursor: 'pointer'}}>
                   <DetailMvtStkArticle />
-                </button>
+                </div>
               </div>
               <div id="collapseOne"
                    className={getCollapseOneclassName()}
@@ -74,12 +75,13 @@ const MouvementsStocks = () => {
 
             <div className="card">
               <div className="card-body" id="headingTwo">
-                <button className="btn btn-block text-left" type="button" 
+                <div className="btn btn-block text-left" 
                   onClick={toggleCollapseTwo}
                   aria-expanded={getAriaExpandedTwo()} 
-                  aria-controls="collapseTwo">
+                  aria-controls="collapseTwo"
+                  style={{cursor: 'pointer'}}>
                   <DetailMvtStkArticle />
-                </button>
+                </div>
               </div>
               <div id="collapseTwo"
                    className={getCollapseTwoclassName()}

@@ -1,1 +1,12 @@
-/*# sourceMappingURL=pagination.css.map */
+.pagination{ display:inline-flex; border-radius:.375rem; overflow:hidden; box-shadow:0 .125rem .25rem rgba(0,0,0,.075) }
+.pagination__btn{ display:inline-block; font-weight:400; text-align:center; vertical-align:middle; user-select:none; border:1px solid #dee2e6; padding:.375rem .75rem; font-size:.875rem; line-height:1.5; background-color:#fff; color:#495057; transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out; cursor:pointer; margin-left:-1px }
+.pagination__btn:first-child{ margin-left:0; border-top-left-radius:.375rem; border-bottom-left-radius:.375rem }
+.pagination__btn:last-child{ border-top-right-radius:.375rem; border-bottom-right-radius:.375rem }
+.pagination__btn:hover{ background-color:#e9ecef; border-color:#dee2e6; color:#495057; text-decoration:none }
+.pagination__btn:focus{ box-shadow:0 0 0 .2rem rgba(0,123,255,.25); outline:0 }
+.pagination__btn:active{ background-color:#dee2e6; border-color:#dee2e6; color:#495057 }
+.pagination__btn--nav{ min-width:40px }
+.pagination__btn--page{ min-width:40px }
+@media(max-width:768px){ .pagination{flex-wrap:wrap; justify-content:center }
+.pagination__btn{ margin:.125rem; border-radius:.375rem !important }
+}

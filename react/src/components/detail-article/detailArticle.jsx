@@ -4,65 +4,63 @@ import './detailArticle.scss';
 
 export default function DetailArticle() {
     return (
-        <div className="row mb-2 align-items-center p-2 custom-border">
-
+        <div className="detail-article">
           {/* Image */}
-          <div className="col-md-1 text-center">
-            <img src={productImg} alt="Produit" className="img-fluid" style={{maxHeight:"80px"}} />
+          <div className="detail-article__image">
+            <img src={productImg} alt="Produit" />
           </div>
 
           {/* Infos Article */}
-          <div className="col-md-5 infosArticle">
-            <p><i className="fas fa-info-circle blue-color"></i> codeArticle</p>
-            <p><i className="fas fa-info-circle blue-color"></i> designation</p>
-            <p><i className="fas fa-dollar-sign blue-color"></i> prixUnitaireHt</p>
-            <p><i className="fas fa-dollar-sign blue-color"></i> prixUnitaireTtc</p>
+          <div className="detail-article__info">
+            <p><i className="fas fa-info-circle detail-article__icon"></i> codeArticle</p>
+            <p><i className="fas fa-info-circle detail-article__icon"></i> designation</p>
+            <p><i className="fas fa-dollar-sign detail-article__icon"></i> prixUnitaireHt</p>
+            <p><i className="fas fa-dollar-sign detail-article__icon"></i> prixUnitaireTtc</p>
           </div>
 
           {/* Catégorie */}
-          <div className="col-md-3">
-            <p><i className="fas fa-flag-checkered blue-color"></i> category?.code</p>
+          <div className="detail-article__category">
+            <p><i className="fas fa-flag-checkered detail-article__icon"></i> category?.code</p>
             <p>category?.designation</p>
           </div>
 
           {/* Boutons */}
-          <div className="col-md-3 text-right">
-            <button type="button" className="btn btn-sm btn-link">
+          <div className="detail-article__actions">
+            <button type="button" className="detail-article__btn detail-article__btn--edit">
               <i className="fas fa-pencil-alt"></i> Modifier
             </button>
-            <button type="button" className="btn btn-sm btn-link text-danger" data-toggle="modal" data-target="#modalDeleteArticle">
+            <button type="button" className="detail-article__btn detail-article__btn--delete">
               <i className="fas fa-trash-alt"></i> Supprimer
             </button>
-            <button type="button" className="btn btn-sm btn-link">
+            <button type="button" className="detail-article__btn detail-article__btn--details">
               <i className="far fa-list-alt"></i> Détails
             </button>
           </div>
 
           {/* Modal Suppression */}
-          <div className="modal fade" id="modalDeleteArticle" tabIndex="-1" aria-hidden="true">
-            <div className="modal-dialog">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title">Confirmation</h5>
-                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+          <div className="detail-article__modal" id="modalDeleteArticle" tabIndex="-1" aria-hidden="true">
+            <div className="detail-article__modal-dialog">
+              <div className="detail-article__modal-content">
+                <div className="detail-article__modal-header">
+                  <h5 className="detail-article__modal-title">Confirmation</h5>
+                  <button type="button" className="detail-article__modal-close" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <div className="modal-body">
+                <div className="detail-article__modal-body">
                   Êtes-vous sûr de vouloir supprimer cet article ?
                 </div>
-                <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" data-dismiss="modal">
+                <div className="detail-article__modal-footer">
+                  <button type="button" className="detail-article__modal-btn detail-article__modal-btn--secondary">
                     <i className="fas fa-ban"></i>&nbsp;Annuler
                   </button>
-                  <button type="button" className="btn btn-danger" data-dismiss="modal">
+                  <button type="button" className="detail-article__modal-btn detail-article__modal-btn--danger">
                     <i className="fas fa-trash-alt"></i>&nbsp;Supprimer
                   </button>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
     )
 }

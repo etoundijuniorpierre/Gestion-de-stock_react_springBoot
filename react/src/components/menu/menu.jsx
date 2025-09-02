@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { MenuHook } from './menuElem';
-import './menu.css';
+import './menu.scss';
 
 export default function Menu() {
     const { menuProperties } = MenuHook();
@@ -19,46 +19,37 @@ export default function Menu() {
         setExpandedMenus(newExpanded);
     };
 
-    // Fonction pour vérifier si un lien est actif
     const isActive = (url) => {
         return location.pathname === `/dashboard/${url}` || location.pathname === `/${url}`;
     };
 
-    // Fonction de navigation
     const handleMenuClick = (url, event) => {
-        // Empêcher le comportement par défaut
         if (event) {
             event.preventDefault();
             event.stopPropagation();
         }
         
-        console.log('🔗 Navigation vers:', `/dashboard/${url}`);
-        console.log('📍 URL actuelle avant navigation:', location.pathname);
-        
         try {
             navigate(`/dashboard/${url}`);
-            console.log('✅ Navigation réussie vers:', `/dashboard/${url}`);
         } catch (error) {
             console.error('❌ Erreur de navigation:', error);
         }
     };
 
     return (
-        <div className="accordion" id="appMenuAccordion">
+        <div className="menu" id="appMenuAccordion">
             {menuProperties.map((menu) => (
-                <div className="card border-0" key={menu.id}>
-                    <div className="card-header bg-transparent border-0" id={`menu${menu.id}`}>
-                        <h2 className="mb-0">
+                <div className="menu__item" key={menu.id}>
+                    <div className="menu__header" id={`menu${menu.id}`}>
+                        <h2 className="menu__title">
                             <button 
-                                className="btn btn-link btn-block text-left text-primary-transparent text-decoration-none w-100 text-s-50" 
+                                className="menu__button" 
                                 type="button" 
-                                data-bs-toggle="collapse" 
-                                data-bs-target={`#collapse${menu.id}`}
                                 aria-expanded={expandedMenus.has(menu.id)}
                                 aria-controls={`collapse${menu.id}`}
                                 onClick={() => toggleMenu(menu.id)}
                             >
-                                <i className={`${menu.icon} me-2`}></i>
+                                <i className={`${menu.icon} menu__icon`}></i>
                                 {menu.titre}
                             </button>
                         </h2>
@@ -66,26 +57,19 @@ export default function Menu() {
                 
                     <div 
                         id={`collapse${menu.id}`} 
-                        className={`collapse ${expandedMenus.has(menu.id) ? 'show' : ''}`}
+                        className={`menu__content ${expandedMenus.has(menu.id) ? 'menu__content--expanded' : ''}`}
                         aria-labelledby={`menu${menu.id}`} 
-                        data-bs-parent="#appMenuAccordion"
                     >
-                        <div className="card-body p-0">
-                            <ul className="list-group list-group-flush">
+                        <div className="menu__body">
+                            <ul className="menu__list">
                                 {menu.sousMenu.map((sousMenu) => (
                                     <li 
-                                        className={`list-group-item border-0 ${isActive(sousMenu.url) ? 'text-white bg-primary' : 'bg-transparent'}`}
+                                        className={`menu__list-item ${isActive(sousMenu.url) ? 'menu__list-item--active' : ''}`}
                                         key={sousMenu.id}
                                     >
                                         <div 
                                             onClick={(event) => handleMenuClick(sousMenu.url, event)}
-                                            className={`text-decoration-none ${isActive(sousMenu.url) ? 'text-white' : 'text-dark'}`}
-                                            style={{ 
-                                                display: 'block', 
-                                                padding: '8px 16px', 
-                                                cursor: 'pointer',
-                                                userSelect: 'none'
-                                            }}
+                                            className={`menu__link ${isActive(sousMenu.url) ? 'menu__link--active' : ''}`}
                                             role="button"
                                             tabIndex={0}
                                             onKeyDown={(event) => {
@@ -94,7 +78,7 @@ export default function Menu() {
                                                 }
                                             }}
                                         >
-                                            <i className={`${sousMenu.icon} me-2`}></i>
+                                            <i className={`${sousMenu.icon} menu__link-icon`}></i>
                                             {sousMenu.titre}
                                         </div>
                                     </li>

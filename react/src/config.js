@@ -1,8 +1,20 @@
-
-const config = {
-    apiUrl: "http://localhost:2035/gestionDeStock",
-    version: "1.0.0"
-  };
+// Configuration de l'application
+export const config = {
+  // URL de l'API Spring Boot
+  API_BASE_URL: 'http://localhost:8080',
   
-  export default config;
+  // Configuration des endpoints
+  API_ENDPOINTS: {
+    ARTICLES: '/gestionDeStock/articles',
+    CATEGORIES: '/gestionDeStock/categories',
+    COMMANDES_CLIENTS: '/gestionDeStock/commandesclients',
+    COMMANDES_FOURNISSEURS: '/gestionDeStock/commandefournisseurs',
+    UTILISATEURS: '/gestionDeStock/utilisateurs',
+    CLIENTS: '/gestionDeStock/clients',
+    FOURNISSEURS: '/gestionDeStock/fournisseurs',
+    AUTHENTIFICATION: '/gestionDeStock/auth'
+  }
+};
+
+export default config;
   

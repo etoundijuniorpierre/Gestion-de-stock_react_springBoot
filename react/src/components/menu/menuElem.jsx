@@ -101,6 +101,20 @@ export const MenuHook = () => {
           url: 'utilisateurs'
         }
       ]
+    },
+    {
+      id: '6',
+      titre: 'Profil',
+      icon: 'fas fa-user-circle',
+      url: '',
+      sousMenu: [
+        {
+          id: '61',
+          titre: 'Changer mot de passe',
+          icon: 'fas fa-key',
+          url: 'changer-mot-passe'
+        }
+      ]
     }
   ];
 

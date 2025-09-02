@@ -1,86 +1,16 @@
-@keyframes buttonPop {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
+.button-action{ display:flex; gap:.5rem }
+.button-action__item{ flex:1; padding:.5rem }
+.button-action__btn{ display:inline-block; font-weight:400; text-align:center; vertical-align:middle; user-select:none; border:1px solid rgba(0,0,0,0); padding:.375rem .75rem; font-size:.875rem; line-height:1.5; border-radius:.375rem; transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out; cursor:pointer; width:100% }
+.button-action__btn:hover{ text-decoration:none }
+.button-action__btn--primary{ color:#fff; background-color:#007bff; border-color:#007bff }
+.button-action__btn--primary:hover{ background-color:#0056b3; border-color:#0056b3 }
+.button-action__btn--primary:focus{ box-shadow:0 0 0 .2rem rgba(0,123,255,.25) }
+.button-action__btn--success{ color:#fff; background-color:#28a745; border-color:#28a745 }
+.button-action__btn--success:hover{ background-color:#1e7e34; border-color:#1e7e34 }
+.button-action__btn--success:focus{ box-shadow:0 0 0 .2rem rgba(40,167,69,.25) }
+.button-action__btn--warning{ color:#212529; background-color:#ffc107; border-color:#ffc107 }
+.button-action__btn--warning:hover{ background-color:#e0a800; border-color:#d39e00 }
+.button-action__btn--warning:focus{ box-shadow:0 0 0 .2rem rgba(255,193,7,.25) }
+@media(max-width:768px){ .button-action{flex-direction:column }
+.button-action__item{ width:100% }
 }
-@keyframes iconSpin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@keyframes buttonGlow {
-  0% {
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(0, 123, 255, 0.6);
-  }
-  100% {
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-  }
-}
-.d-flex {
-  animation: fadeIn 0.8s ease-out;
-}
-
-.btn {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  animation: buttonPop 0.6s ease-out;
-}
-.btn:hover {
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-}
-.btn:hover i {
-  animation: iconSpin 0.6s ease-in-out;
-}
-.btn:active {
-  transform: translateY(-1px) scale(1.02);
-  animation: buttonPop 0.2s ease-out;
-}
-.btn::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.6s;
-}
-.btn:hover::before {
-  left: 100%;
-}
-.btn.btn-primary:hover {
-  animation: buttonGlow 1.5s ease-in-out infinite;
-}
-.btn.btn-success:hover {
-  background: linear-gradient(45deg, #28a745, #20c997);
-}
-.btn.btn-warning:hover {
-  background: linear-gradient(45deg, #ffc107, #fd7e14);
-}
-.btn i {
-  transition: all 0.3s ease;
-}
-.btn i:hover {
-  transform: scale(1.2);
-}
-
-.p-2.flex-fill {
-  transition: all 0.3s ease;
-}
-.p-2.flex-fill:hover {
-  transform: scale(1.02);
-}/*# sourceMappingURL=button.css.map */

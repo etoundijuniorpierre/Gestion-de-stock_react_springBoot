@@ -1,42 +1,74 @@
-import React, { useState } from 'react';
-import "./header.css";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import "./header.scss";
 import ReactLogo from "../../assets/react.ico";
 
 export default function Header() {
-    return(
+    const [connectedUser, setConnectedUser] = useState(null);
+    const navigate = useNavigate();
 
-            <div className="row header-container">
-                <div className="col-md-8">
-                    <div className="input-group flex-nowrap">
-                        <input 
-                            type="text" 
-                            className="form-control" 
-                            placeholder="Username" 
-                            aria-label="Username" 
-                            aria-describedby="addon-wrapping"
-                        />
-                        <div className="input-group-prepend" >
-                            <span className="input-group-text" id="addon-wrapping" style={{height: "100%", cursor: "pointer"}}>
-                                <i className="fas fa-search"></i>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div className="col-md-4 ">
-                    <div className="row user-section">
-                        <div className="col-md-9 text-right">
-                            <span>Bonjour</span>
-                            {/* {connectedUser?.nom}&nbsp; */}
-                        </div>
-                        <div className="col-md-3">
-                            <a href="javascript:void(0);">
-                                {/* [routerLink]="['/profil']" */}
-                                <img src={ReactLogo} className="rounded-circle"  />
-                            </a>
-                        </div>
+    useEffect(() => {
+        // Récupérer les informations de l'utilisateur connecté depuis le localStorage
+        const user = localStorage.getItem('user');
+        if (user) {
+            setConnectedUser(JSON.parse(user));
+        }
+    }, []);
+
+    const handleLogout = () => {
+        // Supprimer les informations de l'utilisateur et le token
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+        
+        // Rediriger vers la page de connexion
+        navigate('/login');
+    };
+
+    const handleProfileClick = () => {
+        navigate('/dashboard/profil');
+    };
+
+    return(
+        <div className="header">
+            <div className="header__search">
+                <div className="header__search-group">
+                    <input 
+                        type="text" 
+                        className="header__search-input" 
+                        placeholder="Rechercher..." 
+                        aria-label="Recherche" 
+                        aria-describedby="addon-wrapping"
+                    />
+                    <div className="header__search-button">
+                        <span className="header__search-icon" id="addon-wrapping">
+                            <i className="fas fa-search"></i>
+                        </span>
                     </div>
                 </div>
             </div>
-
+            <div className="header__user">
+                <div className="header__user-greeting">
+                    <span>Bonjour</span>
+                    {connectedUser?.nom && <span>&nbsp;{connectedUser.nom}</span>}
+                </div>
+                <div className="header__user-actions">
+                    <button 
+                        className="header__profile-btn" 
+                        onClick={handleProfileClick}
+                        title="Profil"
+                    >
+                        <img src={ReactLogo} className="header__user-image" alt="User avatar" />
+                    </button>
+                    <button 
+                        className="header__logout-btn" 
+                        onClick={handleLogout}
+                        title="Déconnexion"
+                    >
+                        <i className="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
     )
 }

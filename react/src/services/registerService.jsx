@@ -1,30 +1,21 @@
-import axios from "axios";
-import config from "../config";
+import httpInterceptor from "./http-interceptor";
 
-const API_URL = config.apiUrl;
-
-export const createUser = async (user) => {
+export const createUser = async (entreprise) => {
     try {
-        const response = await axios.post(`${API_URL}/utilisateurs/create`, user, {
-            headers: {
-                'Accept': '*/*',
-                'Content-Type': 'application/json'
-            }
-        });
-        return response.data;
+        return await httpInterceptor.post('/api/gestionDeStock/entreprises/create', entreprise);
     } catch (error) {
-        console.error('Erreur lors de la création de l\'utilisateur:', error);
+        console.error('Erreur lors de la création de l\'entreprise:', error);
         throw error;
     }
 };
 
-export const registerUser = async (userData) => {
+export const registerUser = async (entrepriseData) => {
     try {
-        const response = await createUser(userData);
+        const response = await createUser(entrepriseData);
         return {
             success: true,
             data: response,
-            message: 'Utilisateur créé avec succès'
+            message: 'Entreprise créée avec succès'
         };
     } catch (error) {
         return {

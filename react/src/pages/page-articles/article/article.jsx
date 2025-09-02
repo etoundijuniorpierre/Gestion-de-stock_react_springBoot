@@ -1,55 +1,137 @@
-import React, { useState } from 'react';
-import './article.scss';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DetailArticle from '../../../components/detail-article/detailArticle';
-import ButtonAction from '../../../components/button-action/button';
-import Pagination from '../../../components/pagination/pagination';
+import { ArticleService } from '../../../services/article/article.service';
+import './article.scss';
 
 const Article = () => {
-  const navigate = useNavigate();
+  const [articles, setArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-  const articles = [1, 2, 3, 4];
+  const navigate = useNavigate();
+  const articleService = new ArticleService();
+
+  useEffect(() => {
+    loadArticles();
+  }, []);
+
+  const loadArticles = async () => {
+    setIsLoading(true);
+    setErrorMsg('');
+    
+    try {
+      const data = await articleService.findAll();
+      setArticles(data || []);
+    } catch (error) {
+      console.error('Erreur lors du chargement des articles:', error);
+      setErrorMsg('Erreur lors du chargement des articles');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleEdit = (articleId) => {
+    navigate(`/dashboard/nouvel-article/${articleId}`);
+  };
+
+  const handleDelete = async (articleId) => {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
+      try {
+        const result = await articleService.delete(articleId);
+        if (result.success) {
+          loadArticles(); // Recharger la liste
+        } else {
+          setErrorMsg('Erreur lors de la suppression de l\'article');
+        }
+      } catch (error) {
+        console.error('Erreur lors de la suppression:', error);
+        setErrorMsg('Erreur lors de la suppression de l\'article');
+      }
+    }
+  };
+
+  const handleNewArticle = () => {
+    navigate('/dashboard/nouvel-article');
+  };
+
+  if (isLoading) {
+    return (
+      <div className="article-container">
+        <div className="loading">Chargement des articles...</div>
+      </div>
+    );
+  }
 
   return (
-    <div className="container-fluid">
-      {/* Header */}
-      <div className="row align-items-center my-3">
-        <div className="col-md-8">
-          <h1>Liste des articles</h1>
-        </div>
-        <div className="col-md-4 text-right" >
-          <ButtonAction onNouveauClick={() => {
-            console.log('🚀 Navigation vers nouvel-article');
-            console.log('📍 URL actuelle avant navigation:', window.location.pathname);
-            navigate('/dashboard/nouvel-article');
-            console.log('🎯 Navigation effectuée');
-          }} />
-        </div>
+    <div className="article-container">
+      <div className="article-header">
+        <h2>
+          <i className="fas fa-boxes article-icon"></i>
+          Gestion des Articles
+        </h2>
+        <button 
+          className="btn btn-primary"
+          onClick={handleNewArticle}
+        >
+          <i className="fas fa-plus"></i> Nouvel Article
+        </button>
       </div>
 
-      {/* Message erreur */}
       {errorMsg && (
-        <div className="row mx-3">
-          <div className="col-12">
-            <div className="alert alert-danger">{errorMsg}</div>
-          </div>
-        </div>
+        <div className="alert alert-danger">{errorMsg}</div>
       )}
 
-      {/* Liste des articles */}
-      <div className="row mx-3">
-        <div className="col-12" >
-          {articles.map((a, i) => (
-            <DetailArticle key={i} />
-          ))}
-        </div>
-      </div>
-
-      {/* Pagination */}
-      <div className="row my-3">
-        <div className="col-md-12 text-center">
-          <Pagination />
-        </div>
+      <div className="article-content">
+        {articles.length === 0 ? (
+          <div className="no-articles">
+            <p>Aucun article trouvé.</p>
+            <button 
+              className="btn btn-primary"
+              onClick={handleNewArticle}
+            >
+              Créer le premier article
+            </button>
+          </div>
+        ) : (
+          <div className="articles-table">
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Désignation</th>
+                  <th>Prix HT</th>
+                  <th>Prix TTC</th>
+                  <th>Catégorie</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {articles.map((article) => (
+                  <tr key={article.id}>
+                    <td>{article.codeArticle}</td>
+                    <td>{article.designation}</td>
+                    <td>{article.prixUnitaireHt} €</td>
+                    <td>{article.prixUnitaireTtc} €</td>
+                    <td>{article.categorie?.designation || 'N/A'}</td>
+                    <td>
+                      <button
+                        className="btn btn-sm btn-warning me-2"
+                        onClick={() => handleEdit(article.id)}
+                      >
+                        <i className="fas fa-edit"></i>
+                      </button>
+                      <button
+                        className="btn btn-sm btn-danger"
+                        onClick={() => handleDelete(article.id)}
+                      >
+                        <i className="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );

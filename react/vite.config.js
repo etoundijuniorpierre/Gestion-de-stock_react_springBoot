@@ -6,5 +6,10 @@ export default defineConfig({
   plugins: [react()],
   css: {
     devSourcemap: true
-  }
+  },
+  // Configuration pour les variables d'environnement
+  define: {
+    'process.env': {}
+  },
+
 })

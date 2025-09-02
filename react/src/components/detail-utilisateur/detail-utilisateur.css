@@ -1,0 +1,22 @@
+.detail-utilisateur{ display:flex; flex-wrap:wrap; margin-bottom:.25rem; margin-right:0; border:1px solid #dee2e6; border-radius:.375rem; padding:.25rem; background-color:#fff; box-shadow:0 .125rem .25rem rgba(0,0,0,.075) }
+.detail-utilisateur__photo{ flex:0 0 8.333333%; max-width:8.333333%; padding:.25rem; text-align:center; margin-bottom:.25rem; margin-top:.25rem; border-right:1px solid #dee2e6 }
+.detail-utilisateur__photo img{ border-radius:.375rem; object-fit:cover }
+.detail-utilisateur__info{ flex:0 0 41.666667%; max-width:41.666667%; margin-bottom:.25rem; margin-top:.25rem; border-right:1px solid #dee2e6; padding-right:1rem }
+.detail-utilisateur__info-item{ display:flex; align-items:center; margin-bottom:.5rem }
+.detail-utilisateur__info-item:last-child{ margin-bottom:0 }
+.detail-utilisateur__address{ flex:0 0 25%; max-width:25%; margin-bottom:.25rem; margin-top:.25rem; border-right:1px solid #dee2e6; padding-right:1rem }
+.detail-utilisateur__address-item{ display:flex; align-items:center; margin-bottom:.5rem }
+.detail-utilisateur__address-item:last-child{ margin-bottom:0 }
+.detail-utilisateur__actions{ flex:0 0 25%; max-width:25%; margin-bottom:.25rem; margin-top:.25rem; display:flex; flex-direction:column; gap:.5rem }
+.detail-utilisateur__icon{ color:#007bff; margin-right:.5rem; width:1rem; text-align:center }
+.detail-utilisateur__btn{ background:none; border:none; color:#007bff; text-decoration:none; padding:.375rem .75rem; font-size:.875rem; border-radius:.375rem; transition:all .15s ease-in-out; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.25rem }
+.detail-utilisateur__btn:hover{ background-color:#f8f9fa; text-decoration:none }
+.detail-utilisateur__btn--edit{ color:#007bff }
+.detail-utilisateur__btn--delete{ color:#dc3545 }
+.detail-utilisateur__btn--delete:hover{ background-color:#f8d7da }
+.detail-utilisateur__btn--details{ color:#6c757d }
+@media(max-width:768px){ .detail-utilisateur{flex-direction:column }
+.detail-utilisateur__photo,.detail-utilisateur__info,.detail-utilisateur__address,.detail-utilisateur__actions{ flex:0 0 100%; max-width:100%; border-right:none; border-bottom:1px solid #dee2e6; margin-bottom:1rem; padding-bottom:1rem }
+.detail-utilisateur__photo:last-child,.detail-utilisateur__info:last-child,.detail-utilisateur__address:last-child,.detail-utilisateur__actions:last-child{ border-bottom:none; margin-bottom:0; padding-bottom:0 }
+.detail-utilisateur__actions{ flex-direction:row; justify-content:center }
+}

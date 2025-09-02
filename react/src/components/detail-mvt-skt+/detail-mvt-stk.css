@@ -1,1 +1,11 @@
-/*# sourceMappingURL=detail-mvt-stk.css.map */
+.detail-mvt-stk{ display:flex; flex-wrap:wrap; margin-bottom:.25rem; margin-right:0; border:1px solid #dee2e6; border-radius:.375rem; padding:.25rem; background-color:#fff; box-shadow:0 .125rem .25rem rgba(0,0,0,.075) }
+.detail-mvt-stk__date{ flex:0 0 25%; max-width:25%; border-right:1px solid #dee2e6; padding:.25rem; margin-bottom:.25rem; margin-top:.25rem }
+.detail-mvt-stk__quantity{ flex:0 0 25%; max-width:25%; border-right:1px solid #dee2e6; padding:.25rem; margin-bottom:.25rem; margin-top:.25rem }
+.detail-mvt-stk__type{ flex:0 0 25%; max-width:25%; border-right:1px solid #dee2e6; padding:.25rem; margin-bottom:.25rem; margin-top:.25rem }
+.detail-mvt-stk__source{ flex:0 0 25%; max-width:25%; padding:.25rem; margin-bottom:.25rem; margin-top:.25rem }
+.detail-mvt-stk__date-content,.detail-mvt-stk__quantity-content,.detail-mvt-stk__type-content,.detail-mvt-stk__source-content{ text-align:center; width:100% }
+.detail-mvt-stk__date-content h5,.detail-mvt-stk__quantity-content h5,.detail-mvt-stk__type-content h5,.detail-mvt-stk__source-content h5{ margin:0; font-size:1rem; font-weight:500; color:#333 }
+@media(max-width:768px){ .detail-mvt-stk{flex-direction:column }
+.detail-mvt-stk__date,.detail-mvt-stk__quantity,.detail-mvt-stk__type,.detail-mvt-stk__source{ flex:0 0 100%; max-width:100%; border-right:none; border-bottom:1px solid #dee2e6; margin-bottom:1rem; padding-bottom:1rem }
+.detail-mvt-stk__date:last-child,.detail-mvt-stk__quantity:last-child,.detail-mvt-stk__type:last-child,.detail-mvt-stk__source:last-child{ border-bottom:none; margin-bottom:0; padding-bottom:0 }
+}

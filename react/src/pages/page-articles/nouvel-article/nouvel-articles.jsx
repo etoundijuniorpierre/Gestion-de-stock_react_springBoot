@@ -1,78 +1,209 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ArticleService } from '../../../services/article/article.service';
+import { CategoryService } from '../../../services/category/category.service';
 import './nouvel-article.scss';
-import ReactLogo from "../../../assets/react.ico";
 
 const NouvelArticle = () => {
+  const [article, setArticle] = useState({});
+  const [categories, setCategories] = useState([]);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const articleService = new ArticleService();
+  const categoryService = new CategoryService();
+
+  useEffect(() => {
+    loadCategories();
+    checkEditMode();
+  }, []);
+
+  const loadCategories = async () => {
+    try {
+      const cats = await categoryService.findAll();
+      setCategories(cats || []);
+    } catch (error) {
+      console.error('Erreur lors du chargement des catégories:', error);
+      setErrorMsg('Erreur lors du chargement des catégories');
+    }
+  };
+
+  const checkEditMode = async () => {
+    if (id) {
+      setIsEditMode(true);
+      try {
+        const art = await articleService.findArticleById(Number(id));
+        setArticle(art || {});
+      } catch (error) {
+        console.error('Erreur lors de la récupération de l\'article:', error);
+        setErrorMsg('Erreur lors de la récupération de l\'article');
+      }
+    }
+  };
+
+  const annuler = () => navigate('/dashboard/articles');
+
+  const validateForm = () => {
+    if (!article.code || !article.designation || !article.prixUnitaireHt) {
+      setErrorMsg('Veuillez remplir tous les champs obligatoires');
+      return false;
+    }
+    return true;
+  };
+
+  const enregistrer = async () => {
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    setErrorMsg('');
+    setSuccessMsg('');
+
+    try {
+      await articleService.enregistrerArticle(article);
+      setSuccessMsg('Article enregistré avec succès !');
+      setTimeout(() => navigate('/dashboard/articles'), 2000);
+    } catch (error) {
+      console.error('Erreur lors de l\'enregistrement de l\'article:', error);
+      setErrorMsg('Erreur lors de l\'enregistrement de l\'article');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const onChange = (field, value) => {
+    setArticle(prev => ({ ...prev, [field]: value }));
+  };
+
   return (
-    <div className="nouvel-article-container">
-      {/* Image */}
-      <div className="logo-section">
-        <button className="logo-button">
-          <img src={ReactLogo} alt="Logo" className="logo-image" />
+    <div className="nouvel-article">
+      <div className="nouvel-article__photo">
+        <button className="nouvel-article__photo-btn">
+          <img src="favicon.ico" className="nouvel-article__photo-img" width="200" height="200" alt="Photo article" />
+          <input hidden type="file" />
         </button>
       </div>
 
-      <hr className="divider" />
+      <hr className="nouvel-article__divider" />
 
-      {/* Titre */}
-      <div className="title-section">
-        <h2 className="form-title">
-          <i className="fas fa-info-circle blue-color"></i> Informations de l'article
-        </h2>
-      </div>
-
-      {/* Message erreur */}
-      <div className="alert alert-danger error-message">
-        <span>Un message d'erreur ici</span>
-      </div>
-
-      {/* Formulaire */}
-      <form className="nouvel-article-form">
-        <div className="form-row">
-          <div className="form-group">
-            <input type="text" className="form-control" name="codearticle" placeholder="Code article" />
-          </div>
-          <div className="form-group">
-            <input type="text" className="form-control" name="designation" placeholder="Désignation" />
-          </div>
+      <div className="nouvel-article__content">
+        <div className="nouvel-article__header">
+          <h2 className="nouvel-article__title">
+            <i className="fas fa-info-circle nouvel-article__icon"></i>&nbsp;Informations de l'article
+          </h2>
         </div>
 
-        <div className="form-row">
-          <div className="form-group">
-            <input type="text" className="form-control" name="prixunitht" placeholder="Prix unitaire HT" />
-          </div>
-          <div className="form-group">
-            <input type="text" className="form-control" name="tauxtva" placeholder="Taux TVA" />
-          </div>
-        </div>
+        {errorMsg && (
+          <div className="nouvel-article__error">{errorMsg}</div>
+        )}
+        
+        {successMsg && (
+          <div className="nouvel-article__success">{successMsg}</div>
+        )}
 
-        <div className="form-row">
-          <div className="form-group">
-            <input type="text" className="form-control" name="prixunitttc" placeholder="Prix unitaire TTC" />
+        <form className="nouvel-article__form">
+          <div className="nouvel-article__form-row">
+            <div className="nouvel-article__form-group">
+              <input
+                type="text"
+                className="nouvel-article__input"
+                name="codearticle"
+                placeholder="Code article"
+                value={article.code || ''}
+                onChange={e => onChange('code', e.target.value)}
+                required
+              />
+            </div>
+            <div className="nouvel-article__form-group">
+              <input
+                type="text"
+                className="nouvel-article__input"
+                name="designation"
+                placeholder="Désignation"
+                value={article.designation || ''}
+                onChange={e => onChange('designation', e.target.value)}
+                required
+              />
+            </div>
           </div>
-          <div className="form-group">
-            <select className="form-control" name="cat">
-              <option value="null">Sélectionner une catégorie</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-            </select>
+
+          <div className="nouvel-article__form-row">
+            <div className="nouvel-article__form-group">
+              <input
+                type="number"
+                className="nouvel-article__input"
+                name="prixunitht"
+                placeholder="Prix unitaire HT"
+                value={article.prixUnitaireHt || ''}
+                onChange={e => onChange('prixUnitaireHt', e.target.value)}
+                required
+              />
+            </div>
+            <div className="nouvel-article__form-group">
+              <input
+                type="number"
+                className="nouvel-article__input"
+                name="tauxtva"
+                placeholder="Taux TVA"
+                value={article.tauxTva || ''}
+                onChange={e => onChange('tauxTva', e.target.value)}
+              />
+            </div>
           </div>
-        </div>
 
-        <hr className="divider2" />
+          <div className="nouvel-article__form-row">
+            <div className="nouvel-article__form-group">
+              <input
+                type="number"
+                className="nouvel-article__input"
+                name="prixunitttc"
+                placeholder="Prix unitaire TTC"
+                value={article.prixUnitaireTtc || ''}
+                onChange={e => onChange('prixUnitaireTtc', e.target.value)}
+              />
+            </div>
+            <div className="nouvel-article__form-group">
+              <select
+                className="nouvel-article__select"
+                name="cat"
+                value={article.categorie?.id || ''}
+                onChange={e => {
+                  const selectedCat = categories.find(cat => cat.id === Number(e.target.value));
+                  onChange('categorie', selectedCat);
+                }}
+              >
+                <option value="">Sélectionner une catégorie</option>
+                {categories.map(cat => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.designation}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </form>
 
-        {/* Boutons */}
-        <div className="button-section">
-          <button className="btn btn-danger cancel-btn">
-            <i className="fas fa-ban"></i> Annuler
+        <div className="nouvel-article__actions">
+          <button
+            className="nouvel-article__btn nouvel-article__btn--secondary"
+            onClick={annuler}
+            disabled={isLoading}
+          >
+            <i className="fas fa-ban"></i>&nbsp;Annuler
           </button>
-          <button className="btn btn-primary save-btn">
-            <i className="fas fa-save"></i> Enregistrer
+          <button
+            className="nouvel-article__btn nouvel-article__btn--primary"
+            onClick={enregistrer}
+            disabled={isLoading}
+          >
+            <i className="fas fa-save"></i>&nbsp;
+            {isLoading ? 'Enregistrement...' : 'Enregistrer'}
           </button>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

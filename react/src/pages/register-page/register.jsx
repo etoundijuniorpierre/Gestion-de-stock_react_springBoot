@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { registerUser } from '../../services/registerService';
+import { loginUser } from '../../services/loginService';
 
 export default function Register() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         nom: '',
+        codeFiscal: '',
         email: '',
         adresse1: '',
         adresse2: '',
-        codeFiscal: '',
-        codePostal: '',
         ville: '',
+        codePostale: '',
         pays: '',
-        password: '',
-        confirmPassword: ''
+        description: '',
+        numTel: ''
     });
 
     const [loading, setLoading] = useState(false);
@@ -29,18 +30,8 @@ export default function Register() {
     };
 
     const validateForm = () => {
-        if (!formData.nom || !formData.email || !formData.password || !formData.confirmPassword) {
-            setMessage({ type: 'error', text: 'Veuillez remplir tous les champs obligatoires' });
-            return false;
-        }
-
-        if (formData.password !== formData.confirmPassword) {
-            setMessage({ type: 'error', text: 'Les mots de passe ne correspondent pas' });
-            return false;
-        }
-
-        if (formData.password.length < 6) {
-            setMessage({ type: 'error', text: 'Le mot de passe doit contenir au moins 6 caractères' });
+        if (!formData.nom || !formData.email || !formData.codeFiscal) {
+            setMessage({ type: 'error', text: 'Veuillez remplir tous les champs obligatoires (Nom, Email, Code Fiscal)' });
             return false;
         }
 
@@ -58,27 +49,44 @@ export default function Register() {
         setMessage({ type: '', text: '' });
 
         try {
-            // Préparer les données pour l'API (exclure confirmPassword)
-            const userData = {
+            // Préparer les données pour l'API selon la structure EntrepriseDto
+            const entrepriseData = {
                 nom: formData.nom,
-                email: formData.email,
-                adresse1: formData.adresse1,
-                adresse2: formData.adresse2,
                 codeFiscal: formData.codeFiscal,
-                codePostal: formData.codePostal,
-                ville: formData.ville,
-                pays: formData.pays,
-                password: formData.password
+                email: formData.email,
+                adresse: {
+                    adresse1: formData.adresse1,
+                    adresse2: formData.adresse2,
+                    ville: formData.ville,
+                    codePostale: formData.codePostale,
+                    pays: formData.pays
+                },
+                description: formData.description,
+                numTel: formData.numTel
             };
 
-            const result = await registerUser(userData);
+            const result = await registerUser(entrepriseData);
 
             if (result.success) {
-                setMessage({ type: 'success', text: result.message });
-                // Rediriger vers la page de connexion après 2 secondes
-                setTimeout(() => {
-                    navigate('/login');
-                }, 2000);
+                setMessage({ type: 'success', text: 'Entreprise créée avec succès. Connexion automatique en cours...' });
+                
+                // Stocker l'ID de l'entreprise créée
+                if (result.data && result.data.id) {
+                    localStorage.setItem('entrepriseId', result.data.id.toString());
+                    console.log('✅ ID entreprise créée stocké:', result.data.id);
+                }
+                
+                // Connexion automatique avec mot de passe par défaut
+                try {
+                    await connectEntreprise(formData.email, result.data);
+                } catch (loginError) {
+                    console.error('Erreur lors de la connexion automatique:', loginError);
+                    setMessage({ type: 'error', text: 'Entreprise créée mais erreur de connexion. Veuillez vous connecter manuellement.' });
+                    setTimeout(() => {
+                        navigate('/login');
+                    }, 3000);
+                    return;
+                }
             } else {
                 setMessage({ type: 'error', text: result.error });
             }
@@ -89,14 +97,85 @@ export default function Register() {
         }
     };
 
+    // Fonction pour connecter automatiquement l'entreprise après inscription
+    const connectEntreprise = async (email, entrepriseData) => {
+        try {
+            // Mot de passe par défaut comme dans le composant Angular
+            const defaultPassword = 'som3R@nd0mP@$$word';
+            
+            // Connexion automatique
+            const loginResult = await loginUser({
+                email: email,
+                password: defaultPassword
+            });
+
+            if (loginResult.success) {
+                try {
+                    // Créer l'utilisateur avec l'ID réel de l'entreprise créée
+                    await createUserFromEntreprise(email, entrepriseData);
+                    
+                    // Stocker l'origine pour indiquer que l'utilisateur vient de s'inscrire
+                    localStorage.setItem('origin', 'inscription');
+                    
+                    // Rediriger vers la page de modification du mot de passe
+                    setMessage({ type: 'success', text: 'Connexion réussie ! Redirection vers la modification du mot de passe...' });
+                    setTimeout(() => {
+                        navigate('/dashboard/changer-mot-passe');
+                    }, 2000);
+                } catch (userError) {
+                    console.error('Erreur lors de la création de l\'utilisateur:', userError);
+                    // Continuer quand même avec la redirection
+                    setMessage({ type: 'warning', text: 'Connexion réussie mais erreur de création utilisateur. Redirection...' });
+                    setTimeout(() => {
+                        navigate('/dashboard/changer-mot-passe');
+                    }, 2000);
+                }
+            } else {
+                throw new Error(loginResult.error || 'Erreur de connexion');
+            }
+        } catch (error) {
+            console.error('Erreur lors de la connexion automatique:', error);
+            throw error;
+        }
+    };
+
+    // Fonction pour créer l'utilisateur avec l'ID réel de l'entreprise
+    const createUserFromEntreprise = async (email, entrepriseData) => {
+        try {
+            // Utiliser l'ID réel de l'entreprise créée
+            const entrepriseId = entrepriseData.id;
+            console.log('🏢 Utilisation de l\'ID entreprise réel:', entrepriseId);
+            
+            // Créer l'objet utilisateur avec l'ID réel
+            const user = {
+                id: entrepriseId, // Utiliser l'ID de l'entreprise comme ID utilisateur
+                email: email,
+                entreprise: {
+                    id: entrepriseId
+                }
+            };
+            
+            // Stocker l'utilisateur connecté dans le localStorage
+            localStorage.setItem('connectedUser', JSON.stringify(user));
+            localStorage.setItem('entrepriseId', entrepriseId.toString());
+            
+            console.log('✅ Utilisateur créé avec ID réel:', user);
+            return user;
+            
+        } catch (error) {
+            console.error('Erreur lors de la création de l\'utilisateur:', error);
+            throw error;
+        }
+    };
+
     return (
         <div className="container d-flex justify-content-center align-items-center min-vh-100 p-5">
             <div className="card shadow-lg" style={{ maxWidth: '600px', width: '100%' }}>
                 <div className="card-body p-5">
                     <div className="text-center mb-4">
-                        <i className="fas fa-user-plus fa-3x text-primary mb-3"></i>
+                        <i className="fas fa-building fa-3x text-primary mb-3"></i>
                         <h2>S'inscrire</h2>
-                        <p className="text-muted">Créez votre compte pour commencer</p>
+                        <p className="text-muted">Créez votre entreprise pour commencer</p>
                     </div>
 
                     <form onSubmit={handleSubmit}>
@@ -192,7 +271,7 @@ export default function Register() {
                             </div>
                         </div>
 
-                        {/* Code postal et Code fiscal */}
+                        {/* Code Fiscal et Code postal */}
                         <div className="row mb-4">
                             <div className="col-md-6">
                                 <div className="form-outline">
@@ -216,20 +295,22 @@ export default function Register() {
 
                             <div className="col-md-6">
                                 <div className="form-outline">
-                                    <label className="form-label" htmlFor="codePostal">Code postal</label>
-                                    <div className="input-group">
-                                        <span className="input-group-text">
-                                            <i className="fas fa-mail-bulk"></i>
-                                        </span>
-                                        <input
-                                            type="text"
-                                            id="codePostal"
-                                            className="form-control"
-                                            name="codePostal"
-                                            value={formData.codePostal}
-                                            onChange={handleChange}
-                                            placeholder="Code postal"
-                                        />
+                                    <div className="form-outline">
+                                        <label className="form-label" htmlFor="codePostale">Code postal</label>
+                                        <div className="input-group">
+                                            <span className="input-group-text">
+                                                <i className="fas fa-mail-bulk"></i>
+                                            </span>
+                                            <input
+                                                type="text"
+                                                id="codePostale"
+                                                className="form-control"
+                                                name="codePostale"
+                                                value={formData.codePostale}
+                                                onChange={handleChange}
+                                                placeholder="Code postal"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -277,42 +358,43 @@ export default function Register() {
                             </div>
                         </div>
 
-                        {/* Mot de passe et confirmation */}
+                        {/* Description et Numéro de téléphone */}
                         <div className="row mb-4">
                             <div className="col-md-6">
                                 <div className="form-outline">
-                                    <label className="form-label" htmlFor="password">Mot de passe</label>
+                                    <label className="form-label" htmlFor="description">Description</label>
                                     <div className="input-group">
                                         <span className="input-group-text">
-                                            <i className="fas fa-lock"></i>
+                                            <i className="fas fa-align-left"></i>
                                         </span>
-                                        <input
-                                            type="password"
-                                            id="password"
+                                        <textarea
+                                            id="description"
                                             className="form-control"
-                                            name="password"
-                                            value={formData.password}
+                                            name="description"
+                                            value={formData.description}
                                             onChange={handleChange}
-                                            placeholder="Mot de passe"
+                                            placeholder="Description de l'entreprise"
+                                            rows="1"
+                                            style={{ resize: 'none', height: '38px' }}
                                         />
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-6">
                                 <div className="form-outline">
-                                    <label className="form-label" htmlFor="confirmPassword">Confirmer mot de passe</label>
+                                    <label className="form-label" htmlFor="numTel">Numéro de téléphone</label>
                                     <div className="input-group">
                                         <span className="input-group-text">
-                                            <i className="fas fa-lock"></i>
+                                            <i className="fas fa-phone"></i>
                                         </span>
                                         <input
-                                            type="password"
-                                            id="confirmPassword"
+                                            type="text"
+                                            id="numTel"
                                             className="form-control"
-                                            name="confirmPassword"
-                                            value={formData.confirmPassword}
+                                            name="numTel"
+                                            value={formData.numTel}
                                             onChange={handleChange}
-                                            placeholder="Confirmer le mot de passe"
+                                            placeholder="Numéro de téléphone"
                                         />
                                     </div>
                                 </div>
@@ -342,7 +424,7 @@ export default function Register() {
                                     </>
                                 ) : (
                                     <>
-                                        <i className="fas fa-user-plus me-2"></i>
+                                        <i className="fas fa-building me-2"></i>
                                         S'inscrire
                                     </>
                                 )}
