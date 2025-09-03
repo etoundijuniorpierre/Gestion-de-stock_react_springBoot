@@ -1,0 +1,34 @@
+.commandes-test{ padding:2rem; max-width:1200px; margin:0 auto }
+.commandes-test__menu{ text-align:center }
+.commandes-test__menu h2{ color:#343a40; margin-bottom:1rem; font-size:2rem; font-weight:600 }
+.commandes-test__menu p{ color:#6c757d; margin-bottom:2rem; font-size:1.1rem }
+.commandes-test__menu .commandes-test__buttons{ display:flex; flex-wrap:wrap; gap:1.5rem; justify-content:center; margin-bottom:3rem }
+.commandes-test__menu .commandes-test__buttons .btn{ display:flex; align-items:center; gap:.75rem; padding:1rem 2rem; border:none; border-radius:12px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:all .3s ease; min-width:250px; justify-content:center }
+.commandes-test__menu .commandes-test__buttons .btn:hover{ transform:translateY(-4px); box-shadow:0 8px 25px rgba(0,0,0,.2) }
+.commandes-test__menu .commandes-test__buttons .btn:active{ transform:translateY(-2px) }
+.commandes-test__menu .commandes-test__buttons .btn i{ font-size:1.2rem }
+.commandes-test__menu .commandes-test__buttons .btn-primary{ background:#007bff; color:#fff }
+.commandes-test__menu .commandes-test__buttons .btn-primary:hover{ background:rgb(0,98.4,204) }
+.commandes-test__menu .commandes-test__buttons .btn-success{ background:#28a745; color:#fff }
+.commandes-test__menu .commandes-test__buttons .btn-success:hover{ background:rgb(30.1449275362,125.8550724638,52) }
+.commandes-test__menu .commandes-test__info{ background:#f8f9fa; border:2px solid #dee2e6; border-radius:12px; padding:2rem; max-width:600px; margin:0 auto }
+.commandes-test__menu .commandes-test__info h4{ color:#343a40; margin-bottom:1rem; font-size:1.2rem; font-weight:600 }
+.commandes-test__menu .commandes-test__info ul{ text-align:left; margin:0 0 2rem 0; padding-left:1.5rem }
+.commandes-test__menu .commandes-test__info ul li{ margin-bottom:.75rem; color:#6c757d; line-height:1.5 }
+.commandes-test__menu .commandes-test__info ul li strong{ color:#343a40 }
+.commandes-test__menu .commandes-test__info .commandes-test__back{ text-align:center }
+.commandes-test__menu .commandes-test__info .commandes-test__back .btn{ display:inline-flex; align-items:center; gap:.5rem; padding:.75rem 1.5rem; border:none; border-radius:8px; font-size:1rem; font-weight:500; cursor:pointer; transition:all .3s ease; background:#6c757d; color:#fff }
+.commandes-test__menu .commandes-test__info .commandes-test__back .btn:hover{ background:rgb(84.3605150215,91.3905579399,97.6394849785); transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,.15) }
+.commandes-test__menu .commandes-test__info .commandes-test__back .btn:active{ transform:translateY(0) }
+.commandes-test__menu .commandes-test__info .commandes-test__back .btn i{ font-size:.9rem }
+@media(max-width:768px){ .commandes-test{padding:1rem }
+.commandes-test__menu h2{ font-size:1.5rem }
+.commandes-test__menu .commandes-test__buttons{ flex-direction:column; align-items:center }
+.commandes-test__menu .commandes-test__buttons .btn{ width:100%; max-width:300px }
+.commandes-test__menu .commandes-test__info{ padding:1.5rem }
+.commandes-test__menu .commandes-test__info ul{ padding-left:1.25rem }
+}
+@keyframes fadeIn{ from{opacity:0; transform:translateY(20px) }
+to{ opacity:1; transform:translateY(0) }
+}
+.commandes-test{ animation:fadeIn .3s ease-out }

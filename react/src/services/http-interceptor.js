@@ -1,9 +1,14 @@
 // Intercepteur HTTP pour gérer l'authentification
 class HttpInterceptor {
   constructor() {
-    // Utiliser directement l'URL du serveur Spring Boot
-    this.baseURL = 'http://localhost:8080';
-    console.log('🚀 HttpInterceptor initialisé avec l\'URL de base:', this.baseURL);
+    // Utiliser l'URL relative si on est en développement avec proxy Vite
+    // Sinon utiliser l'URL directe du serveur Spring Boot
+    this.baseURL = import.meta.env.DEV ? '' : 'http://localhost:8080';
+    console.log('🚀 HttpInterceptor initialisé avec l\'URL de base:', this.baseURL || '(proxy Vite)');
+    
+    // Flag pour éviter les appels multiples simultanés
+    this.isHandlingAuthError = false;
+    this.isRefreshingToken = false;
   }
 
   // Méthode pour ajouter le token d'authentification aux headers
@@ -92,9 +97,23 @@ class HttpInterceptor {
       // Gérer les erreurs d'authentification
       if (response.status === 401 || response.status === 403) {
         // Pour l'endpoint de login, ne pas rediriger automatiquement
-        if (url.includes('/auth/login')) {
+        if (url.includes('/authenticate')) {
           console.log('🔐 Endpoint de login - 403 détecté, pas de redirection automatique');
           throw new Error(`Erreur d'authentification: ${response.status} - Vérifiez vos identifiants ou la configuration du serveur`);
+        }
+        
+        // Vérifier si c'est une vraie erreur d'authentification ou une erreur métier
+        // Si la réponse contient des détails d'erreur métier, c'est probablement pas une erreur d'auth
+        try {
+          const errorData = await response.clone().json();
+          // Si on a des détails d'erreur métier, c'est probablement pas une erreur d'auth
+          if (errorData.message || errorData.errors || errorData.error) {
+            console.log('⚠️ Erreur métier détectée, pas de redirection vers login:', errorData);
+            throw new Error(`Erreur métier: ${errorData.message || errorData.error || 'Erreur de validation'}`);
+          }
+        } catch (parseError) {
+          // Si on ne peut pas parser la réponse, c'est probablement une vraie erreur d'auth
+          console.log('🔐 Vraie erreur d\'authentification détectée, redirection vers login');
         }
         
         // Token expiré ou invalide pour les autres endpoints
@@ -104,6 +123,16 @@ class HttpInterceptor {
       
       // Gérer les autres erreurs HTTP
       if (!response.ok) {
+        // Essayer de récupérer les détails de l'erreur
+        try {
+          const errorData = await response.clone().json();
+          if (errorData.message || errorData.errors || errorData.error) {
+            throw new Error(`Erreur serveur: ${errorData.message || errorData.error || 'Erreur de validation'}`);
+          }
+        } catch (parseError) {
+          // Si on ne peut pas parser, utiliser le message par défaut
+        }
+        
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
@@ -116,6 +145,18 @@ class HttpInterceptor {
       }
       
     } catch (error) {
+      // Gérer spécifiquement les erreurs CORS
+      if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+        console.error('❌ Erreur CORS détectée. Vérifiez la configuration CORS du serveur backend.');
+        throw new Error('Erreur CORS: Impossible de se connecter au serveur. Vérifiez que le serveur backend est démarré et que CORS est configuré.');
+      }
+      
+      // Gérer les erreurs de réseau
+      if (error.name === 'TypeError' && error.message.includes('NetworkError')) {
+        console.error('❌ Erreur réseau détectée. Vérifiez la connexion au serveur.');
+        throw new Error('Erreur réseau: Impossible de se connecter au serveur. Vérifiez que le serveur backend est démarré.');
+      }
+      
       console.error('Erreur lors de la requête HTTP:', error);
       throw error;
     }
@@ -123,14 +164,40 @@ class HttpInterceptor {
 
   // Gérer les erreurs d'authentification
   handleAuthError() {
-    // Supprimer les tokens expirés
-    localStorage.removeItem('token');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('user');
+    console.log('🔐 Gestion d\'erreur d\'authentification');
     
-    // Rediriger vers la page de connexion
-    if (window.location.pathname !== '/login') {
+    // Vérifier si on est déjà sur la page de login
+    if (window.location.pathname === '/login') {
+      console.log('📍 Déjà sur la page de login, pas de redirection');
+      return;
+    }
+    
+    // Vérifier si on a un token valide
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.log('❌ Pas de token trouvé, redirection vers login');
+      // Supprimer les tokens expirés
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('user');
+      
+      // Rediriger vers la page de connexion
       window.location.href = '/login';
+    } else {
+      console.log('⚠️ Token présent mais erreur d\'authentification, tentative de rafraîchissement');
+      // Essayer de rafraîchir le token avant de rediriger
+      this.refreshToken().then(success => {
+        if (!success) {
+          console.log('❌ Échec du rafraîchissement du token, redirection vers login');
+          // Supprimer les tokens expirés
+          localStorage.removeItem('token');
+          localStorage.removeItem('refreshToken');
+          localStorage.removeItem('user');
+          
+          // Rediriger vers la page de connexion
+          window.location.href = '/login';
+        }
+      });
     }
   }
 
@@ -143,7 +210,7 @@ class HttpInterceptor {
     }
 
     try {
-      const response = await fetch(`${this.baseURL}/gestionDeStock/auth/refresh`, {
+      const response = await fetch(`${this.baseURL}/api/gestionDeStock/auth/refresh`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

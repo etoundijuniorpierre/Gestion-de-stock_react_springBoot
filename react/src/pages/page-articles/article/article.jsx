@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArticleService } from '../../../services/article/article.service';
+import useErrorHandler from '../../../hooks/useErrorHandler';
+import ErrorHandler from '../../../components/error-handler/error-handler';
 import './article.scss';
 
 const Article = () => {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
   const articleService = new ArticleService();
+  const { error, handleError, clearError, handleAsyncOperation } = useErrorHandler();
 
   useEffect(() => {
     loadArticles();
@@ -16,14 +18,15 @@ const Article = () => {
 
   const loadArticles = async () => {
     setIsLoading(true);
-    setErrorMsg('');
     
     try {
-      const data = await articleService.findAll();
+      const data = await handleAsyncOperation(async () => {
+        return await articleService.findAll();
+      });
       setArticles(data || []);
     } catch (error) {
+      // L'erreur est déjà gérée par handleAsyncOperation
       console.error('Erreur lors du chargement des articles:', error);
-      setErrorMsg('Erreur lors du chargement des articles');
     } finally {
       setIsLoading(false);
     }
@@ -36,15 +39,17 @@ const Article = () => {
   const handleDelete = async (articleId) => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
       try {
-        const result = await articleService.delete(articleId);
+        const result = await handleAsyncOperation(async () => {
+          return await articleService.delete(articleId);
+        });
         if (result.success) {
           loadArticles(); // Recharger la liste
         } else {
-          setErrorMsg('Erreur lors de la suppression de l\'article');
+          handleError(new Error('Erreur lors de la suppression de l\'article'));
         }
       } catch (error) {
+        // L'erreur est déjà gérée par handleAsyncOperation
         console.error('Erreur lors de la suppression:', error);
-        setErrorMsg('Erreur lors de la suppression de l\'article');
       }
     }
   };
@@ -76,9 +81,12 @@ const Article = () => {
         </button>
       </div>
 
-      {errorMsg && (
-        <div className="alert alert-danger">{errorMsg}</div>
-      )}
+      <ErrorHandler 
+        error={error} 
+        onClose={clearError}
+        autoClose={true}
+        autoCloseDelay={5000}
+      />
 
       <div className="article-content">
         {articles.length === 0 ? (

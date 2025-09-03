@@ -1,0 +1,40 @@
+.route-debug{ padding:2rem; max-width:1200px; margin:0 auto }
+.route-debug__header{ text-align:center; margin-bottom:2rem; padding-bottom:1rem; border-bottom:2px solid #dee2e6 }
+.route-debug__header h2{ color:#343a40; margin-bottom:.5rem; font-size:2rem; font-weight:600 }
+.route-debug__header p{ color:#6c757d; font-size:1.1rem; margin:0 }
+.route-debug__info{ background:#f8f9fa; border:2px solid #dee2e6; border-radius:12px; padding:1.5rem; margin-bottom:2rem }
+.route-debug__info h3{ color:#343a40; margin-bottom:1rem; font-size:1.3rem; font-weight:600 }
+.route-debug__info .route-debug__details p{ margin:.5rem 0; font-family:"Courier New",monospace }
+.route-debug__info .route-debug__details p code{ background:#fff; padding:.25rem .5rem; border-radius:4px; border:1px solid #dee2e6; color:#dc3545; font-weight:600 }
+.route-debug__actions{ background:#fff; border:2px solid #dee2e6; border-radius:12px; padding:1.5rem; margin-bottom:2rem }
+.route-debug__actions h3{ color:#343a40; margin-bottom:1rem; font-size:1.3rem; font-weight:600 }
+.route-debug__actions .btn{ display:inline-flex; align-items:center; gap:.5rem; padding:.75rem 1.5rem; border:none; border-radius:8px; font-size:1rem; font-weight:500; cursor:pointer; transition:all .3s ease; margin:.5rem }
+.route-debug__actions .btn:hover{ transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,.15) }
+.route-debug__actions .btn:active{ transform:translateY(0) }
+.route-debug__actions .btn-primary{ background:#007bff; color:#fff }
+.route-debug__actions .btn-primary:hover{ background:rgb(0,98.4,204) }
+.route-debug__actions .btn-success{ background:#28a745; color:#fff }
+.route-debug__actions .btn-success:hover{ background:rgb(30.1449275362,125.8550724638,52) }
+.route-debug__actions .btn-info{ background:#17a2b8; color:#fff }
+.route-debug__actions .btn-info:hover{ background:rgb(17.3333333333,122.0869565217,138.6666666667) }
+.route-debug__actions .btn-warning{ background:#ffc107; color:#fff }
+.route-debug__actions .btn-warning:hover{ background:rgb(211,158.25,0) }
+.route-debug__actions .btn-secondary{ background:#6c757d; color:#fff }
+.route-debug__actions .btn-secondary:hover{ background:rgb(84.3605150215,91.3905579399,97.6394849785) }
+.route-debug__console{ background:#fff; border:2px solid #dee2e6; border-radius:12px; padding:1.5rem; margin-bottom:2rem }
+.route-debug__console h3{ color:#343a40; margin-bottom:1rem; font-size:1.3rem; font-weight:600 }
+.route-debug__console .btn-dark{ background:#343a40; color:#fff; padding:.75rem 1.5rem; border:none; border-radius:8px; font-size:1rem; font-weight:500; cursor:pointer; transition:all .3s ease }
+.route-debug__console .btn-dark:hover{ background:rgb(74.8620689655,83.5,92.1379310345); transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,.15) }
+.route-debug__console .route-debug__note{ margin-top:1rem; padding:1rem; background:#f8f9fa; border-radius:8px; border-left:4px solid #17a2b8; font-size:.9rem; color:#6c757d }
+.route-debug__help{ background:#fff; border:2px solid #dee2e6; border-radius:12px; padding:1.5rem }
+.route-debug__help h3{ color:#343a40; margin-bottom:1rem; font-size:1.3rem; font-weight:600 }
+.route-debug__help ul{ margin:0; padding-left:1.5rem }
+.route-debug__help ul li{ margin-bottom:.75rem; color:#6c757d; line-height:1.5 }
+.route-debug__help ul li strong{ color:#343a40 }
+@media(max-width:768px){ .route-debug{padding:1rem }
+.route-debug__actions .btn{ display:block; width:100%; margin:.5rem 0; justify-content:center }
+}
+@keyframes fadeIn{ from{opacity:0; transform:translateY(20px) }
+to{ opacity:1; transform:translateY(0) }
+}
+.route-debug{ animation:fadeIn .3s ease-out }

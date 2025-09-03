@@ -1,31 +1,65 @@
-.nouveau-fournisseur{ max-width:800px; margin:0 auto; padding:2rem }
-.nouveau-fournisseur__photo-section{ text-align:center; margin-bottom:2rem }
-.nouveau-fournisseur__photo-button{ background-color:rgba(0,0,0,0); border:none; cursor:pointer; padding:0; transition:transform .2s ease-in-out }
-.nouveau-fournisseur__photo-button:hover{ transform:scale(1.05) }
-.nouveau-fournisseur__photo{ width:200px; height:200px; border-radius:50%; object-fit:cover; border:3px solid #dee2e6; transition:border-color .2s ease-in-out }
-.nouveau-fournisseur__photo:hover{ border-color:#007bff }
-.nouveau-fournisseur__divider{ border:none; border-top:1px solid #dee2e6; margin:2rem 0 }
-.nouveau-fournisseur__content{ margin-bottom:2rem }
-.nouveau-fournisseur__header{ margin-bottom:1.5rem }
-.nouveau-fournisseur__header h2{ margin:0; color:#333; font-size:1.5rem; font-weight:500; display:flex; align-items:center }
-.nouveau-fournisseur__icon{ color:#007bff; margin-right:.5rem }
-.nouveau-fournisseur__errors{ margin-bottom:1.5rem }
-.nouveau-fournisseur__error{ background-color:#f8d7da; color:#721c24; padding:.75rem 1.25rem; margin-bottom:.5rem; border:1px solid #f5c6cb; border-radius:.375rem }
-.nouveau-fournisseur__form{ background-color:#fff; border:1px solid #dee2e6; border-radius:.5rem; padding:2rem; box-shadow:0 .125rem .25rem rgba(0,0,0,.075) }
-.nouveau-fournisseur__form-row{ display:flex; gap:1rem; margin-bottom:1rem }
-@media(max-width:768px){ .nouveau-fournisseur__form-row{flex-direction:column; gap:0 }
+.nouveau-fournisseur-form{ background:#fff; border-radius:12px; box-shadow:0 2px 20px rgba(0,0,0,.08); border:1px solid #f1f3f4; overflow:hidden; height:calc(95vh - 8rem); display:flex; flex-direction:column }
+.nouveau-fournisseur-form .form-header{ background:linear-gradient(135deg,#007bff,#0056b3); color:#fff; padding:1.5rem; text-align:center; flex-shrink:0 }
+.nouveau-fournisseur-form .form-header h2{ margin:0; font-size:1.5rem; font-weight:600; text-shadow:0 1px 2px rgba(0,0,0,.1); display:flex; align-items:center; justify-content:center; gap:.75rem }
+.nouveau-fournisseur-form .form-header h2 i{ font-size:1.25rem }
+.nouveau-fournisseur-form .form-content{ flex:1; padding:1.5rem; overflow-y:auto }
+.nouveau-fournisseur-form .form-content::-webkit-scrollbar{ width:6px }
+.nouveau-fournisseur-form .form-content::-webkit-scrollbar-track{ background:#f1f1f1; border-radius:3px }
+.nouveau-fournisseur-form .form-content::-webkit-scrollbar-thumb{ background:#c1c1c1; border-radius:3px }
+.nouveau-fournisseur-form .form-content::-webkit-scrollbar-thumb:hover{ background:#a8a8a8 }
+.nouveau-fournisseur-form .form-content .alert{ border-radius:8px; border:none; padding:.75rem; margin-bottom:1.5rem; font-weight:500 }
+.nouveau-fournisseur-form .form-content .alert.alert-danger{ background:rgba(220,53,69,.1); color:#dc3545; border-left:4px solid #dc3545 }
+.nouveau-fournisseur-form .form-content .alert.alert-success{ background:rgba(40,167,69,.1); color:#28a745; border-left:4px solid #28a745 }
+.nouveau-fournisseur-form .form-content .form-section{ margin-bottom:1.5rem }
+.nouveau-fournisseur-form .form-content .form-section h3{ color:#495057; font-size:1rem; font-weight:600; margin-bottom:1rem; padding-bottom:.5rem; border-bottom:2px solid #e9ecef }
+.nouveau-fournisseur-form .form-content .form-group{ margin-bottom:1rem }
+.nouveau-fournisseur-form .form-content .form-group label{ font-weight:500; color:#495057; margin-bottom:.375rem; font-size:.85rem; display:block }
+.nouveau-fournisseur-form .form-content .form-group label::after{ content:" *"; color:#dc3545; font-weight:bold }
+.nouveau-fournisseur-form .form-content .form-group label.optional::after{ content:"" }
+.nouveau-fournisseur-form .form-content .form-group .form-control,.nouveau-fournisseur-form .form-content .form-group .nouveau-fournisseur__input{ border:2px solid #e9ecef; border-radius:8px; padding:.5rem .75rem; font-size:.9rem; transition:all .3s ease; background:#f8f9fa; width:100% }
+.nouveau-fournisseur-form .form-content .form-group .form-control:focus,.nouveau-fournisseur-form .form-content .form-group .nouveau-fournisseur__input:focus{ outline:none; border-color:#007bff; background:#fff; box-shadow:0 0 0 .2rem rgba(0,123,255,.15); transform:translateY(-1px) }
+.nouveau-fournisseur-form .form-content .form-group .form-control::placeholder,.nouveau-fournisseur-form .form-content .form-group .nouveau-fournisseur__input::placeholder{ color:#adb5bd }
+.nouveau-fournisseur-form .form-content .form-group .form-control:disabled,.nouveau-fournisseur-form .form-content .form-group .nouveau-fournisseur__input:disabled{ background:#e9ecef; cursor:not-allowed }
+.nouveau-fournisseur-form .form-content .form-group.has-error .form-control,.nouveau-fournisseur-form .form-content .form-group.has-error .nouveau-fournisseur__input{ border-color:#dc3545; background:rgba(220,53,69,.05) }
+.nouveau-fournisseur-form .form-content .form-group.has-error .error-message{ color:#dc3545; font-size:.75rem; margin-top:.25rem }
+.nouveau-fournisseur-form .form-content .row{ margin-left:-0.5rem; margin-right:-0.5rem }
+.nouveau-fournisseur-form .form-content .row .col-md-4,.nouveau-fournisseur-form .form-content .row .col-md-6,.nouveau-fournisseur-form .form-content .row .col-md-12{ padding-left:.5rem; padding-right:.5rem }
+.nouveau-fournisseur-form .form-content .photo-section{ background:#f8f9fa; border-radius:8px; padding:1.5rem; border:1px solid #e9ecef; text-align:center; margin-bottom:1.5rem }
+.nouveau-fournisseur-form .form-content .photo-section .nouveau-fournisseur__photo{ width:150px; height:150px; border-radius:12px; border:3px solid #e9ecef; object-fit:cover; transition:all .3s ease; cursor:pointer }
+.nouveau-fournisseur-form .form-content .photo-section .nouveau-fournisseur__photo:hover{ border-color:#007bff; transform:scale(1.02); box-shadow:0 8px 25px rgba(0,123,255,.15) }
+.nouveau-fournisseur-form .form-content .photo-section .nouveau-fournisseur__file-input{ margin-top:1rem; width:100%; max-width:300px }
+.nouveau-fournisseur-form .form-content .adresse-section{ background:linear-gradient(135deg,#f8f9fa,#e9ecef); border-radius:8px; padding:1.5rem; border:1px solid #dee2e6 }
+.nouveau-fournisseur-form .form-content .adresse-section h3{ color:#007bff; margin-bottom:1.25rem }
+.nouveau-fournisseur-form .form-actions{ background:#f8f9fa; border-top:1px solid #e9ecef; padding:1.5rem; display:flex; justify-content:flex-end; gap:1rem; align-items:center; flex-shrink:0 }
+.nouveau-fournisseur-form .form-actions .btn,.nouveau-fournisseur-form .form-actions .nouveau-fournisseur__btn{ padding:.75rem 1.5rem; border-radius:8px; font-weight:500; font-size:.9rem; transition:all .3s ease; min-width:110px; display:flex; align-items:center; justify-content:center; gap:.5rem; border:none }
+.nouveau-fournisseur-form .form-actions .btn.btn-secondary,.nouveau-fournisseur-form .form-actions .btn.nouveau-fournisseur__btn--danger,.nouveau-fournisseur-form .form-actions .nouveau-fournisseur__btn.btn-secondary,.nouveau-fournisseur-form .form-actions .nouveau-fournisseur__btn.nouveau-fournisseur__btn--danger{ background:linear-gradient(135deg,#6c757d,#5a6268); color:#fff }
+.nouveau-fournisseur-form .form-actions .btn.btn-secondary:hover:not(:disabled),.nouveau-fournisseur-form .form-actions .btn.nouveau-fournisseur__btn--danger:hover:not(:disabled),.nouveau-fournisseur-form .form-actions .nouveau-fournisseur__btn.btn-secondary:hover:not(:disabled),.nouveau-fournisseur-form .form-actions .nouveau-fournisseur__btn.nouveau-fournisseur__btn--danger:hover:not(:disabled){ background:linear-gradient(135deg,#5a6268,#495057); transform:translateY(-2px); box-shadow:0 6px 20px rgba(108,117,125,.4) }
+.nouveau-fournisseur-form .form-actions .btn.btn-secondary:disabled,.nouveau-fournisseur-form .form-actions .btn.nouveau-fournisseur__btn--danger:disabled,.nouveau-fournisseur-form .form-actions .nouveau-fournisseur__btn.btn-secondary:disabled,.nouveau-fournisseur-form .form-actions .nouveau-fournisseur__btn.nouveau-fournisseur__btn--danger:disabled{ background:#adb5bd; cursor:not-allowed; transform:none; box-shadow:none }
+.nouveau-fournisseur-form .form-actions .btn.btn-primary,.nouveau-fournisseur-form .form-actions .btn.nouveau-fournisseur__btn--primary,.nouveau-fournisseur-form .form-actions .nouveau-fournisseur__btn.btn-primary,.nouveau-fournisseur-form .form-actions .nouveau-fournisseur__btn.nouveau-fournisseur__btn--primary{ background:linear-gradient(135deg,#007bff,#0056b3); color:#fff }
+.nouveau-fournisseur-form .form-actions .btn.btn-primary:hover:not(:disabled),.nouveau-fournisseur-form .form-actions .btn.nouveau-fournisseur__btn--primary:hover:not(:disabled),.nouveau-fournisseur-form .form-actions .nouveau-fournisseur__btn.btn-primary:hover:not(:disabled),.nouveau-fournisseur-form .form-actions .nouveau-fournisseur__btn.nouveau-fournisseur__btn--primary:hover:not(:disabled){ background:linear-gradient(135deg,#0056b3,#004085); transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,123,255,.4) }
+.nouveau-fournisseur-form .form-actions .btn.btn-primary:disabled,.nouveau-fournisseur-form .form-actions .btn.nouveau-fournisseur__btn--primary:disabled,.nouveau-fournisseur-form .form-actions .nouveau-fournisseur__btn.btn-primary:disabled,.nouveau-fournisseur-form .form-actions .nouveau-fournisseur__btn.nouveau-fournisseur__btn--primary:disabled{ background:#6c757d; cursor:not-allowed; transform:none; box-shadow:none }
+.nouveau-fournisseur-form .form-actions .btn .spinner-border,.nouveau-fournisseur-form .form-actions .nouveau-fournisseur__btn .spinner-border{ width:.875rem; height:.875rem }
+@media(max-width:768px){ .nouveau-fournisseur-form{height:calc(95vh - 6rem) }
+.nouveau-fournisseur-form .form-header{ padding:1rem }
+.nouveau-fournisseur-form .form-header h2{ font-size:1.25rem }
+.nouveau-fournisseur-form .form-header h2 i{ font-size:1rem }
+.nouveau-fournisseur-form .form-content{ padding:1rem }
+.nouveau-fournisseur-form .form-content .form-section{ margin-bottom:1.25rem }
+.nouveau-fournisseur-form .form-content .form-group{ margin-bottom:.875rem }
+.nouveau-fournisseur-form .form-content .photo-section{ padding:1rem }
+.nouveau-fournisseur-form .form-content .photo-section .nouveau-fournisseur__photo{ width:120px; height:120px }
+.nouveau-fournisseur-form .form-actions{ padding:1rem; flex-direction:column; gap:.75rem }
+.nouveau-fournisseur-form .form-actions .btn,.nouveau-fournisseur-form .form-actions .nouveau-fournisseur__btn{ width:100%; min-width:auto }
 }
-.nouveau-fournisseur__form-group{ flex:1 }
-.nouveau-fournisseur__input{ display:block; width:100%; padding:.75rem; font-size:.875rem; line-height:1.5; color:#495057; background-color:#fff; background-clip:padding-box; border:1px solid #ced4da; border-radius:.375rem; transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out }
-.nouveau-fournisseur__input:focus{ color:#495057; background-color:#fff; border-color:#80bdff; outline:0; box-shadow:0 0 0 .2rem rgba(0,123,255,.25) }
-.nouveau-fournisseur__input::placeholder{ color:#6c757d; opacity:1 }
-.nouveau-fournisseur__actions{ display:flex; justify-content:flex-end; gap:1rem }
-@media(max-width:768px){ .nouveau-fournisseur__actions{flex-direction:column }
+@media(max-width:576px){ .nouveau-fournisseur-form{height:calc(95vh - 4rem) }
+.nouveau-fournisseur-form .form-header{ padding:.75rem }
+.nouveau-fournisseur-form .form-header h2{ font-size:1.125rem; flex-direction:column; gap:.5rem }
+.nouveau-fournisseur-form .form-content{ padding:.75rem }
+.nouveau-fournisseur-form .form-content .form-section{ margin-bottom:1rem }
+.nouveau-fournisseur-form .form-content .form-group{ margin-bottom:.75rem }
+.nouveau-fournisseur-form .form-content .form-group .form-control,.nouveau-fournisseur-form .form-content .form-group .nouveau-fournisseur__input{ padding:.5rem .625rem; font-size:.85rem }
+.nouveau-fournisseur-form .form-content .photo-section{ padding:.75rem }
+.nouveau-fournisseur-form .form-content .photo-section .nouveau-fournisseur__photo{ width:100px; height:100px }
+.nouveau-fournisseur-form .form-actions{ padding:.75rem }
+.nouveau-fournisseur-form .form-actions .btn,.nouveau-fournisseur-form .form-actions .nouveau-fournisseur__btn{ padding:.625rem 1.25rem; font-size:.85rem }
 }
-.nouveau-fournisseur__btn{ display:inline-block; font-weight:400; text-align:center; vertical-align:middle; user-select:none; border:1px solid rgba(0,0,0,0); padding:.75rem 1.5rem; font-size:.875rem; line-height:1.5; border-radius:.375rem; transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out; cursor:pointer; min-width:120px }
-.nouveau-fournisseur__btn--primary{ color:#fff; background-color:#007bff; border-color:#007bff }
-.nouveau-fournisseur__btn--primary:hover{ background-color:#0056b3; border-color:#0056b3 }
-.nouveau-fournisseur__btn--primary:focus{ box-shadow:0 0 0 .2rem rgba(0,123,255,.25) }
-.nouveau-fournisseur__btn--danger{ color:#fff; background-color:#dc3545; border-color:#dc3545 }
-.nouveau-fournisseur__btn--danger:hover{ background-color:#c82333; border-color:#bd2130 }
-.nouveau-fournisseur__btn--danger:focus{ box-shadow:0 0 0 .2rem rgba(220,53,69,.25) }

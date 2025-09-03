@@ -110,158 +110,216 @@ const NouveauFournisseur = () => {
   };
 
   return (
-    <div className="nouveau-fournisseur">
-      <div className="nouveau-fournisseur__photo-section">
-        <button 
-          onClick={() => fileInputRef.current.click()} 
-          className="nouveau-fournisseur__photo-button"
-        >
-          <img src={imgUrl} alt="Photo fournisseur" className="nouveau-fournisseur__photo" />
-        </button>
-        <input 
-          hidden 
-          type="file" 
-          ref={fileInputRef}
-          onChange={onFileInput}
-          accept="image/*"
-        />
+    <div className="nouveau-fournisseur-form">
+      {/* En-tête du formulaire */}
+      <div className="form-header">
+        <h2>
+          <i className="fas fa-truck"></i>
+          {isEditMode ? 'Modifier le fournisseur' : 'Nouveau fournisseur'}
+        </h2>
       </div>
+      
+      {/* Contenu du formulaire */}
+      <div className="form-content">
 
-      <hr className="nouveau-fournisseur__divider" />
-
-      <div className="nouveau-fournisseur__content">
-        <div className="nouveau-fournisseur__header">
-          <h2>
-            <i className="fas fa-info-circle nouveau-fournisseur__icon"></i>
-            &nbsp;Information du fournisseur
-          </h2>
-        </div>
-
+        {/* Messages d'erreur */}
         {errorMsg.length > 0 && (
-          <div className="nouveau-fournisseur__errors">
+          <div className="alert alert-danger">
             {errorMsg.map((msg, index) => (
-              <div key={index} className="nouveau-fournisseur__error">
+              <div key={index}>
+                <i className="fas fa-exclamation-triangle me-2"></i>
                 {msg}
               </div>
             ))}
           </div>
         )}
 
-        <div className="nouveau-fournisseur__form">
-          <div className="nouveau-fournisseur__form-row">
-            <div className="nouveau-fournisseur__form-group">
-              <input
-                type="text"
-                className="nouveau-fournisseur__input"
-                placeholder="Nom"
-                value={fournisseur.nom || ''}
-                onChange={(e) => handleInputChange('nom', e.target.value)}
-              />
-            </div>
-            <div className="nouveau-fournisseur__form-group">
-              <input
-                type="text"
-                className="nouveau-fournisseur__input"
-                placeholder="Adresse 1"
-                value={adresseDto.adresse1 || ''}
-                onChange={(e) => handleAdresseChange('adresse1', e.target.value)}
-              />
-            </div>
-          </div>
-
-          <div className="nouveau-fournisseur__form-row">
-            <div className="nouveau-fournisseur__form-group">
-              <input
-                type="text"
-                className="nouveau-fournisseur__input"
-                placeholder="Prenom"
-                value={fournisseur.prenom || ''}
-                onChange={(e) => handleInputChange('prenom', e.target.value)}
-              />
-            </div>
-            <div className="nouveau-fournisseur__form-group">
-              <input
-                type="text"
-                className="nouveau-fournisseur__input"
-                placeholder="Adresse 2"
-                value={adresseDto.adresse2 || ''}
-                onChange={(e) => handleAdresseChange('adresse2', e.target.value)}
+        <form>
+          {/* Section Photo */}
+          <div className="form-section">
+            <h5 className="section-title">Photo du fournisseur</h5>
+            <div className="photo-section">
+              <button 
+                onClick={() => fileInputRef.current.click()} 
+                className="photo-button"
+              >
+                <img src={imgUrl} alt="Photo fournisseur" className="nouveau-fournisseur__photo" />
+              </button>
+              <input 
+                hidden 
+                type="file" 
+                ref={fileInputRef}
+                onChange={onFileInput}
+                accept="image/*"
               />
             </div>
           </div>
 
-          <div className="nouveau-fournisseur__form-row">
-            <div className="nouveau-fournisseur__form-group">
-              <input
-                type="email"
-                className="nouveau-fournisseur__input"
-                placeholder="E-mail"
-                value={fournisseur.email || ''}
-                onChange={(e) => handleInputChange('email', e.target.value)}
-              />
+          {/* Section Informations personnelles */}
+          <div className="form-section">
+            <h5 className="section-title">Informations personnelles</h5>
+            
+            <div className="row">
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="nom">Nom</label>
+                  <input
+                    type="text"
+                    id="nom"
+                    className="form-control"
+                    placeholder="Nom"
+                    value={fournisseur.nom || ''}
+                    onChange={(e) => handleInputChange('nom', e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="prenom">Prénom</label>
+                  <input
+                    type="text"
+                    id="prenom"
+                    className="form-control"
+                    placeholder="Prénom"
+                    value={fournisseur.prenom || ''}
+                    onChange={(e) => handleInputChange('prenom', e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
             </div>
-            <div className="nouveau-fournisseur__form-group">
-              <input
-                type="text"
-                className="nouveau-fournisseur__input"
-                placeholder="Ville"
-                value={adresseDto.ville || ''}
-                onChange={(e) => handleAdresseChange('ville', e.target.value)}
-              />
+
+            <div className="row">
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="email">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    className="form-control"
+                    placeholder="E-mail"
+                    value={fournisseur.email || ''}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label optional" htmlFor="telephone">Téléphone</label>
+                  <input
+                    type="tel"
+                    id="telephone"
+                    className="form-control"
+                    placeholder="Téléphone"
+                    value={fournisseur.numTel || ''}
+                    onChange={(e) => handleInputChange('numTel', e.target.value)}
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="nouveau-fournisseur__form-row">
-            <div className="nouveau-fournisseur__form-group">
-              <input
-                type="text"
-                className="nouveau-fournisseur__input"
-                placeholder="Telephone"
-                value={fournisseur.numTel || ''}
-                onChange={(e) => handleInputChange('numTel', e.target.value)}
-              />
+          {/* Section Adresse */}
+          <div className="form-section adresse-section">
+            <h5 className="section-title">Adresse</h5>
+            
+            <div className="row">
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label optional" htmlFor="adresse1">Adresse 1</label>
+                  <input
+                    type="text"
+                    id="adresse1"
+                    className="form-control"
+                    placeholder="Adresse 1"
+                    value={adresseDto.adresse1 || ''}
+                    onChange={(e) => handleAdresseChange('adresse1', e.target.value)}
+                  />
+                </div>
+              </div>
+              
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label optional" htmlFor="adresse2">Adresse 2</label>
+                  <input
+                    type="text"
+                    id="adresse2"
+                    className="form-control"
+                    placeholder="Adresse 2"
+                    value={adresseDto.adresse2 || ''}
+                    onChange={(e) => handleAdresseChange('adresse2', e.target.value)}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="nouveau-fournisseur__form-group">
-              <input
-                type="text"
-                className="nouveau-fournisseur__input"
-                placeholder="Code postal"
-                value={adresseDto.codePostale || ''}
-                onChange={(e) => handleAdresseChange('codePostale', e.target.value)}
-              />
-            </div>
-          </div>
 
-          <div className="nouveau-fournisseur__form-row">
-            <div className="nouveau-fournisseur__form-group">
-              &nbsp;
-            </div>
-            <div className="nouveau-fournisseur__form-group">
-              <input
-                type="text"
-                className="nouveau-fournisseur__input"
-                placeholder="Pays"
-                value={adresseDto.pays || ''}
-                onChange={(e) => handleAdresseChange('pays', e.target.value)}
-              />
+            <div className="row">
+              <div className="col-md-4">
+                <div className="form-group">
+                  <label className="form-label optional" htmlFor="ville">Ville</label>
+                  <input
+                    type="text"
+                    id="ville"
+                    className="form-control"
+                    placeholder="Ville"
+                    value={adresseDto.ville || ''}
+                    onChange={(e) => handleAdresseChange('ville', e.target.value)}
+                  />
+                </div>
+              </div>
+              
+              <div className="col-md-4">
+                <div className="form-group">
+                  <label className="form-label optional" htmlFor="codePostale">Code postal</label>
+                  <input
+                    type="text"
+                    id="codePostale"
+                    className="form-control"
+                    placeholder="Code postal"
+                    value={adresseDto.codePostale || ''}
+                    onChange={(e) => handleAdresseChange('codePostale', e.target.value)}
+                  />
+                </div>
+              </div>
+              
+              <div className="col-md-4">
+                <div className="form-group">
+                  <label className="form-label optional" htmlFor="pays">Pays</label>
+                  <input
+                    type="text"
+                    id="pays"
+                    className="form-control"
+                    placeholder="Pays"
+                    value={adresseDto.pays || ''}
+                    onChange={(e) => handleAdresseChange('pays', e.target.value)}
+                  />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
 
-      <div className="nouveau-fournisseur__actions">
+      {/* Actions du formulaire */}
+      <div className="form-actions">
         <button 
-          className="nouveau-fournisseur__btn nouveau-fournisseur__btn--danger"
+          type="button"
+          className="btn btn-secondary"
           onClick={cancelClick}
         >
-          <i className="fas fa-ban"></i>&nbsp;
+          <i className="fas fa-ban"></i>
           Annuler
         </button>
         <button 
-          className="nouveau-fournisseur__btn nouveau-fournisseur__btn--primary"
+          type="button"
+          className="btn btn-primary"
           onClick={enregistrer}
         >
-          <i className="fas fa-save"></i>&nbsp;
+          <i className="fas fa-save"></i>
           {isEditMode ? 'Mettre à jour' : 'Enregistrer'}
         </button>
       </div>

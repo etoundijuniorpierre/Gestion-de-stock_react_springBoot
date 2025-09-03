@@ -1,97 +1,250 @@
-
-.main-container {
-  margin: 50px;
+// Dashboard moderne et simple
+.dashboard-container {
+  min-height: 100vh;
+  background: #f8f9fa;
+  display: flex;
   
-  .row {
-    min-height: 110px;
+  // Navigation latérale
+  .sidebar {
+    width: 310px;
+    background: #ffffff;
+    border-right: 1px solid #e9ecef;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
     
-
-  }
-  
-  .card {
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-    border-radius: 0.375rem;
-    
-    &.col-md-2 {
-      background-color: #f8f9fa;
-      border: 1px solid #dee2e6;
+    .sidebar-header {
+      padding: 2rem 1.5rem;
+      text-align: center;
+      border-bottom: 1px solid #e9ecef;
+      background: linear-gradient(135deg, #007bff, #0056b3);
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1001;
+      flex-shrink: 0;
       
-      .card-header {
-        background-color: #007bff;
-        color: white;
-        border-radius: 0.375rem 0.375rem 0 0;
-        
-        h4 {
-          margin: 0;
-          font-size: 1.1rem;
-        }
+      h4 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+      
+      .subtitle {
+        margin-top: 0.5rem;
+        opacity: 0.9;
+        font-size: 0.9rem;
       }
     }
     
-    &.col-md-10 {
-      background-color: #ffffff;
+    .sidebar-menu {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem 0;
       
-      &.backgroung-grey {
-        background-color: #f8f9fa;
+      // Scrollbar personnalisée
+      &::-webkit-scrollbar {
+        width: 6px;
       }
-    }
-  }
-  
-  
-}
-
-// Styles pour le menu
-#appMenuAccordion {
-  .card {
-    border: none;
-    margin-bottom: 0.25rem;
-    
-    .card-header {
-      //background-color: transparent;
-      border: none;
-      padding: 0.5rem 1rem;
       
-      .btn-link {
-        color: #495057;
-        font-weight: 500;
-        text-decoration: none;
-        padding: 0.5rem 0;
+      &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+      }
+      
+      &::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
         
         &:hover {
-          color: #007bff;
-          background-color: rgba(0, 123, 255, 0.1);
+          background: #a8a8a8;
+        }
+      }
+    }
+  }
+  
+  // Contenu principal
+  .main-content {
+    flex: 1;
+    margin-left: 280px;
+    min-height: 100vh;
+    background: #f8f9fa;
+    
+    // Header fixe
+    .main-header {
+      background: #ffffff;
+      border-bottom: 1px solid #e9ecef;
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      
+      .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+    }
+    
+    // Zone de contenu
+    .content-area {
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      
+      .content-card {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid #f1f3f4;
+        overflow: hidden;
+      }
+    }
+  }
+}
+
+// Styles pour le menu de navigation
+.nav-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  
+  .nav-item {
+    margin: 0.25rem 1rem;
+    
+    .nav-link {
+      display: flex;
+      align-items: center;
+      padding: 0.875rem 1rem;
+      color: #495057;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      
+      &:hover {
+        background: rgba(0, 123, 255, 0.1);
+        color: #007bff;
+        transform: translateX(5px);
+      }
+      
+      &.active {
+        background: #007bff;
+        color: white;
+        box-shadow: 0 2px 10px rgba(0, 123, 255, 0.3);
+      }
+      
+      .nav-icon {
+        width: 20px;
+        margin-right: 0.75rem;
+        text-align: center;
+      }
+      
+      .nav-text {
+        flex: 1;
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 1024px) {
+  .dashboard-container {
+    .sidebar {
+      width: 250px;
+    }
+    
+    .main-content {
+      margin-left: 250px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+    
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+      border-right: none;
+      border-bottom: 1px solid #e9ecef;
+      
+      .sidebar-header {
+        position: relative;
+        top: auto;
+        z-index: auto;
+      }
+      
+      .sidebar-menu {
+        overflow-y: visible;
+        max-height: 300px;
+      }
+    }
+    
+    .main-content {
+      margin-left: 0;
+      
+      .main-header {
+        padding: 1rem;
+        
+        .header-content {
+          flex-direction: column;
+          gap: 1rem;
+          align-items: stretch;
+        }
+      }
+      
+      .content-area {
+        padding: 1rem;
+      }
+    }
+  }
+  
+  .nav-menu {
+    display: flex;
+    overflow-x: auto;
+    padding: 0.5rem;
+    
+    .nav-item {
+      margin: 0 0.25rem;
+      flex-shrink: 0;
+      
+      .nav-link {
+        white-space: nowrap;
+        padding: 0.75rem 1rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .dashboard-container {
+    .sidebar {
+      .sidebar-header {
+        padding: 1.5rem 1rem;
+        
+        h4 {
+          font-size: 1.25rem;
         }
       }
     }
     
-    .card-body {
-      padding: 0;
+    .main-content {
+      .main-header {
+        padding: 0.75rem;
+      }
       
-      .list-group-item {
-        border: none;
-        padding: 0;
-        
-        a {
-          padding: 0.5rem 1rem 0.5rem 2rem;
-          color: #6c757d;
-          text-decoration: none;
-          display: block;
-          
-          &:hover {
-            background-color: rgba(0, 123, 255, 0.1);
-            color: #007bff;
-          }
-        }
-        
-        &.bg-primary {
-          a {
-            color: white;
-            
-            &:hover {
-              background-color: rgba(255, 255, 255, 0.1);
-            }
-          }
-        }
+      .content-area {
+        padding: 0.75rem;
       }
     }
   }

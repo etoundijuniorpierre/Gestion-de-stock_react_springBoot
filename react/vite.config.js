@@ -11,5 +11,16 @@ export default defineConfig({
   define: {
     'process.env': {}
   },
-
+  // Configuration du serveur de développement avec proxy
+  server: {
+    port: 5173,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path
+      }
+    }
+  }
 })

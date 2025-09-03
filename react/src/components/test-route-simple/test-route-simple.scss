@@ -1,0 +1,153 @@
+@use "sass:color";
+
+// Variables
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+$success-color: #28a745;
+$danger-color: #dc3545;
+$warning-color: #ffc107;
+$info-color: #17a2b8;
+$light-color: #f8f9fa;
+$dark-color: #343a40;
+$border-color: #dee2e6;
+$shadow-color: rgba(0, 0, 0, 0.1);
+
+// Composant principal
+.test-route-simple {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  
+  // Header
+  &__header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid $success-color;
+    
+    h1 {
+      color: $success-color;
+      margin-bottom: 0.5rem;
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+    
+    p {
+      color: $secondary-color;
+      font-size: 1.2rem;
+      margin: 0;
+    }
+  }
+  
+  // Content
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  // Card
+  &__card {
+    background: #fff;
+    border: 2px solid $border-color;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    
+    h3 {
+      color: $success-color;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    p {
+      color: $secondary-color;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+    
+    ul {
+      margin: 0;
+      padding-left: 1.5rem;
+      
+      li {
+        margin-bottom: 0.5rem;
+        color: $dark-color;
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+    }
+  }
+  
+  // Info
+  &__info {
+    background: $light-color;
+    border: 2px solid $border-color;
+    border-radius: 12px;
+    padding: 1.5rem;
+    
+    h4 {
+      color: $info-color;
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    
+    p {
+      margin: 0.5rem 0;
+      color: $secondary-color;
+      font-size: 1rem;
+      
+      code {
+        background: #fff;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        border: 1px solid $border-color;
+        color: $primary-color;
+        font-weight: 600;
+        font-family: 'Courier New', monospace;
+      }
+      
+      .status-success {
+        color: $success-color;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .test-route-simple {
+    padding: 1rem;
+    
+    &__header {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      p {
+        font-size: 1.1rem;
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.test-route-simple {
+  animation: fadeIn 0.5s ease-out;
+}

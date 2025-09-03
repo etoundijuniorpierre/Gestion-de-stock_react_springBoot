@@ -29,6 +29,14 @@ export default function Header() {
         navigate('/dashboard/profil');
     };
 
+    // Fonction pour obtenir la photo de l'utilisateur ou la photo par défaut
+    const getUserPhoto = () => {
+        if (connectedUser?.photo && connectedUser.photo !== null && connectedUser.photo !== '') {
+            return connectedUser.photo;
+        }
+        return ReactLogo; // Photo par défaut React si pas de photo
+    };
+
     return(
         <div className="header">
             <div className="header__search">
@@ -49,8 +57,10 @@ export default function Header() {
             </div>
             <div className="header__user">
                 <div className="header__user-greeting">
-                    <span>Bonjour</span>
-                    {connectedUser?.nom && <span>&nbsp;{connectedUser.nom}</span>}
+                    <span className="greeting-text">Bonjour</span>
+                    {connectedUser?.nom && (
+                        <span className="user-name">&nbsp;{connectedUser.nom}</span>
+                    )}
                 </div>
                 <div className="header__user-actions">
                     <button 
@@ -58,7 +68,14 @@ export default function Header() {
                         onClick={handleProfileClick}
                         title="Profil"
                     >
-                        <img src={ReactLogo} className="header__user-image" alt="User avatar" />
+                        <img 
+                            src={getUserPhoto()} 
+                            className="header__user-image" 
+                            alt={`Photo de ${connectedUser?.nom || 'utilisateur'}`}
+                            onError={(e) => {
+                                e.target.src = ReactLogo; // Fallback si l'image ne charge pas
+                            }}
+                        />
                     </button>
                     <button 
                         className="header__logout-btn" 

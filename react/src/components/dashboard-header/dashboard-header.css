@@ -1,0 +1,30 @@
+.dashboard-header{ background:#fff; border-bottom:1px solid #e9ecef; padding:1rem 0 }
+.dashboard-header .header-content{ display:flex; align-items:center; justify-content:space-between; max-width:1400px; margin:0 auto; padding:0 2rem }
+.dashboard-header .header-content .header-left{ flex:1; max-width:500px }
+.dashboard-header .header-content .header-left .search-container .search-input-wrapper{ position:relative; width:100% }
+.dashboard-header .header-content .header-left .search-container .search-input-wrapper .search-icon{ position:absolute; left:1rem; top:50%; transform:translateY(-50%); color:#6c757d; font-size:.9rem }
+.dashboard-header .header-content .header-left .search-container .search-input-wrapper .search-input{ width:100%; padding:.75rem 1rem .75rem 2.5rem; border:2px solid #e9ecef; border-radius:12px; font-size:.95rem; background:#f8f9fa; transition:all .3s ease }
+.dashboard-header .header-content .header-left .search-container .search-input-wrapper .search-input:focus{ outline:none; border-color:#007bff; background:#fff; box-shadow:0 0 0 .2rem rgba(0,123,255,.15) }
+.dashboard-header .header-content .header-left .search-container .search-input-wrapper .search-input::placeholder{ color:#adb5bd }
+.dashboard-header .header-content .header-right .user-info{ display:flex; align-items:center; gap:1.5rem }
+.dashboard-header .header-content .header-right .user-info .user-greeting{ display:flex; flex-direction:column; align-items:flex-end; text-align:right }
+.dashboard-header .header-content .header-right .user-info .user-greeting .greeting-text{ font-size:.875rem; color:#6c757d; font-weight:500 }
+.dashboard-header .header-content .header-right .user-info .user-greeting .user-name{ font-size:1.1rem; color:#007bff; font-weight:600 }
+.dashboard-header .header-content .header-right .user-info .user-actions{ display:flex; align-items:center; gap:1rem }
+.dashboard-header .header-content .header-right .user-info .user-actions .profile-btn{ background:none; border:none; padding:0; cursor:pointer; border-radius:50%; overflow:hidden; transition:all .3s ease }
+.dashboard-header .header-content .header-right .user-info .user-actions .profile-btn:hover{ transform:scale(1.05); box-shadow:0 4px 15px rgba(0,123,255,.3) }
+.dashboard-header .header-content .header-right .user-info .user-actions .profile-btn .user-avatar{ width:44px; height:44px; border-radius:50%; object-fit:cover; border:3px solid #e9ecef; transition:all .3s ease }
+.dashboard-header .header-content .header-right .user-info .user-actions .profile-btn .user-avatar:hover{ border-color:#007bff }
+.dashboard-header .header-content .header-right .user-info .user-actions .logout-btn{ background:linear-gradient(135deg,#dc3545,#c82333); border:none; padding:.75rem; cursor:pointer; color:#fff; font-size:1.1rem; border-radius:12px; transition:all .3s ease; min-width:44px; height:44px; display:flex; align-items:center; justify-content:center }
+.dashboard-header .header-content .header-right .user-info .user-actions .logout-btn:hover{ background:linear-gradient(135deg,#c82333,#a71e2a); transform:translateY(-2px); box-shadow:0 6px 20px rgba(220,53,69,.4) }
+@media(max-width:768px){ .dashboard-header .header-content{flex-direction:column; gap:1rem; padding:0 1rem }
+.dashboard-header .header-content .header-left{ max-width:100% }
+.dashboard-header .header-content .header-right .user-info{ flex-direction:column; gap:1rem }
+.dashboard-header .header-content .header-right .user-info .user-greeting{ align-items:center; text-align:center }
+}
+@media(max-width:576px){ .dashboard-header .header-content{padding:0 .75rem }
+.dashboard-header .header-content .header-left .search-container .search-input-wrapper .search-input{ padding:.625rem .875rem .625rem 2.25rem; font-size:.9rem }
+.dashboard-header .header-content .header-left .search-container .search-input-wrapper .search-icon{ left:.875rem }
+.dashboard-header .header-content .header-right .user-info .user-actions .profile-btn .user-avatar{ width:40px; height:40px }
+.dashboard-header .header-content .header-right .user-info .user-actions .logout-btn{ padding:.625rem; min-width:40px; height:40px; font-size:1rem }
+}

@@ -105,68 +105,98 @@ const ChangerMotPasse = () => {
   const cancel = () => navigate('/dashboard/vue-ensemble');
 
   return (
-    <div className="changer-mdp">
-      <div className="changer-mdp__left">
-        <div className="changer-mdp__photo">
-          <img src="assets/product.png" className="changer-mdp__avatar" width="200" height="200" alt="avatar" />
-        </div>
-        <div className="changer-mdp__title">
-          <h2>Modification du mot de passe</h2>
-          <small className="changer-mdp__subtitle">Sécurisez votre compte en changeant le mot de passe par défaut</small>
-        </div>
+    <div className="changer-mot-passe-form">
+      {/* En-tête du formulaire */}
+      <div className="form-header">
+        <h2>Modification du mot de passe</h2>
+        <div className="subtitle">Sécurisez votre compte en changeant le mot de passe par défaut</div>
       </div>
-
-      <div className="changer-mdp__right">
-        <form className="changer-mdp__form" onSubmit={onSubmit}>
-          <div className="changer-mdp__form-group">
-            <label className="changer-mdp__label" htmlFor="nouveaumotdepasse">Nouveau mot de passe</label>
-            <input
-              id="nouveaumotdepasse"
-              type="password"
-              className="changer-mdp__input"
-              placeholder="Nouveau mot de passe"
-              value={changerMotDePasseDto.motDePasse || ''}
-              onChange={e => setChangerMotDePasseDto(prev => ({ ...prev, motDePasse: e.target.value }))}
-              required
-            />
+      
+      {/* Contenu du formulaire */}
+      <div className="form-content">
+        {/* Messages d'erreur/succès */}
+        {errorMessage && (
+          <div className="alert alert-danger" role="alert">
+            <i className="fas fa-exclamation-triangle me-2"></i>
+            {errorMessage}
           </div>
-
-          <div className="changer-mdp__form-group">
-            <label className="changer-mdp__label" htmlFor="confirmmotdepasse">Confirmer le mot de passe</label>
-            <input
-              id="confirmmotdepasse"
-              type="password"
-              className="changer-mdp__input"
-              placeholder="Confirmer mot de passe"
-              value={changerMotDePasseDto.confirmMotDePasse || ''}
-              onChange={e => setChangerMotDePasseDto(prev => ({ ...prev, confirmMotDePasse: e.target.value }))}
-              required
-            />
+        )}
+        {successMessage && (
+          <div className="alert alert-success" role="alert">
+            <i className="fas fa-check-circle me-2"></i>
+            {successMessage}
           </div>
-
-          {errorMessage && (
-            <div className="changer-mdp__error" role="alert">
-              <i className="fas fa-exclamation-triangle me-2"></i>
-              {errorMessage}
+        )}
+        
+        <form onSubmit={onSubmit}>
+          {/* Section Mot de passe */}
+          <div className="form-section">
+            <h5 className="section-title">Nouveau mot de passe</h5>
+            
+            <div className="row">
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="nouveaumotdepasse">Nouveau mot de passe</label>
+                  <input
+                    id="nouveaumotdepasse"
+                    type="password"
+                    className="form-control"
+                    placeholder="Nouveau mot de passe"
+                    value={changerMotDePasseDto.motDePasse || ''}
+                    onChange={e => setChangerMotDePasseDto(prev => ({ ...prev, motDePasse: e.target.value }))}
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="confirmmotdepasse">Confirmer le mot de passe</label>
+                  <input
+                    id="confirmmotdepasse"
+                    type="password"
+                    className="form-control"
+                    placeholder="Confirmer mot de passe"
+                    value={changerMotDePasseDto.confirmMotDePasse || ''}
+                    onChange={e => setChangerMotDePasseDto(prev => ({ ...prev, confirmMotDePasse: e.target.value }))}
+                    required
+                  />
+                </div>
+              </div>
             </div>
-          )}
-          {successMessage && (
-            <div className="changer-mdp__success" role="alert">
-              <i className="fas fa-check-circle me-2"></i>
-              {successMessage}
-            </div>
-          )}
-
-          <div className="changer-mdp__actions">
-            <button type="button" className="changer-mdp__btn changer-mdp__btn--secondary" onClick={cancel} disabled={isLoading}>
-              <i className="fas fa-ban"></i>&nbsp;Annuler
-            </button>
-            <button type="submit" className="changer-mdp__btn changer-mdp__btn--primary" disabled={isLoading}>
-              <i className="fas fa-save"></i>&nbsp;
-              {isLoading ? 'Enregistrement...' : 'Enregistrer'}
-            </button>
           </div>
         </form>
+      </div>
+      
+      {/* Actions du formulaire */}
+      <div className="form-actions">
+        <button 
+          type="button" 
+          className="btn btn-secondary" 
+          onClick={cancel} 
+          disabled={isLoading}
+        >
+          <i className="fas fa-ban"></i>
+          Annuler
+        </button>
+        <button 
+          type="submit" 
+          className="btn btn-primary" 
+          onClick={onSubmit}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <>
+              <span className="spinner-border" role="status" aria-hidden="true"></span>
+              Enregistrement...
+            </>
+          ) : (
+            <>
+              <i className="fas fa-save"></i>
+              Enregistrer
+            </>
+          )}
+        </button>
       </div>
     </div>
   );

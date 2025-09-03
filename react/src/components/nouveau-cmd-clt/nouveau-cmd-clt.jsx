@@ -1,336 +1,219 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { CltfrsService } from '../../services/cltfrs/cltfrs.service';
-import { CmdcltfrsService } from '../../services/cmdcltfrs.service';
-import { ArticleService } from '../../services/article/article.service';
-import DetailCmd from '../detail-cmd/detail-cmd';
+import { useParams, useNavigate } from 'react-router-dom';
+import useErrorHandler from '../../hooks/useErrorHandler';
+import ErrorHandler from '../error-handler/error-handler';
 import './nouveau-cmd-clt.scss';
 
 const NouveauCmdClt = () => {
-  const [selectedClient, setSelectedClient] = useState({});
-  const [listClients, setListClients] = useState([]);
-  const [searchedArticle, setSearchedArticle] = useState({});
-  const [listArticle, setListArticle] = useState([]);
-  const [codeArticle, setCodeArticle] = useState('');
-  const [quantite, setQuantite] = useState('');
-  const [codeCommande, setCodeCommande] = useState('');
-  const [lignesCommande, setLignesCommande] = useState([]);
-  const [totalCommande, setTotalCommande] = useState(0);
-  const [articleNotYetSelected, setArticleNotYetSelected] = useState(false);
-  const [errorMsg, setErrorMsg] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
+  const { id } = useParams(); // Pour l'édition
   const navigate = useNavigate();
-  const cltFrsService = new CltfrsService();
-  const cmdCltFrsService = new CmdcltfrsService();
-  const articleService = new ArticleService();
-
-  const origin = 'client';
+  const { error, handleError, clearError, handleAsyncOperation } = useErrorHandler();
+  
+  const [isLoading, setIsLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    codeCommande: '',
+    dateCommande: '',
+    client: null,
+    articles: [],
+    totalHt: 0,
+    totalTtc: 0,
+    statut: 'EN_COURS'
+  });
 
   useEffect(() => {
-    findAllClients();
-    findAllArticles();
-  }, []);
-
-  const findAllClients = async () => {
-    try {
-      const clients = await cltFrsService.findAllClients();
-      setListClients(clients);
-    } catch (error) {
-      console.error('Erreur lors du chargement des clients:', error);
-      setErrorMsg(['Erreur lors du chargement des clients']);
+    if (id) {
+      setIsEditing(true);
+      loadCommande(id);
     }
-  };
+  }, [id]);
 
-  const findAllArticles = async () => {
-    try {
-      const articles = await articleService.findAllArticles();
-      setListArticle(articles);
-    } catch (error) {
-      console.error('Erreur lors du chargement des articles:', error);
-      setErrorMsg(['Erreur lors du chargement des articles']);
-    }
-  };
-
-  const filtrerArticle = () => {
-    if (codeArticle.length === 0) {
-      findAllArticles();
-    } else {
-      const filteredArticles = listArticle.filter(art => 
-        art.codeArticle?.toLowerCase().includes(codeArticle.toLowerCase()) || 
-        art.designation?.toLowerCase().includes(codeArticle.toLowerCase())
-      );
-      setListArticle(filteredArticles);
-    }
-  };
-
-  const selectArticleClick = (article) => {
-    setSearchedArticle(article);
-    setCodeArticle(article.codeArticle);
-    setArticleNotYetSelected(false);
-  };
-
-  const ajouterLigneCommande = () => {
-    if (checkLigneCommande()) {
-      const newLigne = {
-        id: Date.now(), // ID temporaire
-        article: searchedArticle,
-        quantite: parseFloat(quantite),
-        prixUnitaire: searchedArticle.prixUnitaireTtc,
-        prixTotal: parseFloat(quantite) * searchedArticle.prixUnitaireTtc
-      };
-      
-      setLignesCommande([...lignesCommande, newLigne]);
-      calculerTotalCommande();
-      setSearchedArticle({});
-      setQuantite('');
-      setCodeArticle('');
-      setArticleNotYetSelected(false);
-      findAllArticles();
-    }
-  };
-
-  const checkLigneCommande = () => {
-    const errors = [];
-    
-    if (!searchedArticle.id) {
-      errors.push('Veuillez sélectionner un article');
-      setArticleNotYetSelected(true);
-    }
-    
-    if (!quantite || parseFloat(quantite) <= 0) {
-      errors.push('Veuillez entrer une quantité valide');
-    }
-    
-    if (errors.length > 0) {
-      setErrorMsg(errors);
-      return false;
-    }
-    
-    setErrorMsg([]);
-    return true;
-  };
-
-  const calculerTotalCommande = () => {
-    const total = lignesCommande.reduce((sum, ligne) => sum + ligne.prixTotal, 0);
-    setTotalCommande(total);
-  };
-
-  const enregistrerCommande = async () => {
-    if (!selectedClient.id) {
-      setErrorMsg(['Veuillez sélectionner un client']);
-      return;
-    }
-
-    if (lignesCommande.length === 0) {
-      setErrorMsg(['Veuillez ajouter au moins une ligne de commande']);
-      return;
-    }
-
+  const loadCommande = async (commandeId) => {
     try {
       setIsLoading(true);
-      const commande = {
-        codeCommande: codeCommande,
-        client: selectedClient,
-        fournisseur: null,
-        lignesCommande: lignesCommande,
-        totalCommande: totalCommande,
-        dateCommande: new Date().toISOString()
-      };
-
-      await cmdCltFrsService.saveCommandeClient(commande);
-      navigate('/dashboard/commandes-clients');
+      // TODO: Implémenter le chargement de la commande existante
+      console.log('Chargement de la commande:', commandeId);
     } catch (error) {
-      console.error('Erreur lors de la sauvegarde de la commande:', error);
-      setErrorMsg(['Erreur lors de la sauvegarde de la commande']);
+      handleError(error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const annuler = () => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      setIsLoading(true);
+      
+      if (isEditing) {
+        // TODO: Implémenter la mise à jour
+        console.log('Mise à jour de la commande:', formData);
+      } else {
+        // TODO: Implémenter la création
+        console.log('Création de la commande:', formData);
+      }
+      
+      // Redirection après succès
+      navigate('/dashboard/commandes-clients');
+      
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCancel = () => {
     navigate('/dashboard/commandes-clients');
   };
 
+  if (isLoading) {
+    return (
+      <div className="nouveau-cmd-clt">
+        <div className="loading-container">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Chargement...</span>
+          </div>
+          <p>Chargement en cours...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="col mb-3">
-      <div className="col-md-12">
-        <div className="col-md-12 mb-3 mt-3">
-          <h2>Nouvelle commande {origin}</h2>
-        </div>
-        
-        {errorMsg.length > 0 && (
-          <div className="alert alert-danger">
-            {errorMsg.map((msg, index) => (
-              <div key={index}>
-                <span>{msg}</span>
-              </div>
-            ))}
-          </div>
-        )}
-
-        <div className="row p-3 custom-border">
-          <div className="col-md-5 custom-border-right">
-            <form>
-              <div className="form-group">
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  name="codeCmd" 
-                  placeholder="Code commande" 
-                  value={codeCommande}
-                  onChange={(e) => setCodeCommande(e.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  placeholder="Date commande"
-                  value={new Date().toLocaleDateString()}
-                  readOnly
-                />
-              </div>
-              <div className="form-group">
-                <select 
-                  className="form-control" 
-                  name="cltFrs" 
-                  value={selectedClient.id || ''}
-                  onChange={(e) => {
-                    const selected = listClients.find(c => c.id === parseInt(e.target.value));
-                    setSelectedClient(selected || {});
-                  }}
-                >
-                  <option value="">Sélectionner un {origin}</option>
-                  {listClientsFournisseurs.map((obj) => (
-                    <option key={obj.id} value={obj.id}>
-                      {obj.nom}&nbsp;{obj.prenom}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </form>
-          </div>
-          
-          {selectedClient.nom && (
-            <>
-              <div className="col-md-5 custom-border-right">
-                <div className="col">
-                  <div className="row">
-                    <div className="col-md-1"><i className="fas fa-info-circle blue-color"></i></div>
-                    <div className="col-md-10">{selectedClient.nom}</div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-1"><i className="fas fa-info-circle blue-color"></i></div>
-                    <div className="col-md-10">{selectedClient.prenom}</div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-1"><i className="fas fa-phone-alt blue-color"></i></div>
-                    <div className="col-md-10">{selectedClient.numTel}</div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-1"><i className="fas fa-hourglass-half blue-color"></i></div>
-                    <div className="col-md-10 text-primary">EN PREPARATION</div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-2 text-center">
-                <img 
-                  src={selectedClient.photo ? selectedClient.photo : '/src/assets/product.png'} 
-                  className="rounded-circle" 
-                  width="150px"
-                  height="150px" 
-                  alt="Photo client"
-                />
-              </div>
-            </>
-          )}
-        </div>
-
-        <div className="row mt-2 p-3 custom-border">
-          <div className="form-row col-md-12">
-            <div className="col-md-4">
-              <input 
-                type="text" 
-                className="form-control" 
-                placeholder="Code article" 
-                value={codeArticle}
-                onChange={(e) => setCodeArticle(e.target.value)}
-                onInput={filtrerArticle}
-              />
-              {codeArticle.length > 0 && !articleNotYetSelected && (
-                <div className="autocomplete shadow p-3 mb-5 bg-white rounded">
-                  {listArticle.map((article) => (
-                    <p 
-                      key={article.id} 
-                      className="p-1"
-                      onClick={() => selectArticleClick(article)}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      {article.codeArticle}&nbsp;{article.designation}
-                    </p>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div className="col-md-4">
-              <input 
-                type="text" 
-                className="form-control" 
-                placeholder="Quantite" 
-                value={quantite}
-                onChange={(e) => setQuantite(e.target.value)}
-              />
-            </div>
-            <div className="col-md-3">
-              <input 
-                type="text" 
-                className="form-control" 
-                placeholder="Prix unitaire" 
-                value={searchedArticle.prixUnitaireTtc || ''}
-                readOnly
-              />
-            </div>
-            <div className="col-md-1">
-              <button 
-                type="button" 
-                className="btn btn-success" 
-                onClick={ajouterLigneCommande}
-              >
-                <i className="fas fa-plus"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="row mt-2 p-3 custom-border" style={{ maxHeight: '300px', overflowY: 'scroll' }}>
-          <div className="col-md-12">
-            {lignesCommande.map((ligne) => (
-              <DetailCmd key={ligne.id} ligneCommande={ligne} />
-            ))}
-          </div>
-        </div>
-
-        <div className="row mt-2 p-3 custom-border">
-          <div className="col-md-12 text-right">
-            <h3>Total de la commande: {totalCommande.toFixed(2)}€</h3>
-          </div>
+    <div className="nouveau-cmd-clt">
+      <div className="nouveau-cmd-clt__header">
+        <h2>
+          <i className="fas fa-shopping-cart"></i>
+          {isEditing ? 'Modifier la Commande Client' : 'Nouvelle Commande Client'}
+        </h2>
+        <div className="nouveau-cmd-clt__actions">
+          <button 
+            className="btn btn-secondary" 
+            onClick={handleCancel}
+            disabled={isLoading}
+          >
+            <i className="fas fa-times"></i> Annuler
+          </button>
+          <button 
+            className="btn btn-primary" 
+            onClick={handleSubmit}
+            disabled={isLoading}
+          >
+            <i className="fas fa-save"></i> 
+            {isEditing ? 'Mettre à jour' : 'Créer'}
+          </button>
         </div>
       </div>
 
-      <div className="col-md-12 text-right mt-2">
-        <button className="btn btn-danger mr-3" onClick={annuler}>
-          <i className="fas fa-ban"></i>&nbsp;
-          Annuler
-        </button>
-        <button 
-          className="btn btn-primary" 
-          onClick={enregistrerCommande}
-          disabled={isLoading}
-        >
-          <i className="fas fa-save"></i>&nbsp;
-          {isLoading ? 'Enregistrement...' : 'Enregistrer'}
-        </button>
+      <ErrorHandler 
+        error={error} 
+        onClose={clearError}
+        autoClose={true}
+        autoCloseDelay={5000}
+      />
+
+      <div className="nouveau-cmd-clt__content">
+        <form onSubmit={handleSubmit} className="nouveau-cmd-clt__form">
+          <div className="form-row">
+            <div className="form-group col-md-6">
+              <label htmlFor="codeCommande">Code Commande</label>
+              <input
+                type="text"
+                id="codeCommande"
+                name="codeCommande"
+                className="form-control"
+                value={formData.codeCommande}
+                onChange={handleInputChange}
+                required
+                placeholder="Code de la commande"
+              />
+            </div>
+            
+            <div className="form-group col-md-6">
+              <label htmlFor="dateCommande">Date Commande</label>
+              <input
+                type="date"
+                id="dateCommande"
+                name="dateCommande"
+                className="form-control"
+                value={formData.dateCommande}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group col-md-6">
+              <label htmlFor="client">Client</label>
+              <select
+                id="client"
+                name="client"
+                className="form-control"
+                value={formData.client?.id || ''}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">Sélectionner un client</option>
+                {/* TODO: Charger la liste des clients */}
+                <option value="1">Client 1</option>
+                <option value="2">Client 2</option>
+              </select>
+            </div>
+            
+            <div className="form-group col-md-6">
+              <label htmlFor="statut">Statut</label>
+              <select
+                id="statut"
+                name="statut"
+                className="form-control"
+                value={formData.statut}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="EN_COURS">En cours</option>
+                <option value="VALIDEE">Validée</option>
+                <option value="LIVREE">Livrée</option>
+                <option value="ANNULEE">Annulée</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>Articles</label>
+            <div className="articles-list">
+              <p className="text-muted">
+                <i className="fas fa-info-circle"></i>
+                La gestion des articles sera implémentée dans une prochaine étape
+              </p>
+            </div>
+          </div>
+
+          <div className="form-row totals">
+            <div className="col-md-6">
+              <div className="total-item">
+                <span className="total-label">Total HT:</span>
+                <span className="total-value">{formData.totalHt.toFixed(2)} €</span>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="total-item">
+                <span className="total-label">Total TTC:</span>
+                <span className="total-value">{formData.totalTtc.toFixed(2)} €</span>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   );

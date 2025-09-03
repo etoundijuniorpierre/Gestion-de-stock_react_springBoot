@@ -1,0 +1,35 @@
+.error-handler{ position:fixed; top:20px; right:20px; z-index:9999; max-width:400px; min-width:300px; background:#fff; border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,.15); border-left:4px solid; animation:slideInRight .3s ease-out }
+.error-handler--error{ border-left-color:#dc3545 }
+.error-handler--error .error-handler__icon{ color:#dc3545 }
+.error-handler--warning{ border-left-color:#ffc107 }
+.error-handler--warning .error-handler__icon{ color:#ffc107 }
+.error-handler--success{ border-left-color:#28a745 }
+.error-handler--success .error-handler__icon{ color:#28a745 }
+.error-handler--info{ border-left-color:#17a2b8 }
+.error-handler--info .error-handler__icon{ color:#17a2b8 }
+.error-handler__content{ display:flex; align-items:flex-start; padding:1rem; gap:.75rem }
+.error-handler__icon{ flex-shrink:0; width:24px; height:24px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; margin-top:.125rem }
+.error-handler__message{ flex:1; min-width:0 }
+.error-handler__title{ margin:0 0 .25rem 0; font-size:.875rem; font-weight:600; color:#343a40; line-height:1.2 }
+.error-handler__text{ margin:0; font-size:.875rem; color:rgb(6.275862069,7,7.724137931); line-height:1.4; word-wrap:break-word }
+.error-handler__close{ background:none; border:none; padding:0; margin:0; cursor:pointer; flex-shrink:0; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#6c757d; transition:all .2s ease; margin-top:.125rem }
+.error-handler__close:hover{ background:rgb(218.25,223.5,228.75); color:#343a40; transform:scale(1.1) }
+.error-handler__close:active{ transform:scale(0.95) }
+.error-handler__close i{ font-size:.875rem }
+@keyframes slideInRight{ from{opacity:0; transform:translateX(100%) }
+to{ opacity:1; transform:translateX(0) }
+}
+@media(max-width:768px){ .error-handler{top:10px; right:10px; left:10px; max-width:none; min-width:auto }
+.error-handler__content{ padding:.875rem }
+.error-handler__icon{ width:20px; height:20px; font-size:1rem }
+.error-handler__title{ font-size:.8rem }
+.error-handler__text{ font-size:.8rem }
+.error-handler__close{ width:20px; height:20px }
+.error-handler__close i{ font-size:.8rem }
+}
+.error-handler--bottom{ top:auto; bottom:20px; animation:slideInUp .3s ease-out }
+@media(max-width:768px){ .error-handler--bottom{bottom:10px }
+}
+@keyframes slideInUp{ from{opacity:0; transform:translateY(100%) }
+to{ opacity:1; transform:translateY(0) }
+}

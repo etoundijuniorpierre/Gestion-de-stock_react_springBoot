@@ -1,0 +1,23 @@
+.test-route-simple{ padding:2rem; max-width:800px; margin:0 auto }
+.test-route-simple__header{ text-align:center; margin-bottom:2rem; padding-bottom:1rem; border-bottom:3px solid #28a745 }
+.test-route-simple__header h1{ color:#28a745; margin-bottom:.5rem; font-size:2.5rem; font-weight:700 }
+.test-route-simple__header p{ color:#6c757d; font-size:1.2rem; margin:0 }
+.test-route-simple__content{ display:flex; flex-direction:column; gap:2rem }
+.test-route-simple__card{ background:#fff; border:2px solid #dee2e6; border-radius:12px; padding:2rem; box-shadow:0 4px 12px rgba(0,0,0,.1) }
+.test-route-simple__card h3{ color:#28a745; margin-bottom:1rem; font-size:1.5rem; font-weight:600 }
+.test-route-simple__card p{ color:#6c757d; margin-bottom:1rem; font-size:1.1rem }
+.test-route-simple__card ul{ margin:0; padding-left:1.5rem }
+.test-route-simple__card ul li{ margin-bottom:.5rem; color:#343a40; font-size:1rem; line-height:1.5 }
+.test-route-simple__info{ background:#f8f9fa; border:2px solid #dee2e6; border-radius:12px; padding:1.5rem }
+.test-route-simple__info h4{ color:#17a2b8; margin-bottom:1rem; font-size:1.3rem; font-weight:600 }
+.test-route-simple__info p{ margin:.5rem 0; color:#6c757d; font-size:1rem }
+.test-route-simple__info p code{ background:#fff; padding:.25rem .5rem; border-radius:4px; border:1px solid #dee2e6; color:#007bff; font-weight:600; font-family:"Courier New",monospace }
+.test-route-simple__info p .status-success{ color:#28a745; font-weight:700; text-transform:uppercase; letter-spacing:1px }
+@media(max-width:768px){ .test-route-simple{padding:1rem }
+.test-route-simple__header h1{ font-size:2rem }
+.test-route-simple__header p{ font-size:1.1rem }
+}
+@keyframes fadeIn{ from{opacity:0; transform:translateY(20px) }
+to{ opacity:1; transform:translateY(0) }
+}
+.test-route-simple{ animation:fadeIn .5s ease-out }

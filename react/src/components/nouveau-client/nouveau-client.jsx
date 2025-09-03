@@ -109,26 +109,34 @@ const NouveauClient = () => {
   };
 
   return (
-    <div className="nouveau-client">
-      <div className="nouveau-client__header">
-        <h2>{isEditMode ? 'Modifier le client' : 'Nouveau client'}</h2>
+    <div className="nouveau-client-form">
+      {/* En-tête du formulaire */}
+      <div className="form-header">
+        <h2>
+          <i className="fas fa-user-plus"></i>
+          {isEditMode ? 'Modifier le client' : 'Nouveau client'}
+        </h2>
       </div>
+      
+      {/* Contenu du formulaire */}
+      <div className="form-content">
+        {/* Messages d'erreur */}
+        {errorMsg.length > 0 && (
+          <div className="alert alert-danger">
+            {errorMsg.map((error, index) => (
+              <div key={index}>
+                <i className="fas fa-exclamation-triangle me-2"></i>
+                {error}
+              </div>
+            ))}
+          </div>
+        )}
 
-      {errorMsg.length > 0 && (
-        <div className="nouveau-client__errors">
-          {errorMsg.map((error, index) => (
-            <div key={index} className="nouveau-client__error">
-              {error}
-            </div>
-          ))}
-        </div>
-      )}
-
-      <div className="nouveau-client__form">
-        <div className="nouveau-client__section">
+        <form>
+        <div className="form-section">
           <h3>Informations personnelles</h3>
           
-          <div className="nouveau-client__photo-section">
+          <div className="photo-section">
             <img src={imgUrl} alt="Photo client" className="nouveau-client__photo" />
             <input
               type="file"
@@ -138,126 +146,151 @@ const NouveauClient = () => {
             />
           </div>
 
-          <div className="nouveau-client__form-row">
-            <div className="nouveau-client__form-group">
-              <label>Nom *</label>
-              <input
-                type="text"
-                value={client.nom || ''}
-                onChange={(e) => handleInputChange('nom', e.target.value)}
-                className="nouveau-client__input"
-                required
-              />
+          <div className="row">
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="form-label">Nom</label>
+                <input
+                  type="text"
+                  value={client.nom || ''}
+                  onChange={(e) => handleInputChange('nom', e.target.value)}
+                  className="form-control"
+                  required
+                />
+              </div>
             </div>
             
-            <div className="nouveau-client__form-group">
-              <label>Prénom *</label>
-              <input
-                type="text"
-                value={client.prenom || ''}
-                onChange={(e) => handleInputChange('prenom', e.target.value)}
-                className="nouveau-client__input"
-                required
-              />
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="form-label">Prénom</label>
+                <input
+                  type="text"
+                  value={client.prenom || ''}
+                  onChange={(e) => handleInputChange('prenom', e.target.value)}
+                  className="form-control"
+                  required
+                />
+              </div>
             </div>
           </div>
 
-          <div className="nouveau-client__form-row">
-            <div className="nouveau-client__form-group">
-              <label>Email *</label>
-              <input
-                type="email"
-                value={client.mail || ''}
-                onChange={(e) => handleInputChange('mail', e.target.value)}
-                className="nouveau-client__input"
-                required
-              />
+          <div className="row">
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="form-label">Email</label>
+                <input
+                  type="email"
+                  value={client.mail || ''}
+                  onChange={(e) => handleInputChange('mail', e.target.value)}
+                  className="form-control"
+                  required
+                />
+              </div>
             </div>
             
-            <div className="nouveau-client__form-group">
-              <label>Téléphone</label>
-              <input
-                type="tel"
-                value={client.numTel || ''}
-                onChange={(e) => handleInputChange('numTel', e.target.value)}
-                className="nouveau-client__input"
-              />
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="form-label optional">Téléphone</label>
+                <input
+                  type="tel"
+                  value={client.numTel || ''}
+                  onChange={(e) => handleInputChange('numTel', e.target.value)}
+                  className="form-control"
+                />
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="nouveau-client__section">
+        <div className="form-section adresse-section">
           <h3>Adresse</h3>
           
-          <div className="nouveau-client__form-group">
-            <label>Adresse 1</label>
-            <input
-              type="text"
-              value={adresseDto.adresse1 || ''}
-              onChange={(e) => handleAdresseChange('adresse1', e.target.value)}
-              className="nouveau-client__input"
-            />
-          </div>
-
-          <div className="nouveau-client__form-group">
-            <label>Adresse 2</label>
-            <input
-              type="text"
-              value={adresseDto.adresse2 || ''}
-              onChange={(e) => handleAdresseChange('adresse2', e.target.value)}
-              className="nouveau-client__input"
-            />
-          </div>
-
-          <div className="nouveau-client__form-row">
-            <div className="nouveau-client__form-group">
-              <label>Code postal</label>
-              <input
-                type="text"
-                value={adresseDto.codePostale || ''}
-                onChange={(e) => handleAdresseChange('codePostale', e.target.value)}
-                className="nouveau-client__input"
-              />
+          <div className="row">
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="form-label optional">Adresse 1</label>
+                <input
+                  type="text"
+                  value={adresseDto.adresse1 || ''}
+                  onChange={(e) => handleAdresseChange('adresse1', e.target.value)}
+                  className="form-control"
+                />
+              </div>
             </div>
             
-            <div className="nouveau-client__form-group">
-              <label>Ville</label>
-              <input
-                type="text"
-                value={adresseDto.ville || ''}
-                onChange={(e) => handleAdresseChange('ville', e.target.value)}
-                className="nouveau-client__input"
-              />
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="form-label optional">Adresse 2</label>
+                <input
+                  type="text"
+                  value={adresseDto.adresse2 || ''}
+                  onChange={(e) => handleAdresseChange('adresse2', e.target.value)}
+                  className="form-control"
+                />
+              </div>
             </div>
           </div>
 
-          <div className="nouveau-client__form-group">
-            <label>Pays</label>
-            <input
-              type="text"
-              value={adresseDto.pays || ''}
-              onChange={(e) => handleAdresseChange('pays', e.target.value)}
-              className="nouveau-client__input"
-            />
+          <div className="row">
+            <div className="col-md-4">
+              <div className="form-group">
+                <label className="form-label optional">Code postal</label>
+                <input
+                  type="text"
+                  value={adresseDto.codePostale || ''}
+                  onChange={(e) => handleAdresseChange('codePostale', e.target.value)}
+                  className="form-control"
+                />
+              </div>
+            </div>
+            
+            <div className="col-md-4">
+              <div className="form-group">
+                <label className="form-label optional">Ville</label>
+                <input
+                  type="text"
+                  value={adresseDto.ville || ''}
+                  onChange={(e) => handleAdresseChange('ville', e.target.value)}
+                  className="form-control"
+                />
+              </div>
+            </div>
+            
+            <div className="col-md-4">
+              <div className="form-group">
+                <label className="form-label optional">Pays</label>
+                <input
+                  type="text"
+                  value={adresseDto.pays || ''}
+                  onChange={(e) => handleAdresseChange('pays', e.target.value)}
+                  className="form-control"
+                />
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="nouveau-client__actions">
-          <button
-            type="button"
-            onClick={cancelClick}
-            className="nouveau-client__btn nouveau-client__btn--secondary"
-          >
-            Annuler
-          </button>
-          <button
-            type="button"
-            onClick={enregistrer}
-            className="nouveau-client__btn nouveau-client__btn--primary"
-          >
-            {isEditMode ? 'Modifier' : 'Enregistrer'}
-          </button>
-        </div>
+        </form>
+      </div>
+      
+      {/* Actions du formulaire */}
+      <div className="form-actions">
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={cancelClick}
+        >
+          <i className="fas fa-ban"></i>
+          Annuler
+        </button>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={enregistrer}
+        >
+          <i className="fas fa-save"></i>
+          {isEditMode ? 'Modifier' : 'Enregistrer'}
+        </button>
       </div>
     </div>
   );

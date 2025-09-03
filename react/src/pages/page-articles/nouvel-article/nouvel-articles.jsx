@@ -99,131 +99,203 @@ const NouvelArticle = () => {
     setArticle(prev => ({ ...prev, [field]: processedValue }));
   };
 
-  return (
-    <div className="nouvel-article">
-      <div className="nouvel-article__photo">
-        <button className="nouvel-article__photo-btn">
-          <img src="favicon.ico" className="nouvel-article__photo-img" width="200" height="200" alt="Photo article" />
-          <input hidden type="file" />
-        </button>
-      </div>
-
-      <hr className="nouvel-article__divider" />
-
-      <div className="nouvel-article__content">
-        <div className="nouvel-article__header">
-          <h2 className="nouvel-article__title">
-            <i className="fas fa-info-circle nouvel-article__icon"></i>&nbsp;Informations de l'article
-          </h2>
+  if (isLoading) {
+    return (
+      <div className="nouvel-article-form">
+        <div className="form-content d-flex justify-content-center align-items-center" style={{ height: '200px' }}>
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Chargement...</span>
+          </div>
+          <p className="ms-3">Chargement en cours...</p>
         </div>
+      </div>
+    );
+  }
 
+  return (
+    <div className="nouvel-article-form">
+      {/* En-tête du formulaire */}
+      <div className="form-header">
+        <h2>
+          <i className="fas fa-box"></i>
+          {isEditMode ? 'Modifier l\'article' : 'Nouvel article'}
+        </h2>
+      </div>
+      
+      {/* Contenu du formulaire */}
+      <div className="form-content">
+        {/* Messages d'erreur/succès */}
         {errorMsg && (
-          <div className="nouvel-article__error">{errorMsg}</div>
+          <div className="alert alert-danger">
+            <i className="fas fa-exclamation-triangle me-2"></i>
+            {errorMsg}
+          </div>
         )}
         
         {successMsg && (
-          <div className="nouvel-article__success">{successMsg}</div>
+          <div className="alert alert-success">
+            <i className="fas fa-check-circle me-2"></i>
+            {successMsg}
+          </div>
         )}
 
-        <form className="nouvel-article__form">
-          <div className="nouvel-article__form-row">
-            <div className="nouvel-article__form-group">
+        <form>
+          {/* Section Photo */}
+          <div className="form-section">
+            <h5 className="section-title">Photo de l'article</h5>
+            <div className="photo-section">
+              <img src="favicon.ico" alt="Photo article" className="nouveau-client__photo" />
               <input
-                type="text"
-                className="nouvel-article__input"
-                name="codearticle"
-                placeholder="Code article"
-                value={article.codeArticle || ''}
-                onChange={e => onChange('codeArticle', e.target.value)}
-                required
-              />
-            </div>
-            <div className="nouvel-article__form-group">
-              <input
-                type="text"
-                className="nouvel-article__input"
-                name="designation"
-                placeholder="Désignation"
-                value={article.designation || ''}
-                onChange={e => onChange('designation', e.target.value)}
-                required
+                type="file"
+                accept="image/*"
+                className="nouveau-client__file-input"
               />
             </div>
           </div>
 
-          <div className="nouvel-article__form-row">
-            <div className="nouvel-article__form-group">
-              <input
-                type="number"
-                className="nouvel-article__input"
-                name="prixunitht"
-                placeholder="Prix unitaire HT"
-                value={article.prixUnitaireHt || ''}
-                onChange={e => onChange('prixUnitaireHt', e.target.value)}
-                required
-              />
+          {/* Section Informations de base */}
+          <div className="form-section">
+            <h5 className="section-title">Informations de l'article</h5>
+            
+            <div className="row">
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="codeArticle">Code Article</label>
+                  <input
+                    type="text"
+                    id="codeArticle"
+                    className="form-control"
+                    name="codearticle"
+                    placeholder="Code article"
+                    value={article.codeArticle || ''}
+                    onChange={e => onChange('codeArticle', e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="designation">Désignation</label>
+                  <input
+                    type="text"
+                    id="designation"
+                    className="form-control"
+                    name="designation"
+                    placeholder="Désignation"
+                    value={article.designation || ''}
+                    onChange={e => onChange('designation', e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
             </div>
-            <div className="nouvel-article__form-group">
-              <input
-                type="number"
-                className="nouvel-article__input"
-                name="tauxtva"
-                placeholder="Taux TVA"
-                value={article.tauxTva || ''}
-                onChange={e => onChange('tauxTva', e.target.value)}
-              />
-            </div>
-          </div>
 
-          <div className="nouvel-article__form-row">
-            <div className="nouvel-article__form-group">
-              <input
-                type="number"
-                className="nouvel-article__input"
-                name="prixunitttc"
-                placeholder="Prix unitaire TTC"
-                value={article.prixUnitaireTtc || ''}
-                onChange={e => onChange('prixUnitaireTtc', e.target.value)}
-              />
+            <div className="row">
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="prixUnitaireHt">Prix unitaire HT</label>
+                  <input
+                    type="number"
+                    id="prixUnitaireHt"
+                    className="form-control"
+                    name="prixunitht"
+                    placeholder="Prix unitaire HT"
+                    value={article.prixUnitaireHt || ''}
+                    onChange={e => onChange('prixUnitaireHt', e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label optional" htmlFor="tauxTva">Taux TVA</label>
+                  <input
+                    type="number"
+                    id="tauxTva"
+                    className="form-control"
+                    name="tauxtva"
+                    placeholder="Taux TVA"
+                    value={article.tauxTva || ''}
+                    onChange={e => onChange('tauxTva', e.target.value)}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="nouvel-article__form-group">
-              <select
-                className="nouvel-article__select"
-                name="cat"
-                value={article.categorie?.id || ''}
-                onChange={e => {
-                  const selectedCat = categories.find(cat => cat.id === Number(e.target.value));
-                  onChange('categorie', selectedCat);
-                }}
-              >
-                <option value="">Sélectionner une catégorie</option>
-                {categories.map(cat => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.designation}
-                  </option>
-                ))}
-              </select>
+
+            <div className="row">
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label optional" htmlFor="prixUnitaireTtc">Prix unitaire TTC</label>
+                  <input
+                    type="number"
+                    id="prixUnitaireTtc"
+                    className="form-control"
+                    name="prixunitttc"
+                    placeholder="Prix unitaire TTC"
+                    value={article.prixUnitaireTtc || ''}
+                    onChange={e => onChange('prixUnitaireTtc', e.target.value)}
+                  />
+                </div>
+              </div>
+              
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label optional" htmlFor="categorie">Catégorie</label>
+                  <select
+                    id="categorie"
+                    className="form-control"
+                    name="cat"
+                    value={article.categorie?.id || ''}
+                    onChange={e => {
+                      const selectedCat = categories.find(cat => cat.id === Number(e.target.value));
+                      onChange('categorie', selectedCat);
+                    }}
+                  >
+                    <option value="">Sélectionner une catégorie</option>
+                    {categories.map(cat => (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.designation}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
         </form>
-
-        <div className="nouvel-article__actions">
-          <button
-            className="nouvel-article__btn nouvel-article__btn--secondary"
-            onClick={annuler}
-            disabled={isLoading}
-          >
-            <i className="fas fa-ban"></i>&nbsp;Annuler
-          </button>
-          <button
-            className="nouvel-article__btn nouvel-article__btn--primary"
-            onClick={enregistrer}
-            disabled={isLoading}
-          >
-            <i className="fas fa-save"></i>&nbsp;
-            {isLoading ? 'Enregistrement...' : 'Enregistrer'}
-          </button>
-        </div>
+      </div>
+      
+      {/* Actions du formulaire */}
+      <div className="form-actions">
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={annuler}
+          disabled={isLoading}
+        >
+          <i className="fas fa-ban"></i>
+          Annuler
+        </button>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={enregistrer}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <>
+              <span className="spinner-border" role="status" aria-hidden="true"></span>
+              Enregistrement...
+            </>
+          ) : (
+            <>
+              <i className="fas fa-save"></i>
+              Enregistrer
+            </>
+          )}
+        </button>
       </div>
     </div>
   );
