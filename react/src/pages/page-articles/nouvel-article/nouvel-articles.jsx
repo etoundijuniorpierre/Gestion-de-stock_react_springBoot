@@ -6,12 +6,15 @@ import './nouvel-article.scss';
 
 const NouvelArticle = () => {
   const [article, setArticle] = useState({
+    id: null,
     codeArticle: '',
     designation: '',
     prixUnitaireHt: null,
     tauxTva: null,
     prixUnitaireTtc: null,
-    categorie: null
+    photo: '',
+    categorie: null,
+    idEntreprise: null
   });
   const [categories, setCategories] = useState([]);
   const [errorMsg, setErrorMsg] = useState('');
@@ -27,7 +30,41 @@ const NouvelArticle = () => {
   useEffect(() => {
     loadCategories();
     checkEditMode();
+    initializeArticle();
   }, []);
+
+  const initializeArticle = () => {
+    // Récupérer l'ID de l'utilisateur depuis le localStorage
+    // Maintenant que loginService stocke directement l'ID, on peut le récupérer facilement
+    let idUser = localStorage.getItem('idUser') || localStorage.getItem('id');
+    
+    if (idUser) {
+      setArticle(prev => ({
+        ...prev,
+        idEntreprise: Number(idUser)
+      }));
+      console.log('✅ ID entreprise défini:', Number(idUser));
+    } else {
+      console.warn('❌ ID utilisateur non trouvé dans le localStorage');
+      
+      // Fallback : essayer de récupérer depuis l'objet connectedUser
+      const connectedUserStr = localStorage.getItem('connectedUser');
+      if (connectedUserStr) {
+        try {
+          const connectedUser = JSON.parse(connectedUserStr);
+          if (connectedUser.id) {
+            setArticle(prev => ({
+              ...prev,
+              idEntreprise: Number(connectedUser.id)
+            }));
+            console.log('✅ ID entreprise récupéré depuis connectedUser:', Number(connectedUser.id));
+          }
+        } catch (e) {
+          console.error('❌ Erreur parsing connectedUser:', e);
+        }
+      }
+    }
+  };
 
   const loadCategories = async () => {
     try {
@@ -46,12 +83,15 @@ const NouvelArticle = () => {
         const art = await articleService.findArticleById(Number(id));
         if (art && art.id) {
           setArticle({
+            id: art.id,
             codeArticle: art.codeArticle || '',
             designation: art.designation || '',
             prixUnitaireHt: art.prixUnitaireHt || null,
             tauxTva: art.tauxTva || null,
             prixUnitaireTtc: art.prixUnitaireTtc || null,
-            categorie: art.categorie || null
+            photo: art.photo || '',
+            categorie: art.categorie || null,
+            idEntreprise: art.idEntreprise || null
           });
         }
       } catch (error) {
@@ -61,13 +101,24 @@ const NouvelArticle = () => {
     }
   };
 
-  const annuler = () => navigate('/dashboard/articles');
+  const annuler = () => navigate('/dashboard/article');
 
   const validateForm = () => {
     if (!article.codeArticle || !article.designation || !article.prixUnitaireHt) {
-      setErrorMsg('Veuillez remplir tous les champs obligatoires');
+      setErrorMsg('Veuillez remplir tous les champs obligatoires (Code, Désignation, Prix HT)');
       return false;
     }
+    
+    if (!article.categorie) {
+      setErrorMsg('Veuillez sélectionner une catégorie');
+      return false;
+    }
+    
+    if (!article.idEntreprise) {
+      setErrorMsg('Erreur: ID de l\'entreprise non trouvé. Veuillez vous reconnecter.');
+      return false;
+    }
+    
     return true;
   };
 
@@ -79,12 +130,37 @@ const NouvelArticle = () => {
     setSuccessMsg('');
 
     try {
-      await articleService.enregistrerArticle(article);
-      setSuccessMsg('Article enregistré avec succès !');
-      setTimeout(() => navigate('/dashboard/articles'), 2000);
+      // Préparer les données selon le format attendu par le backend
+      const articleData = {
+        id: article.id,
+        codeArticle: article.codeArticle,
+        designation: article.designation,
+        prixUnitaireHt: Number(article.prixUnitaireHt),
+        tauxTva: article.tauxTva ? Number(article.tauxTva) : 0,
+        prixUnitaireTtc: article.prixUnitaireTtc ? Number(article.prixUnitaireTtc) : 0,
+        photo: article.photo || '',
+        categorie: article.categorie ? {
+          id: article.categorie.id,
+          code: article.categorie.code,
+          designation: article.categorie.designation,
+          idEntreprise: article.categorie.idEntreprise
+        } : article.categorie.id,
+        idEntreprise: article.idEntreprise
+      };
+
+      console.log('Données de l\'article à envoyer:', articleData);
+      
+      if (isEditMode) {
+        await articleService.updateArticle(article.id, articleData);
+        setSuccessMsg('Article modifié avec succès !');
+      } else {
+        await articleService.enregistrerArticle(articleData);
+        setSuccessMsg('Article enregistré avec succès !');
+      }
+      setTimeout(() => navigate('/dashboard/article'), 2000);
     } catch (error) {
       console.error('Erreur lors de l\'enregistrement de l\'article:', error);
-      setErrorMsg('Erreur lors de l\'enregistrement de l\'article');
+      setErrorMsg(isEditMode ? 'Erreur lors de la modification de l\'article' : 'Erreur lors de l\'enregistrement de l\'article');
     } finally {
       setIsLoading(false);
     }
@@ -121,7 +197,7 @@ const NouvelArticle = () => {
           {isEditMode ? 'Modifier l\'article' : 'Nouvel article'}
         </h2>
       </div>
-      
+
       {/* Contenu du formulaire */}
       <div className="form-content">
         {/* Messages d'erreur/succès */}
@@ -144,11 +220,23 @@ const NouvelArticle = () => {
           <div className="form-section">
             <h5 className="section-title">Photo de l'article</h5>
             <div className="photo-section">
-              <img src="favicon.ico" alt="Photo article" className="nouveau-client__photo" />
+              <img 
+                src={article.photo || "/src/assets/product.png"} 
+                alt="Photo article" 
+                className="nouveau-client__photo" 
+              />
               <input
                 type="file"
                 accept="image/*"
                 className="nouveau-client__file-input"
+                onChange={e => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    // Créer une URL temporaire pour l'image
+                    const imageUrl = URL.createObjectURL(file);
+                    onChange('photo', imageUrl);
+                  }
+                }}
               />
             </div>
           </div>

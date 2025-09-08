@@ -10,12 +10,35 @@ const PageUtilisateur = () => {
   const [errorMsgs, setErrorMsgs] = useState('');
   const [loading, setLoading] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 15;
   const navigate = useNavigate();
   const userService = new UserService();
 
   useEffect(() => {
     findAllUtilisateurs();
   }, []);
+
+  // Calculer le nombre total de pages
+  useEffect(() => {
+    const total = Math.ceil(listUtilisateurs.length / itemsPerPage);
+    setTotalPages(total);
+  }, [listUtilisateurs.length]);
+
+  // Obtenir les utilisateurs pour la page courante
+  const getCurrentPageUtilisateurs = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return listUtilisateurs.slice(startIndex, endIndex);
+  };
+
+  // Fonction pour changer de page et remonter en haut
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    // Remonter en haut de la page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const findAllUtilisateurs = async () => {
     try {
@@ -119,7 +142,7 @@ const PageUtilisateur = () => {
             </div>
           </div>
         ) : (
-          listUtilisateurs.map((utilisateur) => (
+          getCurrentPageUtilisateurs().map((utilisateur) => (
             <div key={utilisateur.id} className="row col-md-12 custom-border mb-3 p-3">
               <div className="col-md-2 custom-border-right">
                 <strong>Nom:</strong> {utilisateur.nom || 'N/A'}
@@ -172,7 +195,13 @@ const PageUtilisateur = () => {
       {listUtilisateurs.length > 0 && (
         <div className="row mb-3">
           <div className="col-md-12 text-center">
-            <Pagination />
+            <Pagination 
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              showFirstLast={true}
+              maxVisiblePages={5}
+            />
           </div>
         </div>
       )}

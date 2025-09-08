@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { loginUser } from '../../services/loginService';
 import './login.scss';
@@ -11,6 +11,23 @@ export default function Login() {
     });
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
+    const [rememberMe, setRememberMe] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+
+    // Charger les données sauvegardées au montage du composant
+    useEffect(() => {
+        const savedEmail = localStorage.getItem('rememberedEmail');
+        const savedPassword = localStorage.getItem('rememberedPassword');
+        const rememberMeStatus = localStorage.getItem('rememberMe') === 'true';
+        
+        if (rememberMeStatus && savedEmail) {
+            setFormData({
+                email: savedEmail,
+                password: savedPassword || ''
+            });
+            setRememberMe(true);
+        }
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -28,6 +45,17 @@ export default function Login() {
         try {
             const result = await loginUser(formData);
             if (result.success) {
+                // Gérer le "Remember Me"
+                if (rememberMe) {
+                    localStorage.setItem('rememberedEmail', formData.email);
+                    localStorage.setItem('rememberedPassword', formData.password);
+                    localStorage.setItem('rememberMe', 'true');
+                } else {
+                    localStorage.removeItem('rememberedEmail');
+                    localStorage.removeItem('rememberedPassword');
+                    localStorage.removeItem('rememberMe');
+                }
+                
                 setMessage({ type: 'success', text: result.message });
                 // Rediriger vers le dashboard après 1 seconde
                 setTimeout(() => {
@@ -89,7 +117,7 @@ export default function Login() {
                                     <i className="fas fa-lock"></i>
                                 </span>
                                 <input
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     id="password"
                                     className="form-control"
                                     name="password"
@@ -98,6 +126,29 @@ export default function Login() {
                                     placeholder="Entrez votre mot de passe"
                                     required
                                 />
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-secondary password-toggle"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    tabIndex="-1"
+                                >
+                                    <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="form-group remember-me-group">
+                            <div className="form-check">
+                                <input
+                                    type="checkbox"
+                                    className="form-check-input"
+                                    id="rememberMe"
+                                    checked={rememberMe}
+                                    onChange={(e) => setRememberMe(e.target.checked)}
+                                />
+                                <label className="form-check-label" htmlFor="rememberMe">
+                                    Se souvenir de moi
+                                </label>
                             </div>
                         </div>
 

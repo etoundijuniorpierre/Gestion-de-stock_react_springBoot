@@ -15,11 +15,14 @@ const DetailClt = ({ client, onSuppressionResult }) => {
 
   const confirmerEtSupprimer = async () => {
     if (client.id) {
-      try {
-        await cltFrsService.deleteClient(client.id);
+      const result = await cltFrsService.deleteClient(client.id);
+      
+      if (result.success) {
         onSuppressionResult('success');
-      } catch (error) {
-        onSuppressionResult(error.response?.data?.error || 'Erreur lors de la suppression');
+      } else {
+        // Afficher le message d'erreur spécifique
+        const errorMessage = result.error?.message || 'Erreur lors de la suppression';
+        onSuppressionResult(errorMessage);
       }
     }
   };
@@ -28,12 +31,14 @@ const DetailClt = ({ client, onSuppressionResult }) => {
     <>
       <div className="detail-client">
         <div className="detail-client__photo">
-          <img 
-            src={client.photo ? client.photo : '/src/assets/product.png'} 
-            alt="Photo client"
-            width="100" 
-            height="100" 
-          />
+          {client.photo && (
+            <img 
+              src={client.photo} 
+              alt="Photo client"
+              width="100" 
+              height="100" 
+            />
+          )}
         </div>
 
         {/* Details client */}

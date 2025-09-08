@@ -1,4 +1,5 @@
 import httpInterceptor from '../http-interceptor';
+import { API_CONFIG, buildApiUrlWithParam } from '../../config/api.config.js';
 
 // Service React pur pour la gestion des utilisateurs
 class UserService {
@@ -6,7 +7,7 @@ class UserService {
   // Récupérer tous les utilisateurs
   async findAll() {
     try {
-      const data = await httpInterceptor.get('/api/gestionDeStock/utilisateurs/all');
+      const data = await httpInterceptor.get(API_CONFIG.ENDPOINTS.UTILISATEURS.ALL);
       // Si la réponse est un tableau, on le retourne tel quel
       if (Array.isArray(data)) {
         return data;
@@ -22,7 +23,7 @@ class UserService {
   // Récupérer un utilisateur par ID
   async findById(id) {
     try {
-      const response = await httpInterceptor.get(`/api/gestionDeStock/utilisateurs/${id}`);
+      const response = await httpInterceptor.get(buildApiUrlWithParam(API_CONFIG.ENDPOINTS.UTILISATEURS.BY_ID, id));
       return response;
     } catch (error) {
       console.error('Erreur lors de la récupération de l\'utilisateur:', error);
@@ -36,7 +37,7 @@ class UserService {
   // Sauvegarder un utilisateur (création)
   async save(utilisateur) {
     try {
-      const response = await httpInterceptor.post('/api/gestionDeStock/utilisateurs/create', utilisateur);
+      const response = await httpInterceptor.post(API_CONFIG.ENDPOINTS.UTILISATEURS.CREATE, utilisateur);
       return response;
     } catch (error) {
       console.error('Erreur lors de la sauvegarde de l\'utilisateur:', error);
@@ -57,7 +58,7 @@ class UserService {
       // D'après swagger.json, l'endpoint create peut être utilisé pour créer ET modifier
       // On ajoute l'ID à l'utilisateur pour la modification
       const utilisateurAvecId = { ...utilisateur, id };
-      const response = await httpInterceptor.post('/api/gestionDeStock/utilisateurs/create', utilisateurAvecId);
+      const response = await httpInterceptor.post(API_CONFIG.ENDPOINTS.UTILISATEURS.CREATE, utilisateurAvecId);
       return response;
     } catch (error) {
       console.error('Erreur lors de la mise à jour de l\'utilisateur:', error);
@@ -75,7 +76,7 @@ class UserService {
   // Supprimer un utilisateur
   async delete(id) {
     try {
-      await httpInterceptor.delete(`/api/gestionDeStock/utilisateurs/delete/${id}`);
+      await httpInterceptor.delete(buildApiUrlWithParam(API_CONFIG.ENDPOINTS.UTILISATEURS.DELETE, id));
       return { success: true };
     } catch (error) {
       console.error('Erreur lors de la suppression de l\'utilisateur:', error);
@@ -89,7 +90,7 @@ class UserService {
   // Rechercher un utilisateur par email
   async findByEmail(email) {
     try {
-      const response = await httpInterceptor.get(`/api/gestionDeStock/utilisateurs/find/${email}`);
+      const response = await httpInterceptor.get(buildApiUrlWithParam(API_CONFIG.ENDPOINTS.UTILISATEURS.FIND_BY_EMAIL, email));
       return response;
     } catch (error) {
       console.error('Erreur lors de la recherche par email:', error);

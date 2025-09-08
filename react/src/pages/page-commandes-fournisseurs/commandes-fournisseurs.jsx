@@ -14,6 +14,9 @@ const CommandesFournisseurs = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [expandedCommands, setExpandedCommands] = useState(new Set());
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 15;
 
   const navigate = useNavigate();
   const cmdCltFrsService = new CmdcltfrsService();
@@ -21,6 +24,26 @@ const CommandesFournisseurs = () => {
   useEffect(() => {
     findAllCommandes();
   }, []);
+
+  // Calculer le nombre total de pages
+  useEffect(() => {
+    const total = Math.ceil(listeCommandes.length / itemsPerPage);
+    setTotalPages(total);
+  }, [listeCommandes.length]);
+
+  // Obtenir les commandes pour la page courante
+  const getCurrentPageCommandes = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return listeCommandes.slice(startIndex, endIndex);
+  };
+
+  // Fonction pour changer de page et remonter en haut
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    // Remonter en haut de la page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const findAllCommandes = async () => {
     setIsLoading(true);
@@ -115,7 +138,7 @@ const CommandesFournisseurs = () => {
       </div>
 
       <div className="commandes-fournisseurs__content">
-        {listeCommandes.map((cmd) => (
+        {getCurrentPageCommandes().map((cmd) => (
           <div key={cmd.id} className="commandes-fournisseurs__card">
             <div className="commandes-fournisseurs__card-header">
               <button
@@ -154,7 +177,13 @@ const CommandesFournisseurs = () => {
 
       {listeCommandes.length > 0 && (
         <div className="commandes-fournisseurs__pagination">
-          <Pagination />
+          <Pagination 
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            showFirstLast={true}
+            maxVisiblePages={5}
+          />
         </div>
       )}
     </div>

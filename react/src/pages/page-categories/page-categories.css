@@ -1,0 +1,73 @@
+.categories-list-container{ background:#fff; border-radius:12px; box-shadow:0 2px 20px rgba(0,0,0,.08); border:1px solid #f1f3f4; overflow:hidden; height:calc(100vh - 4rem); display:flex; flex-direction:column }
+.categories-list-container .page-header{ background:linear-gradient(135deg,#007bff,#0056b3); color:#fff; padding:1.5rem; flex-shrink:0 }
+.categories-list-container .page-header .header-content{ display:flex; align-items:center; justify-content:space-between }
+.categories-list-container .page-header .header-content h1{ margin:0; font-size:1.75rem; font-weight:600; text-shadow:0 1px 2px rgba(0,0,0,.1); display:flex; align-items:center; gap:.75rem }
+.categories-list-container .page-header .header-content h1 i{ font-size:1.5rem }
+.categories-list-container .page-header .header-content .header-actions .btn{ background:hsla(0,0%,100%,.2); border:2px solid hsla(0,0%,100%,.3); color:#fff; padding:.75rem 1.5rem; border-radius:8px; font-weight:500; transition:all .3s ease }
+.categories-list-container .page-header .header-content .header-actions .btn:hover{ background:hsla(0,0%,100%,.3); border-color:hsla(0,0%,100%,.5); transform:translateY(-2px); box-shadow:0 6px 20px hsla(0,0%,100%,.2) }
+.categories-list-container .page-header .header-content .header-actions .btn i{ margin-right:.5rem }
+.categories-list-container .page-content{ flex:1; padding:1.5rem; overflow-y:auto }
+.categories-list-container .page-content::-webkit-scrollbar{ width:6px }
+.categories-list-container .page-content::-webkit-scrollbar-track{ background:#f1f1f1; border-radius:3px }
+.categories-list-container .page-content::-webkit-scrollbar-thumb{ background:#c1c1c1; border-radius:3px }
+.categories-list-container .page-content::-webkit-scrollbar-thumb:hover{ background:#a8a8a8 }
+.categories-list-container .page-content .alert{ border-radius:8px; border:none; padding:1rem 1.25rem; margin-bottom:1.5rem; font-weight:500; display:flex; align-items:center; gap:.75rem }
+.categories-list-container .page-content .alert.alert-danger{ background:linear-gradient(135deg,#dc3545,#c82333); color:#fff; box-shadow:0 4px 15px rgba(220,53,69,.3); border-left:4px solid #fff }
+.categories-list-container .page-content .alert.alert-danger.alert-warning{ background:linear-gradient(135deg,#ffc107,#e0a800); color:#212529; border-left-color:#856404 }
+.categories-list-container .page-content .alert.alert-danger.alert-info{ background:linear-gradient(135deg,#6c757d,#5a6268); color:#fff; border-left-color:#495057 }
+.categories-list-container .page-content .empty-state{ background:#f8f9fa; border-radius:8px; padding:3rem 2rem; text-align:center; border:2px dashed #dee2e6 }
+.categories-list-container .page-content .empty-state .empty-icon{ font-size:3rem; color:#adb5bd; margin-bottom:1rem }
+.categories-list-container .page-content .empty-state .empty-text{ color:#6c757d; font-size:1.1rem; font-weight:500 }
+.categories-list-container .page-content .categories-list .category-item{ background:#fff; border:1px solid #e9ecef; border-radius:8px; padding:1.25rem; margin-bottom:1rem; transition:all .3s ease; box-shadow:0 2px 8px rgba(0,0,0,.05) }
+.categories-list-container .page-content .categories-list .category-item:hover{ border-color:#007bff; box-shadow:0 4px 20px rgba(0,123,255,.15); transform:translateY(-2px) }
+.categories-list-container .page-content .categories-list .category-item .category-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-info{ flex:1 }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-info .category-code{ background:linear-gradient(135deg,#007bff,#0056b3); color:#fff; padding:.5rem 1rem; border-radius:6px; font-weight:600; font-size:.9rem; display:inline-flex; align-items:center; gap:.5rem; margin-bottom:.5rem }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-info .category-code .category-used-badge{ background:hsla(0,0%,100%,.2); border-radius:50%; width:1.2rem; height:1.2rem; display:flex; align-items:center; justify-content:center; font-size:.7rem; color:#fff; border:1px solid hsla(0,0%,100%,.3) }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-info .category-code .category-used-badge i{ font-size:.6rem }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-info .category-designation{ color:#495057; font-size:1.1rem; font-weight:500; margin:0 }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-actions{ display:flex; gap:.5rem }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-actions .btn{ padding:.5rem 1rem; border-radius:6px; font-weight:500; font-size:.85rem; transition:all .3s ease; border:none; display:flex; align-items:center; gap:.5rem }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-actions .btn.btn-details{ background:linear-gradient(135deg,#17a2b8,#138496); color:#fff }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-actions .btn.btn-details:hover{ background:linear-gradient(135deg,#138496,#117a8b); transform:translateY(-1px); box-shadow:0 4px 15px rgba(23,162,184,.4) }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-actions .btn.btn-edit{ background:linear-gradient(135deg,#ffc107,#e0a800); color:#212529 }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-actions .btn.btn-edit:hover{ background:linear-gradient(135deg,#e0a800,#d39e00); transform:translateY(-1px); box-shadow:0 4px 15px rgba(255,193,7,.4) }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-actions .btn.btn-delete{ background:linear-gradient(135deg,#dc3545,#c82333); color:#fff }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-actions .btn.btn-delete:hover{ background:linear-gradient(135deg,#c82333,#bd2130); transform:translateY(-1px); box-shadow:0 4px 15px rgba(220,53,69,.4) }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-actions .btn.btn-delete-disabled{ background:linear-gradient(135deg,#6c757d,#5a6268); color:#adb5bd; cursor:not-allowed; opacity:.6 }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-actions .btn.btn-delete-disabled:hover{ background:linear-gradient(135deg,#6c757d,#5a6268); transform:none; box-shadow:none }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-actions .btn.btn-delete-disabled i{ opacity:.7 }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-actions .btn i{ font-size:.875rem }
+.categories-list-container .page-content .pagination-container{ margin-top:2rem; text-align:center }
+.modal .modal-content{ border:none; border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,.2) }
+.modal .modal-content .modal-header{ background:linear-gradient(135deg,#dc3545,#c82333); color:#fff; border-radius:12px 12px 0 0; border-bottom:none }
+.modal .modal-content .modal-header .modal-title{ font-weight:600 }
+.modal .modal-content .modal-header .close{ color:#fff; opacity:.8 }
+.modal .modal-content .modal-header .close:hover{ opacity:1 }
+.modal .modal-content .modal-body{ padding:2rem; text-align:center; font-size:1.1rem; color:#495057 }
+.modal .modal-content .modal-footer{ border-top:none; padding:1.5rem; gap:1rem }
+.modal .modal-content .modal-footer .btn{ padding:.75rem 1.5rem; border-radius:8px; font-weight:500; transition:all .3s ease; border:none }
+.modal .modal-content .modal-footer .btn.btn-secondary{ background:linear-gradient(135deg,#6c757d,#5a6268); color:#fff }
+.modal .modal-content .modal-footer .btn.btn-secondary:hover{ background:linear-gradient(135deg,#5a6268,#495057); transform:translateY(-2px); box-shadow:0 6px 20px rgba(108,117,125,.4) }
+.modal .modal-content .modal-footer .btn.btn-danger{ background:linear-gradient(135deg,#dc3545,#c82333); color:#fff }
+.modal .modal-content .modal-footer .btn.btn-danger:hover{ background:linear-gradient(135deg,#c82333,#bd2130); transform:translateY(-2px); box-shadow:0 6px 20px rgba(220,53,69,.4) }
+.modal .modal-content .modal-footer .btn i{ margin-right:.5rem }
+@media(max-width:768px){ .categories-list-container{height:calc(100vh - 2rem) }
+.categories-list-container .page-header{ padding:1rem }
+.categories-list-container .page-header .header-content{ flex-direction:column; gap:1rem; text-align:center }
+.categories-list-container .page-header .header-content h1{ font-size:1.5rem }
+.categories-list-container .page-content{ padding:1rem }
+.categories-list-container .page-content .categories-list .category-item{ padding:1rem }
+.categories-list-container .page-content .categories-list .category-item .category-header{ flex-direction:column; gap:1rem; text-align:center }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-actions{ justify-content:center; flex-wrap:wrap }
+}
+@media(max-width:576px){ .categories-list-container{height:calc(100vh - 1rem) }
+.categories-list-container .page-header{ padding:.75rem }
+.categories-list-container .page-header .header-content h1{ font-size:1.25rem; flex-direction:column; gap:.5rem }
+.categories-list-container .page-content{ padding:.75rem }
+.categories-list-container .page-content .categories-list .category-item{ padding:.75rem }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-info .category-code{ font-size:.8rem; padding:.375rem .75rem }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-info .category-designation{ font-size:1rem }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-actions .btn{ padding:.375rem .75rem; font-size:.8rem }
+.categories-list-container .page-content .categories-list .category-item .category-header .category-actions .btn span{ display:none }
+}

@@ -1,8 +1,8 @@
-.nouvel-article-form{ background:#fff; border-radius:12px; box-shadow:0 2px 20px rgba(0,0,0,.08); border:1px solid #f1f3f4; overflow:hidden; height:calc(100vh - 10rem); display:flex; flex-direction:column }
+.nouvel-article-form{ background:#f1f1f1; border-radius:12px; box-shadow:0 2px 20px rgba(0,0,0,.08); border:1px solid #f1f3f4; overflow:hidden; height:calc(100vh - 8rem); display:flex; flex-direction:column; padding-top:3rem }
 .nouvel-article-form .form-header{ background:linear-gradient(135deg,#007bff,#0056b3); color:#fff; padding:1.5rem; text-align:center; flex-shrink:0 }
 .nouvel-article-form .form-header h2{ margin:0; font-size:1.5rem; font-weight:600; text-shadow:0 1px 2px rgba(0,0,0,.1); display:flex; align-items:center; justify-content:center; gap:.75rem }
 .nouvel-article-form .form-header h2 i{ font-size:1.25rem }
-.nouvel-article-form .form-content{ flex:1; padding:1.5rem; overflow-y:hidden }
+.nouvel-article-form .form-content{ flex:1; padding:1.5rem; overflow-y:hidden; background:#fff }
 .nouvel-article-form .form-content::-webkit-scrollbar{ width:6px }
 .nouvel-article-form .form-content::-webkit-scrollbar-track{ background:#f1f1f1; border-radius:3px }
 .nouvel-article-form .form-content::-webkit-scrollbar-thumb{ background:#c1c1c1; border-radius:3px }
@@ -25,8 +25,9 @@
 .nouvel-article-form .form-content .row{ margin-left:-0.5rem; margin-right:-0.5rem }
 .nouvel-article-form .form-content .row .col-md-4,.nouvel-article-form .form-content .row .col-md-6,.nouvel-article-form .form-content .row .col-md-12{ padding-left:.5rem; padding-right:.5rem }
 .nouvel-article-form .form-content .photo-section{ background:#f8f9fa; border-radius:8px; padding:1.5rem; border:1px solid #e9ecef; text-align:center; margin-bottom:1.5rem }
-.nouvel-article-form .form-content .photo-section .nouveau-client__photo{ width:150px; height:150px; border-radius:12px; border:3px solid #e9ecef; object-fit:cover; transition:all .3s ease; cursor:pointer }
+.nouvel-article-form .form-content .photo-section .nouveau-client__photo{ width:150px; height:150px; border-radius:12px; border:3px solid #e9ecef; object-fit:cover; transition:all .3s ease; cursor:pointer; background-color:#f8f9fa }
 .nouvel-article-form .form-content .photo-section .nouveau-client__photo:hover{ border-color:#007bff; transform:scale(1.02); box-shadow:0 8px 25px rgba(0,123,255,.15) }
+.nouvel-article-form .form-content .photo-section .nouveau-client__photo[src*="product.png"]{ opacity:.8; filter:grayscale(30%); background:linear-gradient(135deg,#f8f9fa 0%,#e9ecef 100%); border-style:dashed; border-color:#dee2e6 }
 .nouvel-article-form .form-content .photo-section .nouveau-client__file-input{ margin-top:1rem; width:100%; max-width:300px }
 .nouvel-article-form .form-actions{ background:#f8f9fa; border-top:1px solid #e9ecef; padding:1.5rem; display:flex; justify-content:flex-end; gap:1rem; align-items:center; flex-shrink:0 }
 .nouvel-article-form .form-actions .btn{ padding:.75rem 1.5rem; border-radius:8px; font-weight:500; font-size:.9rem; transition:all .3s ease; min-width:110px; display:flex; align-items:center; justify-content:center; gap:.5rem }

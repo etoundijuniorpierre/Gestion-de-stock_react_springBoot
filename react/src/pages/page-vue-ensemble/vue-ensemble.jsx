@@ -1,6 +1,5 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import DebugNav from '../../components/debug-nav/debug-nav';
 import './vue-ensemble.scss';
 
 const VueEnsemble = () => {
@@ -20,9 +19,6 @@ const VueEnsemble = () => {
                   <strong>📍 Page Vue d'ensemble</strong> - URL: {location.pathname}
                 </div>
                 <p>Cette page s'affiche dans la zone principale du dashboard.</p>
-                
-                {/* Composant de navigation de debug */}
-                <DebugNav />
                 
                 <div className="row">
                   <div className="col-md-6">

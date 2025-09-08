@@ -1,31 +1,18 @@
 import httpInterceptor from '../http-interceptor';
+import API_CONFIG, { buildApiUrlWithParam } from '../../config/api.config.js';
 
+// Service React pur pour la gestion des mouvements de stock
 class MouvementStockService {
 
-  // Entrée en stock
-  async entreeStock(mvtStkDto) {
-    try {
-      return await httpInterceptor.post('/api/gestionDeStock/mvtstk/entree', mvtStkDto);
-    } catch (error) {
-      console.error('Erreur lors de l\'entrée en stock:', error);
-      throw error;
-    }
-  }
-
-  // Sortie de stock
-  async sortieStock(mvtStkDto) {
-    try {
-      return await httpInterceptor.post('/api/gestionDeStock/mvtstk/sortie', mvtStkDto);
-    } catch (error) {
-      console.error('Erreur lors de la sortie de stock:', error);
-      throw error;
-    }
-  }
-
   // Correction positive de stock
-  async correctionStockPos(mvtStkDto) {
+  async correctionPositive(mvtStkDto) {
     try {
-      return await httpInterceptor.post('/api/gestionDeStock/mvtstk/correctionpos', mvtStkDto);
+      const endpoint = API_CONFIG.ENDPOINTS.MOUVEMENTS_STOCK.CORRECTION_POSITIVE;
+      if (!endpoint) {
+        throw new Error('Endpoint de correction positive non défini dans la configuration API');
+      }
+      
+      return await httpInterceptor.post(endpoint, mvtStkDto);
     } catch (error) {
       console.error('Erreur lors de la correction positive:', error);
       throw error;
@@ -33,88 +20,82 @@ class MouvementStockService {
   }
 
   // Correction négative de stock
-  async correctionStockNeg(mvtStkDto) {
+  async correctionNegative(mvtStkDto) {
     try {
-      return await httpInterceptor.post('/api/gestionDeStock/mvtstk/correctionneg', mvtStkDto);
+      return await httpInterceptor.post(API_CONFIG.ENDPOINTS.MOUVEMENTS_STOCK.CORRECTION_NEGATIVE, mvtStkDto);
     } catch (error) {
       console.error('Erreur lors de la correction négative:', error);
       throw error;
     }
   }
 
-  // Mouvements de stock d'un article
-  async getMouvementsArticle(idArticle) {
+  // Entrée de stock
+  async entreeStock(mvtStkDto) {
     try {
-      const data = await httpInterceptor.get(`/api/gestionDeStock/mvtstk/filter/article/${idArticle}`);
-      // Si la réponse est un tableau, on le retourne tel quel
-      if (Array.isArray(data)) {
-        return data;
-      }
-      // Sinon, on essaie d'extraire le tableau de la réponse
-      return data?.content || data?.data || [data] || [];
+      return await httpInterceptor.post(API_CONFIG.ENDPOINTS.MOUVEMENTS_STOCK.ENTREE, mvtStkDto);
     } catch (error) {
-      console.error('Erreur lors de la récupération des mouvements:', error);
-      return [];
+      console.error('Erreur lors de l\'entrée de stock:', error);
+      throw error;
     }
   }
 
-  // Stock réel d'un article
-  async getStockReelArticle(idArticle) {
+  // Sortie de stock
+  async sortieStock(mvtStkDto) {
     try {
-      return await httpInterceptor.get(`/api/gestionDeStock/mvtstk/stockreel/${idArticle}`);
+      return await httpInterceptor.post(API_CONFIG.ENDPOINTS.MOUVEMENTS_STOCK.SORTIE, mvtStkDto);
+    } catch (error) {
+      console.error('Erreur lors de la sortie de stock:', error);
+      throw error;
+    }
+  }
+
+  // Récupérer le stock réel d'un article
+  async getStockReel(idArticle) {
+    if (!idArticle) {
+      throw new Error('ID de l\'article manquant');
+    }
+    try {
+      return await httpInterceptor.get(buildApiUrlWithParam(API_CONFIG.ENDPOINTS.MOUVEMENTS_STOCK.STOCK_REEL, idArticle));
     } catch (error) {
       console.error('Erreur lors de la récupération du stock réel:', error);
-      return 0;
+      throw error;
     }
   }
 
-  // Créer un mouvement d'entrée
-  async creerEntreeStock(articleId, quantite, sourceMvt = 'commandeFournisseur') {
-    const mvtStk = {
-      dateMvt: new Date().toISOString(),
-      quantite: quantite,
-      article: { id: articleId },
-      typeMvt: 'entree',
-      sourceMvt: sourceMvt
-    };
-    return this.entreeStock(mvtStk);
+  // Récupérer l'historique des mouvements d'un article
+  async getHistoriqueMouvements(idArticle) {
+    if (!idArticle) {
+      throw new Error('ID de l\'article manquant');
+    }
+    try {
+      return await httpInterceptor.get(buildApiUrlWithParam(API_CONFIG.ENDPOINTS.MOUVEMENTS_STOCK.FILTER_ARTICLE, idArticle));
+    } catch (error) {
+      console.error('Erreur lors de la récupération de l\'historique:', error);
+      throw error;
+    }
   }
 
-  // Créer un mouvement de sortie
-  async creerSortieStock(articleId, quantite, sourceMvt = 'vente') {
-    const mvtStk = {
+  // Créer un DTO de mouvement de stock pour correction
+  createMvtStkDto(article, quantite, typeCorrection, idEntreprise = 1) {
+    return {
       dateMvt: new Date().toISOString(),
-      quantite: quantite,
-      article: { id: articleId },
-      typeMvt: 'sortie',
-      sourceMvt: sourceMvt
+      quantite: parseFloat(quantite),
+      article: {
+        id: article.id,
+        codeArticle: article.codeArticle,
+        designation: article.designation,
+        prixUnitaireHt: article.prixUnitaireHt,
+        tauxTva: article.tauxTva,
+        prixUnitaireTtc: article.prixUnitaireTtc,
+        photo: article.photo,
+        categorie: article.categorie,
+        idEntreprise: article.idEntreprise
+      },
+      typeMvt: typeCorrection === 'positive' ? 'CORRECTION_POS' : 'CORRECTION_NEG',
+      sourceMvt: 'VENTE', // Par défaut pour les corrections manuelles
+      idEntreprise: idEntreprise
     };
-    return this.sortieStock(mvtStk);
-  }
-
-  // Créer une correction positive
-  async creerCorrectionPositive(articleId, quantite) {
-    const mvtStk = {
-      dateMvt: new Date().toISOString(),
-      quantite: quantite,
-      article: { id: articleId },
-      typeMvt: 'correctionPos',
-      sourceMvt: 'commandeFournisseur'
-    };
-    return this.correctionStockPos(mvtStk);
-  }
-
-  // Créer une correction négative
-  async creerCorrectionNegative(articleId, quantite) {
-    const mvtStk = {
-      dateMvt: new Date().toISOString(),
-      quantite: quantite,
-      article: { id: articleId },
-      typeMvt: 'correctionNeg',
-      sourceMvt: 'commandeFournisseur'
-    };
-    return this.correctionStockNeg(mvtStk);
   }
 }
 
-export { MouvementStockService };
+export default MouvementStockService;

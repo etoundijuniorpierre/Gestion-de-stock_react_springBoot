@@ -191,26 +191,45 @@ $modal-overlay-bg: rgba(0, 0, 0, 0.5);
 
 // Styles pour le modal de correction de stock
 .correction-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: $modal-overlay-bg;
-  z-index: 9999;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(4px) !important;
+  z-index: 99999 !important;
   @include flex-center;
   animation: fadeIn 0.3s ease-out;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  
+  // Empêcher les interactions avec les éléments en arrière-plan
+  pointer-events: auto !important;
+  
+  // S'assurer que le modal reste interactif
+  .correction-modal {
+    pointer-events: auto !important;
+    user-select: auto !important;
+  }
 }
 
 .correction-modal {
-  background: #fff;
+  background: #fff !important;
   border-radius: 12px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  width: 90%;
-  max-width: 500px;
-  max-height: 90vh;
+  width: 90% !important;
+  max-width: 500px !important;
+  max-height: 90vh !important;
   overflow-y: auto;
   animation: slideInUp 0.3s ease-out;
+  position: relative !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
   
   // Header du modal
   .correction-modal-header {
@@ -260,6 +279,48 @@ $modal-overlay-bg: rgba(0, 0, 0, 0.5);
   .correction-modal-body {
     padding: 1.5rem;
     
+    // Messages d'alerte
+    .correction-alert {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      animation: slideInDown 0.3s ease-out;
+      
+      i {
+        font-size: 1.1rem;
+        flex-shrink: 0;
+      }
+      
+      span {
+        flex: 1;
+      }
+    }
+    
+    .correction-alert-error {
+      background: color.adjust($danger-color, $lightness: 45%);
+      color: color.adjust($danger-color, $lightness: -20%);
+      border: 1px solid color.adjust($danger-color, $lightness: 30%);
+      
+      i {
+        color: $danger-color;
+      }
+    }
+    
+    .correction-alert-success {
+      background: color.adjust($success-color, $lightness: 45%);
+      color: color.adjust($success-color, $lightness: -20%);
+      border: 1px solid color.adjust($success-color, $lightness: 30%);
+      
+      i {
+        color: $success-color;
+      }
+    }
+    
     .correction-form-group {
       margin-bottom: 1.5rem;
       
@@ -300,6 +361,18 @@ $modal-overlay-bg: rgba(0, 0, 0, 0.5);
         
         &:hover {
           border-color: color.adjust($primary-color, $lightness: 20%);
+        }
+        
+        &:disabled {
+          background: $light-color;
+          color: #6c757d;
+          cursor: not-allowed;
+          opacity: 0.7;
+          
+          &:hover {
+            border-color: $border-color;
+            transform: none;
+          }
         }
         
         &::placeholder {
@@ -354,6 +427,17 @@ $modal-overlay-bg: rgba(0, 0, 0, 0.5);
         transform: translateY(0);
       }
       
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+        
+        &:hover {
+          transform: none;
+          box-shadow: none;
+        }
+      }
+      
       i {
         font-size: 0.9rem;
       }
@@ -379,6 +463,35 @@ $modal-overlay-bg: rgba(0, 0, 0, 0.5);
   }
 }
 
+// Styles pour désactiver la page quand le modal est ouvert
+body.modal-open {
+  overflow: hidden !important;
+  
+  // Désactiver tous les éléments sauf le modal
+  *:not(.correction-modal-overlay):not(.correction-modal-overlay *) {
+    pointer-events: none !important;
+    user-select: none !important;
+  }
+  
+  // Réactiver spécifiquement le modal et ses enfants
+  .correction-modal-overlay,
+  .correction-modal-overlay * {
+    pointer-events: auto !important;
+    user-select: auto !important;
+  }
+  
+  // Désactiver spécifiquement les boutons et liens en arrière-plan
+  button:not(.correction-modal-overlay button),
+  a:not(.correction-modal-overlay a),
+  input:not(.correction-modal-overlay input),
+  select:not(.correction-modal-overlay select),
+  textarea:not(.correction-modal-overlay textarea) {
+    pointer-events: none !important;
+    opacity: 0.7 !important;
+    cursor: not-allowed !important;
+  }
+}
+
 // Animations
 @keyframes fadeIn {
   from {
@@ -397,6 +510,17 @@ $modal-overlay-bg: rgba(0, 0, 0, 0.5);
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

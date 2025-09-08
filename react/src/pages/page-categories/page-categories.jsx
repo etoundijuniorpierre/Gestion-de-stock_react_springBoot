@@ -3,12 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { CategoryService } from '../../services/category/category.service';
 import ButtonAction from '../../components/button-action/button.jsx';
 import Pagination from '../../components/pagination/pagination.jsx';
+import './page-categories.scss';
 
 const PageCategories = () => {
   const [listCategories, setListCategories] = useState([]);
   const [selectedCatIdToDelete, setSelectedCatIdToDelete] = useState(-1);
-  const [errorMsgs, setErrorMsgs] = useState('');
+  const [errorMsgs, setErrorMsgs] = useState({ message: '', type: 'danger' });
   const [loading, setLoading] = useState(false);
+  const [usedCategories, setUsedCategories] = useState(new Set());
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 15;
   const navigate = useNavigate();
   const categoryService = new CategoryService();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -17,17 +22,62 @@ const PageCategories = () => {
     findAllCategories();
   }, []);
 
+  // Calculer le nombre total de pages
+  useEffect(() => {
+    const total = Math.ceil(listCategories.length / itemsPerPage);
+    setTotalPages(total);
+  }, [listCategories.length]);
+
+  // Obtenir les catégories pour la page courante
+  const getCurrentPageCategories = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return listCategories.slice(startIndex, endIndex);
+  };
+
+  // Fonction pour changer de page et remonter en haut
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    // Remonter en haut de la page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const findAllCategories = async () => {
     try {
       setLoading(true);
       const categories = await categoryService.findAll();
       setListCategories(categories);
-      setErrorMsgs('');
+      setErrorMsgs({ message: '', type: 'danger' });
+      
+      // Vérifier quelles catégories sont utilisées
+      await checkUsedCategories(categories);
     } catch (error) {
       console.error('Erreur lors de la récupération des catégories:', error);
       setErrorMsgs(error.message || 'Erreur lors de la récupération des catégories');
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Vérifier quelles catégories sont utilisées par des articles
+  const checkUsedCategories = async (categories) => {
+    try {
+      const usedCatIds = new Set();
+      
+      // Pour chaque catégorie, vérifier si elle est référencée par des articles
+      for (const category of categories) {
+        const isUsed = await categoryService.isCategoryUsed(category.id);
+        if (isUsed) {
+          usedCatIds.add(category.id);
+        }
+      }
+      
+      setUsedCategories(usedCatIds);
+    } catch (error) {
+      console.error('Erreur lors de la vérification des catégories utilisées:', error);
+      // En cas d'erreur, on considère toutes les catégories comme utilisées par sécurité
+      const allCatIds = new Set(categories.map(cat => cat.id));
+      setUsedCategories(allCatIds);
     }
   };
 
@@ -46,9 +96,34 @@ const PageCategories = () => {
         setSelectedCatIdToDelete(-1);
         findAllCategories();
         setShowDeleteModal(false);
+        setErrorMsgs(''); // Effacer les erreurs précédentes
       } catch (error) {
         console.error('Erreur lors de la suppression:', error);
-        setErrorMsgs(error.message || 'Erreur lors de la suppression de la catégorie');
+        
+        // Gestion spécifique des erreurs avec messages personnalisés
+        let errorMessage = 'Erreur lors de la suppression de la catégorie';
+        let errorType = 'danger';
+        
+        if (error.message) {
+          if (error.message.includes('déjà utilisée') || error.message.includes('utilisée par des articles')) {
+            errorMessage = '⚠️ ' + error.message;
+            errorType = 'warning';
+          } else if (error.message.includes('non trouvée')) {
+            errorMessage = '❌ ' + error.message;
+            errorType = 'info';
+          } else if (error.message.includes('HTTP error') || error.message.includes('status: 400')) {
+            errorMessage = '⚠️ Impossible de supprimer cette catégorie qui est déjà utilisée';
+            errorType = 'warning';
+          } else {
+            errorMessage = '❌ ' + error.message;
+            errorType = 'danger';
+          }
+        }
+        
+        setErrorMsgs({ message: errorMessage, type: errorType });
+        
+        // Fermer le modal en cas d'erreur
+        setShowDeleteModal(false);
       }
     }
   };
@@ -78,84 +153,113 @@ const PageCategories = () => {
   }
 
   return (
-    <div className="col">
-      <div className="row m-3">
-        <div className="col-md-8 p-0">
-          <h1>Liste des catégories</h1>
-        </div>
-        <div className="col-md-4 text-right">
-          <ButtonAction
-            onClick={nouvelleCategory}
-            text="Nouvelle catégorie"
-          />
+    <div className="categories-list-container">
+      {/* En-tête de la page */}
+      <div className="page-header">
+        <div className="header-content">
+          <h1>
+            <i className="fas fa-tags"></i>
+            Liste des catégories
+          </h1>
+          <div className="header-actions">
+            <button 
+              className="btn" 
+              onClick={nouvelleCategory}
+            >
+              <i className="fas fa-plus"></i>
+              Nouvelle catégorie
+            </button>
+          </div>
         </div>
       </div>
       
-      <div className="col m-3">
-        {errorMsgs && (
-          <div className="row col-md-12 alert alert-danger">
-            {errorMsgs}
-          </div>
-        )}
+      {/* Contenu de la page */}
+      <div className="page-content">
+                            {/* Messages d'erreur */}
+                    {errorMsgs.message && (
+                      <div className={`alert alert-danger ${errorMsgs.type !== 'danger' ? `alert-${errorMsgs.type}` : ''}`}>
+                        <i className={`fas ${errorMsgs.type === 'warning' ? 'fa-exclamation-triangle' : errorMsgs.type === 'info' ? 'fa-ban' : 'fa-exclamation-triangle'}`}></i>
+                        {errorMsgs.message}
+                      </div>
+                    )}
         
+        {/* Liste des catégories */}
         {listCategories.length === 0 ? (
-          <div className="row col-md-12 custom-border mb-3 p-3">
-            <div className="col-md-12 text-center">
+          <div className="empty-state">
+            <div className="empty-icon">
+              <i className="fas fa-tags"></i>
+            </div>
+            <div className="empty-text">
               Aucune catégorie trouvée
             </div>
           </div>
         ) : (
-          listCategories.map((cat) => (
-            <div key={cat.id} className="row col-md-12 custom-border mb-3 p-3">
-              <div className="col-md-3 custom-border-right">
-                {cat.code}
-              </div>
-              <div className="col-md-4 custom-border-right">
-                {cat.designation}
-              </div>
-              <div className="col-md-3">
-                <div className="row">
-                  <div className="col-md-3">
+          <div className="categories-list">
+            {getCurrentPageCategories().map((cat) => (
+              <div key={cat.id} className="category-item">
+                <div className="category-header">
+                  <div className="category-info">
+                    <div className="category-code">
+                      {cat.code}
+                      {usedCategories.has(cat.id) && (
+                        <span className="category-used-badge" title="Cette catégorie est utilisée par des articles">
+                          <i className="fas fa-link"></i>
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="category-designation">
+                      {cat.designation}
+                    </h3>
+                  </div>
+                  <div className="category-actions">
                     <button 
                       type="button" 
-                      className="btn btn-link text-primary" 
+                      className="btn btn-details" 
                       onClick={() => voirDetailsCategorie(cat.id)}
+                      title="Voir les détails"
                     >
-                      <i className="far fa-list-alt"></i>&nbsp;Détails
+                      <i className="far fa-list-alt"></i>
+                      <span>Détails</span>
                     </button>
-                  </div>
-                  <div className="col-md-3">
                     <button 
                       type="button" 
-                      className="btn btn-link text-warning" 
+                      className="btn btn-edit" 
                       onClick={() => modifierCategory(cat.id)}
+                      title="Modifier"
                     >
-                      <i className="fas fa-pencil-alt"></i>&nbsp;Modifier
+                      <i className="fas fa-pencil-alt"></i>
+                      <span>Modifier</span>
                     </button>
-                  </div>
-                  <div className="col-md-3">
                     <button 
                       type="button" 
-                      className="btn btn-link text-danger" 
-                      onClick={() => selectCatPourSupprimer(cat.id)}
+                      className={`btn ${usedCategories.has(cat.id) ? 'btn-delete-disabled' : 'btn-delete'}`}
+                      onClick={() => !usedCategories.has(cat.id) && selectCatPourSupprimer(cat.id)}
+                      disabled={usedCategories.has(cat.id)}
+                      title={usedCategories.has(cat.id) ? 'Cette catégorie est utilisée par des articles et ne peut pas être supprimée' : 'Supprimer'}
                     >
-                      <i className="fas fa-trash-alt"></i>&nbsp;Supprimer
+                      <i className="fas fa-trash-alt"></i>
+                      <span>{usedCategories.has(cat.id) ? 'Utilisée' : 'Supprimer'}</span>
                     </button>
                   </div>
                 </div>
               </div>
-            </div>
-          ))
+            ))}
+          </div>
+        )}
+        
+        {/* Pagination */}
+        {listCategories.length > 0 && (
+          <div className="pagination-container">
+            <Pagination 
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              showFirstLast={true}
+              maxVisiblePages={5}
+            />
+          </div>
         )}
       </div>
-      
-      {listCategories.length > 0 && (
-        <div className="row mb-3">
-          <div className="col-md-12 text-center">
-            <Pagination />
-          </div>
-        </div>
-      )}
 
       {/* Modal de confirmation de suppression */}
       {showDeleteModal && (

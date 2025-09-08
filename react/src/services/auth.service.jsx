@@ -1,4 +1,5 @@
 import httpInterceptor from './http-interceptor';
+import { API_CONFIG } from '../config/api.config.js';
 
 class AuthService {
   constructor() {
@@ -26,7 +27,7 @@ class AuthService {
     };
 
     try {
-      const data = await httpInterceptor.post('/gestionDeStock/auth/authenticate', authRequest);
+      const data = await httpInterceptor.post(API_CONFIG.ENDPOINTS.AUTH.LOGIN, authRequest);
       
       if (data.accessToken) {
         if (typeof window !== 'undefined') {
@@ -49,7 +50,7 @@ class AuthService {
     try {
       const token = localStorage.getItem('token');
       if (token) {
-        await httpInterceptor.post('/gestionDeStock/auth/logout');
+        await httpInterceptor.post(API_CONFIG.ENDPOINTS.AUTH.LOGOUT);
       }
     } catch (error) {
       console.error('Erreur lors de la déconnexion:', error);

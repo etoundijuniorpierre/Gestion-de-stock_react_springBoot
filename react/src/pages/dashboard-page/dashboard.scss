@@ -96,6 +96,7 @@
     // Zone de contenu
     .content-area {
       padding: 2rem;
+      padding-top: 5rem; // Compense l'espace du header fixe
       max-width: 1400px;
       margin: 0 auto;
       
@@ -164,6 +165,10 @@
     .main-content {
       margin-left: 250px;
     }
+  }
+  
+  .dashboard-header {
+    left: 250px; // Ajuster la position du header pour la nouvelle largeur de sidebar
   }
 }
 

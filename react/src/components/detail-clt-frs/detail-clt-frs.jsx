@@ -20,46 +20,39 @@ const DetailCltFrs = ({ clientFournisseur, origin, onSuppressionResult }) => {
 
   const confirmerEtSupprimer = async () => {
     if (clientFournisseur.id) {
-      try {
-        let result;
-        if (origin === 'fournisseur') {
-          result = await cltFrsService.deleteFournisseur(clientFournisseur.id);
-        } else {
-          result = await cltFrsService.deleteClient(clientFournisseur.id);
-        }
-        
-        if (result.success) {
-          onSuppressionResult('success');
-        } else {
-          onSuppressionResult(result.error || 'Erreur lors de la suppression');
-        }
-      } catch (error) {
-        console.error('Erreur lors de la suppression:', error);
-        onSuppressionResult(error.response?.data?.error || 'Erreur lors de la suppression');
+      let result;
+      if (origin === 'fournisseur') {
+        result = await cltFrsService.deleteFournisseur(clientFournisseur.id);
+      } else {
+        result = await cltFrsService.deleteClient(clientFournisseur.id);
+      }
+      
+      if (result.success) {
+        onSuppressionResult('success');
+      } else {
+        // Afficher le message d'erreur spécifique
+          const errorMessage =  "Impossible de supprimer un client qui a deja des commande clients" ;
+          onSuppressionResult(errorMessage);
       }
     }
   };
 
   const getPhoto = () => {
-    if (clientFournisseur.photo) {
-      return clientFournisseur.photo;
-    }
-    if (origin === 'fournisseur') {
-      return '/src/assets/fournisseur1.jpg';
-    }
-    return '/src/assets/client1.jpg';
+    return clientFournisseur.photo || null;
   };
 
   return (
     <>
       <div className="detail-clt-frs">
         <div className="detail-clt-frs__photo">
-          <img 
-            src={getPhoto()} 
-            alt={`Photo ${origin === 'fournisseur' ? 'fournisseur' : 'client'}`}
-            width="100" 
-            height="100" 
-          />
+          {getPhoto() && (
+            <img 
+              src={getPhoto()} 
+              alt={`Photo ${origin === 'fournisseur' ? 'fournisseur' : 'client'}`}
+              width="100" 
+              height="100" 
+            />
+          )}
         </div>
 
         {/* Details */}

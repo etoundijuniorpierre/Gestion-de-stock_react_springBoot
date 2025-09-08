@@ -36,11 +36,13 @@ class CltfrsService {
     }
   }
 
-  // Méthode temporaire pour update (à implémenter quand l'API sera disponible)
   async updateClient(id, client) {
-    // Pour l'instant, on simule la mise à jour
-    console.warn('Méthode updateClient non implémentée dans l\'API, simulation en cours');
-    return { ...client, id };
+    try {
+      return await httpInterceptor.put(`/api/gestionDeStock/clients/${id}`, client);
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du client:', error);
+      throw error;
+    }
   }
 
   async deleteClient(id) {
@@ -49,6 +51,17 @@ class CltfrsService {
       return { success: true };
     } catch (error) {
       console.error('Erreur lors de la suppression du client:', error);
+      
+      // Gestion spécifique de l'erreur 400
+      if (error.response?.status === 400) {
+        return { 
+          success: false, 
+          error: {
+            message: "Impossible de supprimer un client qui a déjà des commandes clients"
+          }
+        };
+      }
+      
       return { success: false, error };
     }
   }
@@ -100,6 +113,17 @@ class CltfrsService {
       return { success: true };
     } catch (error) {
       console.error('Erreur lors de la suppression du fournisseur:', error);
+      
+      // Gestion spécifique de l'erreur 400
+      if (error.response?.status === 400) {
+        return { 
+          success: false, 
+          error: {
+            message: "Impossible de supprimer un fournisseur qui a déjà des commandes fournisseurs"
+          }
+        };
+      }
+      
       return { success: false, error };
     }
   }

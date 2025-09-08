@@ -9,12 +9,35 @@ import './fournisseurs.scss';
 const Fournisseurs = () => {
   const [listFournisseur, setListFournisseur] = useState([]);
   const [errorMsg, setErrorMsg] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 15;
   const navigate = useNavigate();
   const cltFrsService = new CltfrsService();
 
   useEffect(() => {
     findAllFournisseurs();
   }, []);
+
+  // Calculer le nombre total de pages
+  useEffect(() => {
+    const total = Math.ceil(listFournisseur.length / itemsPerPage);
+    setTotalPages(total);
+  }, [listFournisseur.length]);
+
+  // Obtenir les fournisseurs pour la page courante
+  const getCurrentPageFournisseurs = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return listFournisseur.slice(startIndex, endIndex);
+  };
+
+  // Fonction pour changer de page et remonter en haut
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    // Remonter en haut de la page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const findAllFournisseurs = async () => {
     try {
@@ -60,7 +83,7 @@ const Fournisseurs = () => {
           </div>
         )}
         
-        {listFournisseur.map((fournisseur) => (
+        {getCurrentPageFournisseurs().map((fournisseur) => (
           <DetailCltFrs
             key={fournisseur.id}
             clientFournisseur={fournisseur}
@@ -73,7 +96,13 @@ const Fournisseurs = () => {
       {listFournisseur.length > 0 && (
         <div className="row mb-3">
           <div className="col-md-12 text-center">
-            <Pagination />
+            <Pagination 
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              showFirstLast={true}
+              maxVisiblePages={5}
+            />
           </div>
         </div>
       )}

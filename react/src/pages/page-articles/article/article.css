@@ -6,4 +6,9 @@
 .article-container .article-content .no-articles p{ color:#666; margin-bottom:20px }
 .article-container .article-content .articles-table .table th{ background-color:#f8f9fa; border-top:none }
 .article-container .article-content .articles-table .table td{ vertical-align:middle }
+.article-container .article-content .articles-table .table .article-photo{ display:flex; justify-content:center; align-items:center; width:60px; height:60px }
+.article-container .article-content .articles-table .table .article-photo__img{ width:50px; height:50px; object-fit:cover; border-radius:8px; border:2px solid #e9ecef; box-shadow:0 2px 4px rgba(0,0,0,.1); transition:transform .2s ease; background-color:#f8f9fa }
+.article-container .article-content .articles-table .table .article-photo__img:hover{ transform:scale(1.05); box-shadow:0 4px 8px rgba(0,0,0,.15) }
+.article-container .article-content .articles-table .table .article-photo__img[src*="product.png"]{ opacity:.7; filter:grayscale(20%); background:linear-gradient(135deg,#f8f9fa 0%,#e9ecef 100%) }
 .article-container .loading{ text-align:center; padding:40px; color:#666 }
+.article-container .article-pagination{ display:flex; justify-content:center; margin-top:30px; padding:20px 0; border-top:1px solid #e9ecef }

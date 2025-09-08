@@ -1,10 +1,12 @@
 // Intercepteur HTTP pour gérer l'authentification
+import { API_CONFIG } from '../config/api.config.js';
+
 class HttpInterceptor {
   constructor() {
-    // Utiliser l'URL relative si on est en développement avec proxy Vite
-    // Sinon utiliser l'URL directe du serveur Spring Boot
-    this.baseURL = import.meta.env.DEV ? '' : 'http://localhost:8080';
-    console.log('🚀 HttpInterceptor initialisé avec l\'URL de base:', this.baseURL || '(proxy Vite)');
+    // Utiliser la configuration centralisée de l'API
+    this.baseURL = API_CONFIG.BASE_URL;
+    console.log('🚀 HttpInterceptor initialisé avec BASE_URL:', this.baseURL);
+    console.log('🔧 Configuration API chargée depuis api.config.js');
     
     // Flag pour éviter les appels multiples simultanés
     this.isHandlingAuthError = false;
@@ -73,12 +75,15 @@ class HttpInterceptor {
 
   // Méthode principale pour faire la requête
   async makeRequest(url, config) {
+    // Construire l'URL complète avec la BASE_URL explicite
     const fullUrl = url.startsWith('http') ? url : `${this.baseURL}${url}`;
     
     // Debug: afficher les détails de la requête
     console.log('🌐 Requête HTTP:', {
       method: config.method,
       url: fullUrl,
+      baseURL: this.baseURL,
+      originalUrl: url,
       headers: config.headers,
       body: config.body
     });

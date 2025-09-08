@@ -22,10 +22,6 @@ import CommandesFournisseurs from '../page-commandes-fournisseurs/commandes-four
 import NouvelleCommandeFrs from '../../components/nouveau-cmd-frs/nouveau-cmd-frs';
 import NouvelleCommandeClt from '../../components/nouveau-cmd-clt/nouveau-cmd-clt';
 import ChangerMotPasse from '../profil/changer-mot-passe/changer-mot-passe';
-import DebugDelete from '../../components/debug-delete/debug-delete';
-import AuthTest from '../../components/auth-test/auth-test';
-import RouteDebug from '../../components/route-debug/route-debug';
-import TestRouteSimple from '../../components/test-route-simple/test-route-simple';
 
 import "./dashboard.scss";
 
@@ -58,6 +54,7 @@ export default function Dashboard() {
                             <Route path="vue-ensemble" element={<VueEnsemble />} />
                             <Route path="statistiques" element={<Statistiques />} />
                             <Route path="nouvel-article" element={<NouvelArticle />} />
+                            <Route path="nouvel-article/:id" element={<NouvelArticle />} />
                             <Route path="article" element={<Article />} />
                             <Route path="mouvements-stocks" element={<MouvementsStocks />} />
                             <Route path="clients" element={<Clients />} />
@@ -78,15 +75,9 @@ export default function Dashboard() {
                             <Route path="commandes-fournisseurs" element={<CommandesFournisseurs />} />
                             <Route path="nouvellecommandefrs" element={<NouvelleCommandeFrs />} />
                             <Route path="nouvellecommandefrs/:id" element={<NouvelleCommandeFrs />} />
-                            <Route path="nouvellecommandectl" element={<TestRouteSimple />} />
-                            <Route path="nouvellecommandectl/:id" element={<TestRouteSimple />} />
+                            <Route path="nouvellecommandectl" element={<NouvelleCommandeClt />} />
+                            <Route path="nouvellecommandectl/:id" element={<NouvelleCommandeClt />} />
                             <Route path="changer-mot-passe" element={<ChangerMotPasse />} />
-                            <Route path="debug-delete" element={<DebugDelete />} />
-                            <Route path="auth-test" element={<AuthTest />} />
-                            <Route path="route-debug" element={<RouteDebug />} />
-                            <Route path="test-route-simple" element={<TestRouteSimple />} />
-                            {/* Route de débogage temporaire */}
-                            <Route path="debug-route/:path" element={<RouteDebug />} />
                             <Route path="*" element={<VueEnsemble />} />
                         </Routes>
                     </div>

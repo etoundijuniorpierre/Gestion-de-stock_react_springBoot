@@ -15,11 +15,14 @@ const DetailFrs = ({ fournisseur, onSuppressionResult }) => {
 
   const confirmerEtSupprimer = async () => {
     if (fournisseur.id) {
-      try {
-        await cltFrsService.deleteFournisseur(fournisseur.id);
+      const result = await cltFrsService.deleteFournisseur(fournisseur.id);
+      
+      if (result.success) {
         onSuppressionResult('success');
-      } catch (error) {
-        onSuppressionResult(error.response?.data?.error || 'Erreur lors de la suppression');
+      } else {
+        // Afficher le message d'erreur spécifique
+        const errorMessage = result.error?.message || 'Erreur lors de la suppression';
+        onSuppressionResult(errorMessage);
       }
     }
   };
@@ -28,12 +31,14 @@ const DetailFrs = ({ fournisseur, onSuppressionResult }) => {
     <>
       <div className="detail-fournisseur">
         <div className="detail-fournisseur__photo">
-          <img 
-            src={fournisseur.photo ? fournisseur.photo : '/src/assets/product.png'} 
-            alt="Photo fournisseur"
-            width="100" 
-            height="100" 
-          />
+          {fournisseur.photo && (
+            <img 
+              src={fournisseur.photo} 
+              alt="Photo fournisseur"
+              width="100" 
+              height="100" 
+            />
+          )}
         </div>
 
         <div className="detail-fournisseur__info">

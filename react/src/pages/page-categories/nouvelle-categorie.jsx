@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CategoryService } from '../../services/category/category.service';
+import './nouvelle-categorie.scss';
 
 const NouvelleCategorie = () => {
   const [categoryDto, setCategoryDto] = useState({
@@ -95,75 +96,96 @@ const NouvelleCategorie = () => {
   }
 
   return (
-    <div className="col mb-3">
-      <div className="col-md-12">
-        <div className="col-md-12 mb-3 mt-3">
-          <h2>{isEdit ? 'Modifier la catégorie' : 'Nouvelle catégorie'}</h2>
-        </div>
-        <div className="col-md-12">
-          {errorMsg.length > 0 && (
-            <div className="alert alert-danger">
-              {errorMsg.map((msg, index) => (
-                <div key={index}>
-                  <span>{msg}</span>
-                </div>
-              ))}
-            </div>
-          )}
-          
-          <form>
-            <div className="row mb-3">
-              <div className="col">
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  placeholder="Code catégorie" 
-                  name="code" 
-                  value={categoryDto.code}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-            </div>
-            <div className="row mb-3">
-              <div className="col">
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  placeholder="Description" 
-                  name="designation" 
-                  value={categoryDto.designation}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-            </div>
-          </form>
-        </div>
+    <div className="nouvelle-categorie-form">
+      {/* En-tête du formulaire */}
+      <div className="form-header">
+        <h2>
+          <i className="fas fa-tags"></i>
+          {isEdit ? 'Modifier la catégorie' : 'Nouvelle catégorie'}
+        </h2>
       </div>
       
-      <div className="col-md-12 text-right">
+      {/* Contenu du formulaire */}
+      <div className="form-content">
+        {/* Messages d'erreur */}
+        {errorMsg.length > 0 && (
+          <div className="alert alert-danger">
+            {errorMsg.map((msg, index) => (
+              <div key={index}>
+                <i className="fas fa-exclamation-triangle me-2"></i>
+                {msg}
+              </div>
+            ))}
+          </div>
+        )}
+
+        <form>
+          {/* Section Informations de base */}
+          <div className="form-section">
+            <h5 className="section-title">Informations de la catégorie</h5>
+            
+            <div className="row">
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="code">Code catégorie</label>
+                  <input 
+                    type="text" 
+                    id="code"
+                    className="form-control" 
+                    placeholder="Code catégorie" 
+                    name="code" 
+                    value={categoryDto.code}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="designation">Désignation</label>
+                  <input 
+                    type="text" 
+                    id="designation"
+                    className="form-control" 
+                    placeholder="Description" 
+                    name="designation" 
+                    value={categoryDto.designation}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+      {/* Actions du formulaire */}
+      <div className="form-actions">
         <button 
-          className="btn btn-danger mr-3" 
+          type="button"
+          className="btn btn-secondary" 
           onClick={cancel}
           disabled={loading}
         >
-          <i className="fas fa-ban"></i>&nbsp;
+          <i className="fas fa-ban"></i>
           Annuler
         </button>
         <button 
+          type="button"
           className="btn btn-primary" 
           onClick={enregistrerCategory}
           disabled={loading}
         >
           {loading ? (
             <>
-              <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
-              {isEdit ? 'Modifier' : 'Enregistrer'}
+              <span className="spinner-border" role="status" aria-hidden="true"></span>
+              {isEdit ? 'Modification...' : 'Enregistrement...'}
             </>
           ) : (
             <>
-              <i className="fas fa-save"></i>&nbsp;
+              <i className="fas fa-save"></i>
               {isEdit ? 'Modifier' : 'Enregistrer'}
             </>
           )}

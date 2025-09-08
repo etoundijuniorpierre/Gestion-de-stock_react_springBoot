@@ -1,8 +1,8 @@
-.nouveau-client-form{ background:#fff; border-radius:12px; box-shadow:0 2px 20px rgba(0,0,0,.08); border:1px solid #f1f3f4; overflow:hidden; height:calc(95vh - 8rem); display:flex; flex-direction:column }
+.nouveau-client-form{ background:#f1f1f1; border-radius:12px; box-shadow:0 2px 20px rgba(0,0,0,.08); border:1px solid #f1f3f4; overflow:hidden; height:calc(98vh - 8rem); display:flex; flex-direction:column; padding-top:3rem }
 .nouveau-client-form .form-header{ background:linear-gradient(135deg,#007bff,#0056b3); color:#fff; padding:1.5rem; text-align:center; flex-shrink:0 }
 .nouveau-client-form .form-header h2{ margin:0; font-size:1.5rem; font-weight:600; text-shadow:0 1px 2px rgba(0,0,0,.1); display:flex; align-items:center; justify-content:center; gap:.75rem }
 .nouveau-client-form .form-header h2 i{ font-size:1.25rem }
-.nouveau-client-form .form-content{ flex:1; padding:1.5rem; overflow-y:auto }
+.nouveau-client-form .form-content{ flex:1; padding:1.5rem; overflow-y:hidden; background:#fff }
 .nouveau-client-form .form-content::-webkit-scrollbar{ width:6px }
 .nouveau-client-form .form-content::-webkit-scrollbar-track{ background:#f1f1f1; border-radius:3px }
 .nouveau-client-form .form-content::-webkit-scrollbar-thumb{ background:#c1c1c1; border-radius:3px }

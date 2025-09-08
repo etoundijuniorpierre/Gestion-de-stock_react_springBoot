@@ -1,64 +1,69 @@
-import React, { useState, useEffect } from 'react';
-import './error-handler.scss';
+import React, { useEffect } from 'react';
+import './error-handler.css';
 
-const ErrorHandler = ({ error, onClose, autoClose = true, autoCloseDelay = 5000 }) => {
-  const [isVisible, setIsVisible] = useState(true);
-
+const ErrorHandler = ({ 
+  error, 
+  success,
+  onClose, 
+  onSuccessClose,
+  autoClose = false, 
+  autoCloseDelay = 5000,
+  showCloseButton = true 
+}) => {
   useEffect(() => {
-    if (autoClose && error) {
+    if (autoClose && (error || success)) {
       const timer = setTimeout(() => {
-        setIsVisible(false);
-        if (onClose) onClose();
+        if (error) {
+          onClose();
+        }
+        if (success) {
+          onSuccessClose();
+        }
       }, autoCloseDelay);
 
       return () => clearTimeout(timer);
     }
-  }, [error, autoClose, autoCloseDelay, onClose]);
+  }, [error, success, autoClose, autoCloseDelay, onClose, onSuccessClose]);
 
-  const handleClose = () => {
-    setIsVisible(false);
-    if (onClose) onClose();
-  };
-
-  if (!error || !isVisible) {
+  if (!error && !success) {
     return null;
   }
 
-  // Déterminer le type d'erreur et l'icône appropriée
-  const getErrorType = () => {
-    if (error.message?.includes('Erreur métier') || error.message?.includes('Erreur serveur')) {
-      return { type: 'warning', icon: 'fas fa-exclamation-triangle' };
-    }
-    if (error.message?.includes('Erreur d\'authentification')) {
-      return { type: 'error', icon: 'fas fa-lock' };
-    }
-    return { type: 'error', icon: 'fas fa-exclamation-circle' };
-  };
-
-  const { type, icon } = getErrorType();
-
   return (
-    <div className={`error-handler error-handler--${type}`}>
-      <div className="error-handler__content">
-        <div className="error-handler__icon">
-          <i className={icon}></i>
+    <div className="error-handler-container">
+      {error && (
+        <div className={`alert alert-${error.type || 'danger'} alert-dismissible fade show`} role="alert">
+          <div className="alert-content">
+            <i className="fas fa-exclamation-triangle me-2"></i>
+            <span className="error-message">{error.message}</span>
+          </div>
+          {showCloseButton && (
+            <button 
+              type="button" 
+              className="btn-close" 
+              onClick={onClose}
+              aria-label="Close"
+            ></button>
+          )}
         </div>
-        <div className="error-handler__message">
-          <h4 className="error-handler__title">
-            {type === 'warning' ? 'Attention' : 'Erreur'}
-          </h4>
-          <p className="error-handler__text">
-            {error.message || 'Une erreur est survenue'}
-          </p>
+      )}
+      
+      {success && (
+        <div className="alert alert-success alert-dismissible fade show" role="alert">
+          <div className="alert-content">
+            <i className="fas fa-check-circle me-2"></i>
+            <span className="success-message">{success}</span>
+          </div>
+          {showCloseButton && (
+            <button 
+              type="button" 
+              className="btn-close" 
+              onClick={onSuccessClose}
+              aria-label="Close"
+            ></button>
+          )}
         </div>
-        <button 
-          className="error-handler__close" 
-          onClick={handleClose}
-          aria-label="Fermer"
-        >
-          <i className="fas fa-times"></i>
-        </button>
-      </div>
+      )}
     </div>
   );
 };
