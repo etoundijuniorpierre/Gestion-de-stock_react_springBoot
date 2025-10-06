@@ -221,123 +221,122 @@ const NouveauCmdClt = () => {
 
   if (isLoading) {
     return (
-      <div className="nouveau-cmd-clt">
-        <div className="loading-container">
+      <div className="nouvelle-commande-client-form">
+        <div className="form-content d-flex justify-content-center align-items-center" style={{ height: '200px' }}>
           <div className="spinner-border text-primary" role="status">
             <span className="visually-hidden">Chargement...</span>
           </div>
-          <p>Chargement en cours...</p>
+          <p className="ms-3">Chargement en cours...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="nouveau-cmd-clt">
-      <div className="nouveau-cmd-clt__header">
+    <div className="nouvelle-commande-client-form">
+      {/* En-tête du formulaire */}
+      <div className="form-header">
         <h2>
           <i className="fas fa-shopping-cart"></i>
           {isEditing ? 'Modifier la Commande Client' : 'Nouvelle Commande Client'}
         </h2>
-        <div className="nouveau-cmd-clt__actions">
-          <button 
-            className="btn btn-secondary" 
-            onClick={handleCancel}
-            disabled={isLoading}
-          >
-            <i className="fas fa-times"></i> Annuler
-          </button>
-          <button 
-            className="btn btn-primary" 
-            onClick={handleSubmit}
-            disabled={isLoading}
-          >
-            <i className="fas fa-save"></i> 
-            {isEditing ? 'Mettre à jour' : 'Créer'}
-          </button>
-        </div>
       </div>
+      
+      {/* Contenu du formulaire */}
+      <div className="form-content">
+        <ErrorHandler 
+          error={error} 
+          onClose={clearError}
+          autoClose={true}
+          autoCloseDelay={5000}
+        />
 
-      <ErrorHandler 
-        error={error} 
-        onClose={clearError}
-        autoClose={true}
-        autoCloseDelay={5000}
-      />
-
-      <div className="nouveau-cmd-clt__content">
-        <form onSubmit={handleSubmit} className="nouveau-cmd-clt__form">
-          <div className="form-row">
-            <div className="form-group col-md-6">
-              <label htmlFor="codeCommande">Code Commande *</label>
-              <input
-                type="text"
-                id="codeCommande"
-                name="codeCommande"
-                className="form-control"
-                value={formData.codeCommande}
-                onChange={handleInputChange}
-                required
-                placeholder="Code de la commande"
-              />
-            </div>
+        <form onSubmit={handleSubmit}>
+          {/* Section Informations de base */}
+          <div className="form-section">
+            <h5 className="section-title">Informations de la commande</h5>
             
-            <div className="form-group col-md-6">
-              <label htmlFor="dateCommande">Date Commande *</label>
-              <input
-                type="date"
-                id="dateCommande"
-                name="dateCommande"
-                className="form-control"
-                value={formData.dateCommande}
-                onChange={handleInputChange}
-                required
-              />
+            <div className="row">
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="codeCommande">Code Commande *</label>
+                  <input
+                    type="text"
+                    id="codeCommande"
+                    name="codeCommande"
+                    className="form-control"
+                    value={formData.codeCommande}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Code de la commande"
+                  />
+                </div>
+              </div>
+              
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="dateCommande">Date Commande *</label>
+                  <input
+                    type="date"
+                    id="dateCommande"
+                    name="dateCommande"
+                    className="form-control"
+                    value={formData.dateCommande}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="clientId">Client *</label>
+                  <select
+                    id="clientId"
+                    name="clientId"
+                    className="form-control"
+                    value={formData.clientId}
+                    onChange={handleInputChange}
+                    required
+                  >
+                    <option value="">Sélectionner un client</option>
+                    {clients.map(client => (
+                      <option key={client.id} value={client.id}>
+                        {client.nom} {client.prenom}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="statut">Statut</label>
+                  <select
+                    id="statut"
+                    name="statut"
+                    className="form-control"
+                    value={formData.statut}
+                    onChange={handleInputChange}
+                    required
+                  >
+                    <option value="EN_PREPARATION">En préparation</option>
+                    <option value="VALIDEE">Validée</option>
+                    <option value="LIVREE_EN_COURS">Livraison en cours</option>
+                    <option value="LIVREE">Livrée</option>
+                    <option value="ANNULEE">Annulée</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="form-row">
-            <div className="form-group col-md-6">
-              <label htmlFor="clientId">Client *</label>
-              <select
-                id="clientId"
-                name="clientId"
-                className="form-control"
-                value={formData.clientId}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="">Sélectionner un client</option>
-                {clients.map(client => (
-                  <option key={client.id} value={client.id}>
-                    {client.nom} {client.prenom}
-                  </option>
-                ))}
-              </select>
-            </div>
-            
-            <div className="form-group col-md-6">
-              <label htmlFor="statut">Statut</label>
-              <select
-                id="statut"
-                name="statut"
-                className="form-control"
-                value={formData.statut}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="EN_PREPARATION">En préparation</option>
-                <option value="VALIDEE">Validée</option>
-                <option value="LIVREE_EN_COURS">Livraison en cours</option>
-                <option value="LIVREE">Livrée</option>
-                <option value="ANNULEE">Annulée</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <div className="d-flex justify-content-between align-items-center mb-2">
-              <label>Articles *</label>
+          {/* Section Articles */}
+          <div className="form-section">
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h5 className="section-title">Articles *</h5>
               <button 
                 type="button" 
                 className="btn btn-success btn-sm"
@@ -348,7 +347,7 @@ const NouveauCmdClt = () => {
             </div>
             
             {formData.articles.length > 0 ? (
-              <div className="articles-list">
+              <div className="articles-section">
                 <table className="table table-striped">
                   <thead>
                     <tr>
@@ -416,27 +415,66 @@ const NouveauCmdClt = () => {
                 </table>
               </div>
             ) : (
-              <div className="alert alert-info">
-                <i className="fas fa-info-circle"></i> Aucun article ajouté. Cliquez sur "Ajouter un article" pour commencer.
+              <div className="articles-section">
+                <div className="alert alert-info">
+                  <i className="fas fa-info-circle"></i> Aucun article ajouté. Cliquez sur "Ajouter un article" pour commencer.
+                </div>
               </div>
             )}
           </div>
 
-          <div className="form-row totals">
-            <div className="col-md-6">
-              <div className="total-item">
-                <span className="total-label">Total HT:</span>
-                <span className="total-value">{formData.totalHt.toFixed(2)} €</span>
-              </div>
-            </div>
-            <div className="col-md-6">
-              <div className="total-item">
-                <span className="total-label">Total TTC:</span>
-                <span className="total-value">{formData.totalTtc.toFixed(2)} €</span>
+          {/* Section Totaux */}
+          <div className="form-section">
+            <h5 className="section-title">Totaux</h5>
+            <div className="totals-section">
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="total-item">
+                    <span className="total-label">Total HT:</span>
+                    <span className="total-value">{formData.totalHt.toFixed(2)} €</span>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="total-item">
+                    <span className="total-label">Total TTC:</span>
+                    <span className="total-value">{formData.totalTtc.toFixed(2)} €</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </form>
+      </div>
+      
+      {/* Actions du formulaire */}
+      <div className="form-actions">
+        <button 
+          type="button" 
+          className="btn btn-secondary" 
+          onClick={handleCancel}
+          disabled={isLoading}
+        >
+          <i className="fas fa-times"></i>
+          Annuler
+        </button>
+        <button 
+          type="submit" 
+          className="btn btn-primary" 
+          onClick={handleSubmit}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <>
+              <span className="spinner-border" role="status" aria-hidden="true"></span>
+              {isEditing ? 'Mise à jour...' : 'Création...'}
+            </>
+          ) : (
+            <>
+              <i className="fas fa-save"></i>
+              {isEditing ? 'Mettre à jour' : 'Créer'}
+            </>
+          )}
+        </button>
       </div>
     </div>
   );
