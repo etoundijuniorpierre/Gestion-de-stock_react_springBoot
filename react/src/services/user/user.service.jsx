@@ -114,12 +114,19 @@ class UserService {
       console.log('🔐 Tentative de changement de mot de passe...');
       console.log('📤 Données complètes reçues:', changerMotDePasseDto);
       
-      // S'assurer que toutes les données requises sont présentes
+      // Mapper les données du frontend vers le format attendu par le backend
+      // Le frontend envoie: {id, motDePasse, confirmMotDePasse, ancienMotDePasse?}
+      // Le backend attend: {id, motDePasse, confirmMotDePasse}
       const dataToSend = {
         id: changerMotDePasseDto.id,
-        ancienMotDePasse: changerMotDePasseDto.ancienMotDePasse,
-        nouveauMotDePasse: changerMotDePasseDto.nouveauMotDePasse
+        motDePasse: changerMotDePasseDto.motDePasse || changerMotDePasseDto.nouveauMotDePasse,
+        confirmMotDePasse: changerMotDePasseDto.confirmMotDePasse || changerMotDePasseDto.motDePasse
       };
+      
+      // Ajouter l'ancien mot de passe seulement s'il est fourni
+      if (changerMotDePasseDto.ancienMotDePasse) {
+        dataToSend.ancienMotDePasse = changerMotDePasseDto.ancienMotDePasse;
+      }
       
       console.log('📤 Données envoyées à l\'API:', dataToSend);
       
