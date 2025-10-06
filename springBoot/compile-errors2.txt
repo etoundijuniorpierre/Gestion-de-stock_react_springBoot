@@ -1,0 +1,70 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< com.example:GestionDeStock >---------------------
+[INFO] Building Gestion-de-stock 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] The artifact org.hibernate:hibernate-core:jar:6.4.4.Final has been relocated to org.hibernate.orm:hibernate-core:jar:6.4.4.Final
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ GestionDeStock ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ GestionDeStock ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 163 source files with javac [debug release 17] to target\classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[38,4] illegal start of expression
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[40,5] illegal start of type
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[40,23] <identifier> expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[48,5] illegal start of type
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[48,31] <identifier> expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[48,54] <identifier> expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[51,5] illegal start of type
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[51,39] <identifier> expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[51,41] ';' expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[54,5] illegal start of type
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[54,39] <identifier> expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[54,41] ';' expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[57,5] illegal start of type
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[57,33] <identifier> expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[57,35] ';' expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[61,5] illegal start of type
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[61,18] <identifier> expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[64,1] class, interface, enum, or record expected
+[INFO] 18 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  4.709 s
+[INFO] Finished at: 2025-10-05T19:00:03+01:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project GestionDeStock: Compilation failure: Compilation failure: 
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[38,4] illegal start of expression
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[40,5] illegal start of type
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[40,23] <identifier> expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[48,5] illegal start of type
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[48,31] <identifier> expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[48,54] <identifier> expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[51,5] illegal start of type
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[51,39] <identifier> expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[51,41] ';' expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[54,5] illegal start of type
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[54,39] <identifier> expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[54,41] ';' expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[57,5] illegal start of type
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[57,33] <identifier> expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[57,35] ';' expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[61,5] illegal start of type
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[61,18] <identifier> expected
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[64,1] class, interface, enum, or record expected
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

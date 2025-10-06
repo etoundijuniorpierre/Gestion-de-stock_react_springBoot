@@ -1,0 +1,24 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< com.example:GestionDeStock >---------------------
+[INFO] Building Gestion-de-stock 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] The artifact org.hibernate:hibernate-core:jar:6.4.4.Final has been relocated to org.hibernate.orm:hibernate-core:jar:6.4.4.Final
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-cli) @ GestionDeStock ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 163 source files with javac [debug release 21] to target\classes
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.795 s
+[INFO] Finished at: 2025-10-05T18:53:29+01:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-cli) on project GestionDeStock: Fatal error compiling: error: release version 21 not supported -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException

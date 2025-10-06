@@ -1,0 +1,194 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< com.example:GestionDeStock >---------------------
+[INFO] Building Gestion-de-stock 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] The artifact org.hibernate:hibernate-core:jar:6.4.4.Final has been relocated to org.hibernate.orm:hibernate-core:jar:6.4.4.Final
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ GestionDeStock ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ GestionDeStock ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 165 source files with javac [debug release 21] to target\classes
+[INFO] Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+[INFO] -------------------------------------------------------------
+[WARNING] COMPILATION WARNING : 
+[INFO] -------------------------------------------------------------
+[WARNING] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/handlers/ErrorDto.java:[27,24] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/exception/EntityNotFoundException.java:[7,3] Not generating getErrorCode(): A method with that name already exists
+[INFO] 2 warnings 
+[INFO] -------------------------------------------------------------
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/VentesServiceImpl.java:[138,5] cannot find symbol
+  symbol:   class MvtStkRequestDto
+  location: class com.example.Gestion.de.stock.service.serviceImpl.VentesServiceImpl
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/VentesServiceImpl.java:[138,34] cannot find symbol
+  symbol:   variable MvtStkRequestDto
+  location: class com.example.Gestion.de.stock.service.serviceImpl.VentesServiceImpl
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/EntrepriseValidator.java:[21,51] cannot find symbol
+  symbol:   class AdresseRequestDto
+  location: class com.example.Gestion.de.stock.validator.EntrepriseValidator
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[31,51] cannot find symbol
+  symbol:   method getId()
+  location: class com.example.Gestion.de.stock.dto.request.ClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/EntrepriseServiceImpl.java:[49,46] cannot find symbol
+  symbol:   method validateRequest(com.example.Gestion.de.stock.dto.request.EntrepriseRequestDto)
+  location: class com.example.Gestion.de.stock.validator.EntrepriseValidator
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/EntrepriseServiceImpl.java:[63,64] incompatible types: com.example.Gestion.de.stock.dto.response.UtilisateurResponseDto cannot be converted to com.example.Gestion.de.stock.dto.request.UtilisateurRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/EntrepriseServiceImpl.java:[81,9] cannot find symbol
+  symbol:   method motDePasse(java.lang.String)
+  location: class com.example.Gestion.de.stock.dto.response.UtilisateurResponseDto.UtilisateurResponseDtoBuilder
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeFournisseurServiceImpl.java:[65,55] cannot find symbol
+  symbol:   method validateRequest(com.example.Gestion.de.stock.dto.request.CommandeFournisseurRequestDto)
+  location: class com.example.Gestion.de.stock.validator.CommandeFournisseurValidator
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeFournisseurServiceImpl.java:[309,37] cannot find symbol
+  symbol:   class MvtStkDto
+  location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeFournisseurServiceImpl.java:[309,89] cannot find symbol
+  symbol:   class MvtStkDto
+  location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeFournisseurServiceImpl.java:[310,50] cannot find symbol
+  symbol:   class ArticleDto
+  location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/ArticleServiceImpl.java:[62,13] no suitable constructor found for InvalidEntityException(com.example.Gestion.de.stock.exception.ErrorCodes,java.util.List<java.lang.String>)
+    constructor com.example.Gestion.de.stock.exception.InvalidEntityException.InvalidEntityException(java.lang.String,java.lang.Throwable) is not applicable
+      (argument mismatch; com.example.Gestion.de.stock.exception.ErrorCodes cannot be converted to java.lang.String)
+    constructor com.example.Gestion.de.stock.exception.InvalidEntityException.InvalidEntityException(java.lang.String,com.example.Gestion.de.stock.exception.ErrorCodes) is not applicable
+      (argument mismatch; com.example.Gestion.de.stock.exception.ErrorCodes cannot be converted to java.lang.String)
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/LigneCdeCltValidator.java:[30,102] cannot find symbol
+  symbol:   method getId()
+  location: class com.example.Gestion.de.stock.dto.request.CommandeClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[77,12] cannot find symbol
+  symbol:   method getId()
+  location: variable dto of type com.example.Gestion.de.stock.dto.request.CommandeClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[77,35] cannot find symbol
+  symbol:   method isCommandeLivree()
+  location: variable dto of type com.example.Gestion.de.stock.dto.request.CommandeClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[81,72] cannot find symbol
+  symbol:   method getId()
+  location: class com.example.Gestion.de.stock.dto.request.ClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[83,76] cannot find symbol
+  symbol:   method getId()
+  location: class com.example.Gestion.de.stock.dto.request.ClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[84,83] cannot find symbol
+  symbol:   method getId()
+  location: class com.example.Gestion.de.stock.dto.request.ClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[90,12] cannot find symbol
+  symbol:   method getLigneCommandeClients()
+  location: variable dto of type com.example.Gestion.de.stock.dto.request.CommandeClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[91,10] cannot find symbol
+  symbol:   method getLigneCommandeClients()
+  location: variable dto of type com.example.Gestion.de.stock.dto.request.CommandeClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[108,47] incompatible types: java.time.Instant cannot be converted to java.time.LocalDate
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[111,12] cannot find symbol
+  symbol:   method getLigneCommandeClients()
+  location: variable dto of type com.example.Gestion.de.stock.dto.request.CommandeClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[112,10] cannot find symbol
+  symbol:   method getLigneCommandeClients()
+  location: variable dto of type com.example.Gestion.de.stock.dto.request.CommandeClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[197,23] cannot find symbol
+  symbol:   method isCommandeLivree()
+  location: variable commandeClient of type com.example.Gestion.de.stock.dto.response.CommandeClientResponseDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[293,23] cannot find symbol
+  symbol:   method isCommandeLivree()
+  location: variable commandeClient of type com.example.Gestion.de.stock.dto.response.CommandeClientResponseDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/dto/mapper/AdresseMapper.java:[30,28] cannot find symbol
+  symbol:   method getId()
+  location: variable adresse of type com.example.Gestion.de.stock.model.entity.Adresse
+[INFO] 26 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  44.538 s
+[INFO] Finished at: 2025-10-05T19:45:19+01:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project GestionDeStock: Compilation failure: Compilation failure: 
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/VentesServiceImpl.java:[138,5] cannot find symbol
+[ERROR]   symbol:   class MvtStkRequestDto
+[ERROR]   location: class com.example.Gestion.de.stock.service.serviceImpl.VentesServiceImpl
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/VentesServiceImpl.java:[138,34] cannot find symbol
+[ERROR]   symbol:   variable MvtStkRequestDto
+[ERROR]   location: class com.example.Gestion.de.stock.service.serviceImpl.VentesServiceImpl
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/EntrepriseValidator.java:[21,51] cannot find symbol
+[ERROR]   symbol:   class AdresseRequestDto
+[ERROR]   location: class com.example.Gestion.de.stock.validator.EntrepriseValidator
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[31,51] cannot find symbol
+[ERROR]   symbol:   method getId()
+[ERROR]   location: class com.example.Gestion.de.stock.dto.request.ClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/EntrepriseServiceImpl.java:[49,46] cannot find symbol
+[ERROR]   symbol:   method validateRequest(com.example.Gestion.de.stock.dto.request.EntrepriseRequestDto)
+[ERROR]   location: class com.example.Gestion.de.stock.validator.EntrepriseValidator
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/EntrepriseServiceImpl.java:[63,64] incompatible types: com.example.Gestion.de.stock.dto.response.UtilisateurResponseDto cannot be converted to com.example.Gestion.de.stock.dto.request.UtilisateurRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/EntrepriseServiceImpl.java:[81,9] cannot find symbol
+[ERROR]   symbol:   method motDePasse(java.lang.String)
+[ERROR]   location: class com.example.Gestion.de.stock.dto.response.UtilisateurResponseDto.UtilisateurResponseDtoBuilder
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeFournisseurServiceImpl.java:[65,55] cannot find symbol
+[ERROR]   symbol:   method validateRequest(com.example.Gestion.de.stock.dto.request.CommandeFournisseurRequestDto)
+[ERROR]   location: class com.example.Gestion.de.stock.validator.CommandeFournisseurValidator
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeFournisseurServiceImpl.java:[309,37] cannot find symbol
+[ERROR]   symbol:   class MvtStkDto
+[ERROR]   location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeFournisseurServiceImpl.java:[309,89] cannot find symbol
+[ERROR]   symbol:   class MvtStkDto
+[ERROR]   location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeFournisseurServiceImpl.java:[310,50] cannot find symbol
+[ERROR]   symbol:   class ArticleDto
+[ERROR]   location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/ArticleServiceImpl.java:[62,13] no suitable constructor found for InvalidEntityException(com.example.Gestion.de.stock.exception.ErrorCodes,java.util.List<java.lang.String>)
+[ERROR]     constructor com.example.Gestion.de.stock.exception.InvalidEntityException.InvalidEntityException(java.lang.String,java.lang.Throwable) is not applicable
+[ERROR]       (argument mismatch; com.example.Gestion.de.stock.exception.ErrorCodes cannot be converted to java.lang.String)
+[ERROR]     constructor com.example.Gestion.de.stock.exception.InvalidEntityException.InvalidEntityException(java.lang.String,com.example.Gestion.de.stock.exception.ErrorCodes) is not applicable
+[ERROR]       (argument mismatch; com.example.Gestion.de.stock.exception.ErrorCodes cannot be converted to java.lang.String)
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/LigneCdeCltValidator.java:[30,102] cannot find symbol
+[ERROR]   symbol:   method getId()
+[ERROR]   location: class com.example.Gestion.de.stock.dto.request.CommandeClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[77,12] cannot find symbol
+[ERROR]   symbol:   method getId()
+[ERROR]   location: variable dto of type com.example.Gestion.de.stock.dto.request.CommandeClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[77,35] cannot find symbol
+[ERROR]   symbol:   method isCommandeLivree()
+[ERROR]   location: variable dto of type com.example.Gestion.de.stock.dto.request.CommandeClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[81,72] cannot find symbol
+[ERROR]   symbol:   method getId()
+[ERROR]   location: class com.example.Gestion.de.stock.dto.request.ClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[83,76] cannot find symbol
+[ERROR]   symbol:   method getId()
+[ERROR]   location: class com.example.Gestion.de.stock.dto.request.ClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[84,83] cannot find symbol
+[ERROR]   symbol:   method getId()
+[ERROR]   location: class com.example.Gestion.de.stock.dto.request.ClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[90,12] cannot find symbol
+[ERROR]   symbol:   method getLigneCommandeClients()
+[ERROR]   location: variable dto of type com.example.Gestion.de.stock.dto.request.CommandeClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[91,10] cannot find symbol
+[ERROR]   symbol:   method getLigneCommandeClients()
+[ERROR]   location: variable dto of type com.example.Gestion.de.stock.dto.request.CommandeClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[108,47] incompatible types: java.time.Instant cannot be converted to java.time.LocalDate
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[111,12] cannot find symbol
+[ERROR]   symbol:   method getLigneCommandeClients()
+[ERROR]   location: variable dto of type com.example.Gestion.de.stock.dto.request.CommandeClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[112,10] cannot find symbol
+[ERROR]   symbol:   method getLigneCommandeClients()
+[ERROR]   location: variable dto of type com.example.Gestion.de.stock.dto.request.CommandeClientRequestDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[197,23] cannot find symbol
+[ERROR]   symbol:   method isCommandeLivree()
+[ERROR]   location: variable commandeClient of type com.example.Gestion.de.stock.dto.response.CommandeClientResponseDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/CommandeClientServiceImpl.java:[293,23] cannot find symbol
+[ERROR]   symbol:   method isCommandeLivree()
+[ERROR]   location: variable commandeClient of type com.example.Gestion.de.stock.dto.response.CommandeClientResponseDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/dto/mapper/AdresseMapper.java:[30,28] cannot find symbol
+[ERROR]   symbol:   method getId()
+[ERROR]   location: variable adresse of type com.example.Gestion.de.stock.model.entity.Adresse
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

@@ -1,0 +1,259 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< com.example:GestionDeStock >---------------------
+[INFO] Building Gestion-de-stock 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] The artifact org.hibernate:hibernate-core:jar:6.4.4.Final has been relocated to org.hibernate.orm:hibernate-core:jar:6.4.4.Final
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ GestionDeStock ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ GestionDeStock ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 163 source files with javac [debug release 21] to target\classes
+[INFO] -------------------------------------------------------------
+[WARNING] COMPILATION WARNING : 
+[INFO] -------------------------------------------------------------
+[WARNING] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/handlers/ErrorDto.java:[27,24] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/exception/EntityNotFoundException.java:[7,3] Not generating getErrorCode(): A method with that name already exists
+[INFO] 2 warnings 
+[INFO] -------------------------------------------------------------
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveUtilisateurPhoto.java:[3,40] cannot find symbol
+  symbol:   class UtilisateurDto
+  location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveUtilisateurPhoto.java:[17,55] cannot find symbol
+  symbol: class UtilisateurDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/UtilisateurService.java:[4,40] cannot find symbol
+  symbol:   class ChangerMotDePasseUtilisateurDto
+  location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveUtilisateurPhoto.java:[29,10] cannot find symbol
+  symbol:   class UtilisateurDto
+  location: class com.example.Gestion.de.stock.service.strategy.SaveUtilisateurPhoto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/UtilisateurService.java:[22,44] cannot find symbol
+  symbol:   class ChangerMotDePasseUtilisateurDto
+  location: interface com.example.Gestion.de.stock.service.UtilisateurService
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/dto/mapper/LigneVenteMapper.java:[7,49] cannot find symbol
+  symbol:   class Vente
+  location: package com.example.Gestion.de.stock.model.entity
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[20,2] cannot find symbol
+  symbol: class RequestMapping
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveEntreprisePhoto.java:[3,40] cannot find symbol
+  symbol:   class EntrepriseDto
+  location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveEntreprisePhoto.java:[18,54] cannot find symbol
+  symbol: class EntrepriseDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveEntreprisePhoto.java:[30,10] cannot find symbol
+  symbol:   class EntrepriseDto
+  location: class com.example.Gestion.de.stock.service.strategy.SaveEntreprisePhoto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[6,40] cannot find symbol
+  symbol:   class CommandeClientDto
+  location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[12,39] cannot find symbol
+  symbol:   class CommandeClientDto
+  location: class com.example.Gestion.de.stock.validator.CommandeClientValidator
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveFournisseurPhoto.java:[5,40] cannot find symbol
+  symbol:   class FournisseurDto
+  location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveFournisseurPhoto.java:[18,55] cannot find symbol
+  symbol: class FournisseurDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveFournisseurPhoto.java:[33,10] cannot find symbol
+  symbol:   class FournisseurDto
+  location: class com.example.Gestion.de.stock.service.strategy.SaveFournisseurPhoto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/UtilisateurServiceImpl.java:[6,40] cannot find symbol
+  symbol:   class ChangerMotDePasseUtilisateurDto
+  location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/UtilisateurServiceImpl.java:[115,51] cannot find symbol
+  symbol:   class ChangerMotDePasseUtilisateurDto
+  location: class com.example.Gestion.de.stock.service.serviceImpl.UtilisateurServiceImpl
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/UtilisateurServiceImpl.java:[158,25] cannot find symbol
+  symbol:   class ChangerMotDePasseUtilisateurDto
+  location: class com.example.Gestion.de.stock.service.serviceImpl.UtilisateurServiceImpl
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/EntrepriseServiceImpl.java:[11,47] cannot find symbol
+  symbol:   class RolesMapper
+  location: package com.example.Gestion.de.stock.dto.mapper
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/UtilisateurApi.java:[5,40] cannot find symbol
+  symbol:   class ChangerMotDePasseUtilisateurDto
+  location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/UtilisateurApi.java:[46,57] cannot find symbol
+  symbol:   class ChangerMotDePasseUtilisateurDto
+  location: interface com.example.Gestion.de.stock.controler.controllerApi.UtilisateurApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/UtilisateurController.java:[6,40] cannot find symbol
+  symbol:   class ChangerMotDePasseUtilisateurDto
+  location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/UtilisateurController.java:[42,51] cannot find symbol
+  symbol:   class ChangerMotDePasseUtilisateurDto
+  location: class com.example.Gestion.de.stock.controler.UtilisateurController
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveClientPhoto.java:[3,40] cannot find symbol
+  symbol:   class ClientDto
+  location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveClientPhoto.java:[17,50] cannot find symbol
+  symbol: class ClientDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveClientPhoto.java:[29,10] cannot find symbol
+  symbol:   class ClientDto
+  location: class com.example.Gestion.de.stock.service.strategy.SaveClientPhoto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[29,76] cannot find symbol
+  symbol:   class PathVariable
+  location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[28,4] cannot find symbol
+  symbol:   class GetMapping
+  location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[36,86] cannot find symbol
+  symbol:   class PathVariable
+  location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[35,4] cannot find symbol
+  symbol:   class GetMapping
+  location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[43,34] cannot find symbol
+  symbol:   class RequestBody
+  location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[42,4] cannot find symbol
+  symbol:   class PostMapping
+  location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[50,34] cannot find symbol
+  symbol:   class RequestBody
+  location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[49,4] cannot find symbol
+  symbol:   class PostMapping
+  location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[57,41] cannot find symbol
+  symbol:   class RequestBody
+  location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[56,4] cannot find symbol
+  symbol:   class PostMapping
+  location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[64,41] cannot find symbol
+  symbol:   class RequestBody
+  location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[63,4] cannot find symbol
+  symbol:   class PostMapping
+  location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[INFO] 38 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  13.158 s
+[INFO] Finished at: 2025-10-05T19:09:52+01:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project GestionDeStock: Compilation failure: Compilation failure: 
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveUtilisateurPhoto.java:[3,40] cannot find symbol
+[ERROR]   symbol:   class UtilisateurDto
+[ERROR]   location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveUtilisateurPhoto.java:[17,55] cannot find symbol
+[ERROR]   symbol: class UtilisateurDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/UtilisateurService.java:[4,40] cannot find symbol
+[ERROR]   symbol:   class ChangerMotDePasseUtilisateurDto
+[ERROR]   location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveUtilisateurPhoto.java:[29,10] cannot find symbol
+[ERROR]   symbol:   class UtilisateurDto
+[ERROR]   location: class com.example.Gestion.de.stock.service.strategy.SaveUtilisateurPhoto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/UtilisateurService.java:[22,44] cannot find symbol
+[ERROR]   symbol:   class ChangerMotDePasseUtilisateurDto
+[ERROR]   location: interface com.example.Gestion.de.stock.service.UtilisateurService
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/dto/mapper/LigneVenteMapper.java:[7,49] cannot find symbol
+[ERROR]   symbol:   class Vente
+[ERROR]   location: package com.example.Gestion.de.stock.model.entity
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[20,2] cannot find symbol
+[ERROR]   symbol: class RequestMapping
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveEntreprisePhoto.java:[3,40] cannot find symbol
+[ERROR]   symbol:   class EntrepriseDto
+[ERROR]   location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveEntreprisePhoto.java:[18,54] cannot find symbol
+[ERROR]   symbol: class EntrepriseDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveEntreprisePhoto.java:[30,10] cannot find symbol
+[ERROR]   symbol:   class EntrepriseDto
+[ERROR]   location: class com.example.Gestion.de.stock.service.strategy.SaveEntreprisePhoto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[6,40] cannot find symbol
+[ERROR]   symbol:   class CommandeClientDto
+[ERROR]   location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/validator/CommandeClientValidator.java:[12,39] cannot find symbol
+[ERROR]   symbol:   class CommandeClientDto
+[ERROR]   location: class com.example.Gestion.de.stock.validator.CommandeClientValidator
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveFournisseurPhoto.java:[5,40] cannot find symbol
+[ERROR]   symbol:   class FournisseurDto
+[ERROR]   location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveFournisseurPhoto.java:[18,55] cannot find symbol
+[ERROR]   symbol: class FournisseurDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveFournisseurPhoto.java:[33,10] cannot find symbol
+[ERROR]   symbol:   class FournisseurDto
+[ERROR]   location: class com.example.Gestion.de.stock.service.strategy.SaveFournisseurPhoto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/UtilisateurServiceImpl.java:[6,40] cannot find symbol
+[ERROR]   symbol:   class ChangerMotDePasseUtilisateurDto
+[ERROR]   location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/UtilisateurServiceImpl.java:[115,51] cannot find symbol
+[ERROR]   symbol:   class ChangerMotDePasseUtilisateurDto
+[ERROR]   location: class com.example.Gestion.de.stock.service.serviceImpl.UtilisateurServiceImpl
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/UtilisateurServiceImpl.java:[158,25] cannot find symbol
+[ERROR]   symbol:   class ChangerMotDePasseUtilisateurDto
+[ERROR]   location: class com.example.Gestion.de.stock.service.serviceImpl.UtilisateurServiceImpl
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/serviceImpl/EntrepriseServiceImpl.java:[11,47] cannot find symbol
+[ERROR]   symbol:   class RolesMapper
+[ERROR]   location: package com.example.Gestion.de.stock.dto.mapper
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/UtilisateurApi.java:[5,40] cannot find symbol
+[ERROR]   symbol:   class ChangerMotDePasseUtilisateurDto
+[ERROR]   location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/UtilisateurApi.java:[46,57] cannot find symbol
+[ERROR]   symbol:   class ChangerMotDePasseUtilisateurDto
+[ERROR]   location: interface com.example.Gestion.de.stock.controler.controllerApi.UtilisateurApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/UtilisateurController.java:[6,40] cannot find symbol
+[ERROR]   symbol:   class ChangerMotDePasseUtilisateurDto
+[ERROR]   location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/UtilisateurController.java:[42,51] cannot find symbol
+[ERROR]   symbol:   class ChangerMotDePasseUtilisateurDto
+[ERROR]   location: class com.example.Gestion.de.stock.controler.UtilisateurController
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveClientPhoto.java:[3,40] cannot find symbol
+[ERROR]   symbol:   class ClientDto
+[ERROR]   location: package com.example.Gestion.de.stock.dto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveClientPhoto.java:[17,50] cannot find symbol
+[ERROR]   symbol: class ClientDto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/service/strategy/SaveClientPhoto.java:[29,10] cannot find symbol
+[ERROR]   symbol:   class ClientDto
+[ERROR]   location: class com.example.Gestion.de.stock.service.strategy.SaveClientPhoto
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[29,76] cannot find symbol
+[ERROR]   symbol:   class PathVariable
+[ERROR]   location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[28,4] cannot find symbol
+[ERROR]   symbol:   class GetMapping
+[ERROR]   location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[36,86] cannot find symbol
+[ERROR]   symbol:   class PathVariable
+[ERROR]   location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[35,4] cannot find symbol
+[ERROR]   symbol:   class GetMapping
+[ERROR]   location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[43,34] cannot find symbol
+[ERROR]   symbol:   class RequestBody
+[ERROR]   location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[42,4] cannot find symbol
+[ERROR]   symbol:   class PostMapping
+[ERROR]   location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[50,34] cannot find symbol
+[ERROR]   symbol:   class RequestBody
+[ERROR]   location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[49,4] cannot find symbol
+[ERROR]   symbol:   class PostMapping
+[ERROR]   location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[57,41] cannot find symbol
+[ERROR]   symbol:   class RequestBody
+[ERROR]   location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[56,4] cannot find symbol
+[ERROR]   symbol:   class PostMapping
+[ERROR]   location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[64,41] cannot find symbol
+[ERROR]   symbol:   class RequestBody
+[ERROR]   location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] /C:/Users/etoun/Documents/k48/Gestion de stock/Gestion-de-stock_angular_springBoot/springBoot/src/main/java/com/example/Gestion/de/stock/controler/controllerApi/MvtStkApi.java:[63,4] cannot find symbol
+[ERROR]   symbol:   class PostMapping
+[ERROR]   location: interface com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

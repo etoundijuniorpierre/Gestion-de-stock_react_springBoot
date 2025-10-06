@@ -48,9 +48,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
                                 // Vos chemins d'authentification et de création d'entreprise
-                                "/gestionDeStock/authenticate",
-                                "/gestionDeStock/utilisateurs/create",
-                                "/gestionDeStock/entreprises/create").permitAll()
+                                "api/gestionDeStock/authenticate",
+                                "api/gestionDeStock/logout",
+                                "api/gestionDeStock/utilisateurs/create",
+                                "api/gestionDeStock/entreprises/create").permitAll()
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 )
