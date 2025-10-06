@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CmdcltfrsService } from '../../services/cmdcltfrs.service';
-import ButtonAction from '../../components/button-action/button';
-import DetailCmdFrs from '../../components/detail-cmd-frs/detail-cmd-frs';
-import DetailCmd from '../../components/detail-cmd/detail-cmd';
-import Pagination from '../../components/pagination/pagination';
 import './commandes-fournisseurs.scss';
 
 const CommandesFournisseurs = () => {
@@ -13,7 +9,6 @@ const CommandesFournisseurs = () => {
   const [mapPrixTotalCommande, setMapPrixTotalCommande] = useState(new Map());
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-  const [expandedCommands, setExpandedCommands] = useState(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 15;
@@ -71,6 +66,10 @@ const CommandesFournisseurs = () => {
     navigate('/dashboard/nouvellecommandefrs');
   };
 
+  const modifierCommande = (id) => {
+    navigate(`/dashboard/nouvellecommandefrs/${id}`);
+  };
+
   const findLignesCommande = async (idCommande) => {
     if (!idCommande) return;
     
@@ -103,16 +102,25 @@ const CommandesFournisseurs = () => {
     return mapLignesCommande.get(id) || [];
   };
 
-  const toggleCommand = (commandId) => {
-    setExpandedCommands(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(commandId)) {
-        newSet.delete(commandId);
-      } else {
-        newSet.add(commandId);
-      }
-      return newSet;
-    });
+  const validerCommande = async (id) => {
+    try {
+      await cmdCltFrsService.updateEtatCommandeFournisseur(id, 'VALIDEE');
+      // Refresh the command list
+      findAllCommandes();
+    } catch (error) {
+      console.error('Erreur lors de la validation de la commande:', error);
+      setErrorMsg('Erreur lors de la validation de la commande');
+    }
+  };
+
+  const isCommandeModifiable = (etatCommande) => {
+    // La commande peut être modifiée si elle n'est pas encore validée ou livrée
+    return etatCommande === 'EN_PREPARATION';
+  };
+
+  const isCommandeValidable = (etatCommande) => {
+    // La commande peut être validée si elle est en préparation
+    return etatCommande === 'EN_PREPARATION';
   };
 
   if (isLoading) {
@@ -126,68 +134,106 @@ const CommandesFournisseurs = () => {
   return (
     <div className="commandes-fournisseurs">
       <div className="commandes-fournisseurs__header">
-        <div className="commandes-fournisseurs__title">
-          <h1>Commandes Fournisseurs</h1>
-        </div>
-        <div className="commandes-fournisseurs__actions">
-          <ButtonAction
-            isImporterVisible={false}
-            onNouveauClick={nouvelleCommande}
-          />
-        </div>
+        <h1>Commandes Fournisseurs</h1>
+        <button className="commandes-fournisseurs__btn commandes-fournisseurs__btn--primary" onClick={nouvelleCommande}>
+          <i className="fas fa-plus"></i> Nouvelle Commande
+        </button>
       </div>
 
-      <div className="commandes-fournisseurs__content">
-        {getCurrentPageCommandes().map((cmd) => (
-          <div key={cmd.id} className="commandes-fournisseurs__card">
-            <div className="commandes-fournisseurs__card-header">
-              <button
-                className="commandes-fournisseurs__toggle-btn"
-                type="button"
-                onClick={() => toggleCommand(cmd.id)}
-                aria-expanded={expandedCommands.has(cmd.id)}
-              >
-                <DetailCmdFrs commande={cmd} />
-              </button>
-            </div>
-
-            {expandedCommands.has(cmd.id) && (
+      {listeCommandes.length > 0 ? (
+        <div className="commandes-fournisseurs__content">
+          {getCurrentPageCommandes().map((cmd) => (
+            <div key={cmd.id} className="commandes-fournisseurs__card">
+              <div className="commandes-fournisseurs__card-header">
+                <h5 className="commandes-fournisseurs__card-title">
+                  Commande {cmd.code} - {new Date(cmd.dateCommande).toLocaleDateString('fr-FR')}
+                </h5>
+              </div>
               <div className="commandes-fournisseurs__card-body">
-                <div className="commandes-fournisseurs__lignes">
-                  {getLignesCommande(cmd.id).map((ligne, index) => (
-                    <DetailCmd key={index} ligneCommande={ligne} />
-                  ))}
+                <div className="commandes-fournisseurs__card-info">
+                  <div className="commandes-fournisseurs__info-left">
+                    <strong>État:</strong> {cmd.etatCommande}<br />
+                    <strong>Total:</strong> {calculerTotalCommande(cmd.id)}€
+                  </div>
+                  <div className="commandes-fournisseurs__info-right">
+                    <strong>Fournisseur:</strong><br />
+                    {cmd.fournisseur?.nom} {cmd.fournisseur?.prenom}
+                  </div>
                 </div>
-              </div>
-            )}
-
-            <div className="commandes-fournisseurs__card-footer">
-              <div className="commandes-fournisseurs__footer-content">
-                <div className="commandes-fournisseurs__lignes-count">
-                  <h5>{getLignesCommande(cmd.id).length} lignes de commande</h5>
-                </div>
-                <div className="commandes-fournisseurs__total">
-                  <h5>Total commande: {calculerTotalCommande(cmd.id)}€</h5>
+                
+                {cmd.id && getLignesCommande(cmd.id).length > 0 && (
+                  <div className="commandes-fournisseurs__lignes">
+                    <h6>Lignes de commande ({getLignesCommande(cmd.id).length})</h6>
+                    <div className="commandes-fournisseurs__table-container">
+                      <table className="commandes-fournisseurs__table">
+                        <thead>
+                          <tr>
+                            <th>Article</th>
+                            <th>Quantité</th>
+                            <th>Prix unitaire</th>
+                            <th>Total</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {getLignesCommande(cmd.id).map((ligne, index) => (
+                            <tr key={index}>
+                              <td>{ligne.article?.designation}</td>
+                              <td>{ligne.quantite}</td>
+                              <td>{ligne.prixUnitaire}€</td>
+                              <td>
+                                {(ligne.quantite && ligne.prixUnitaire ? ligne.quantite * ligne.prixUnitaire : 0).toFixed(2)}€
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="commandes-fournisseurs__total">
+                      <strong>Total commande: {calculerTotalCommande(cmd.id)}€</strong>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Boutons d'action */}
+                <div className="commandes-fournisseurs__actions">
+                  {isCommandeModifiable(cmd.etatCommande) && (
+                    <button 
+                      className="commandes-fournisseurs__btn commandes-fournisseurs__btn--secondary"
+                      onClick={() => modifierCommande(cmd.id)}
+                    >
+                      <i className="fas fa-edit"></i> Modifier
+                    </button>
+                  )}
+                  {isCommandeValidable(cmd.etatCommande) && (
+                    <button 
+                      className="commandes-fournisseurs__btn commandes-fournisseurs__btn--success"
+                      onClick={() => validerCommande(cmd.id)}
+                    >
+                      <i className="fas fa-check"></i> Valider
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
+          ))}
+        </div>
+      ) : (
+        <div className="commandes-fournisseurs__empty">
+          <div className="commandes-fournisseurs__empty-message">
+            Aucune commande fournisseur trouvée.
           </div>
-        ))}
-      </div>
+        </div>
+      )}
 
-      {listeCommandes.length > 0 && (
+      {listeCommandes.length > 0 && totalPages > 1 && (
         <div className="commandes-fournisseurs__pagination">
-          <Pagination 
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-            showFirstLast={true}
-            maxVisiblePages={5}
-          />
+          <div className="commandes-fournisseurs__pagination-info">
+            Page {currentPage} sur {totalPages}
+          </div>
         </div>
       )}
     </div>
   );
 };
 
-export default CommandesFournisseurs; 
+export default CommandesFournisseurs;

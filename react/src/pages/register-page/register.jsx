@@ -117,6 +117,9 @@ export default function Register() {
                     // Stocker l'origine pour indiquer que l'utilisateur vient de s'inscrire
                     localStorage.setItem('origin', 'inscription');
                     
+                    // Marquer que l'utilisateur doit changer son mot de passe
+                    localStorage.setItem('mustChangePassword', 'true');
+                    
                     // Rediriger vers la page de modification du mot de passe
                     setMessage({ type: 'success', text: 'Connexion réussie ! Redirection vers la modification du mot de passe...' });
                     setTimeout(() => {

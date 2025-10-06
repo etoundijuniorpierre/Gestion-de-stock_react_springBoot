@@ -6,6 +6,9 @@ import '@fortawesome/fontawesome-free/css/all.min.css'
 import './index.scss'
 import App from './App.jsx'
 
+// Run API tests
+import './test-api.js'
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />

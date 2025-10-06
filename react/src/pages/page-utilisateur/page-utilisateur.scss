@@ -1,0 +1,15 @@
+// Page Utilisateur Styles
+.page-utilisateur {
+  // You can add any page-specific styles here if needed
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .text-right {
+    text-align: center !important;
+  }
+  
+  .m-3 {
+    margin: 1rem;
+  }
+}

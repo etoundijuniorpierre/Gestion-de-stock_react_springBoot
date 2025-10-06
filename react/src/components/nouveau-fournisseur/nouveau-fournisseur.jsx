@@ -37,7 +37,7 @@ const NouveauFournisseur = () => {
 
   const enregistrer = async () => {
     // Validation des champs obligatoires
-    if (!fournisseur.nom || !fournisseur.prenom || !fournisseur.email) {
+    if (!fournisseur.nom || !fournisseur.prenom || !fournisseur.mail) {
       setErrorMsg(['Les champs nom, prénom et email sont obligatoires']);
       return;
     }
@@ -50,10 +50,12 @@ const NouveauFournisseur = () => {
         // Mode édition
         const updatedFournisseur = await cltFrsService.updateFournisseur(fournisseur.id, fournisseurToSave);
         await savePhoto(updatedFournisseur.id, updatedFournisseur.nom);
+        navigate('/dashboard/fournisseurs');
       } else {
         // Mode création
         const newFournisseur = await cltFrsService.saveFournisseur(fournisseurToSave);
         await savePhoto(newFournisseur.id, newFournisseur.nom);
+        navigate('/dashboard/fournisseurs');
       }
     } catch (error) {
       setErrorMsg(error.response?.data?.errors || ['Erreur lors de la sauvegarde']);
@@ -91,13 +93,10 @@ const NouveauFournisseur = () => {
 
       try {
         await photoService.savePhoto(params);
-        navigate('/dashboard/fournisseurs');
       } catch (error) {
         console.error('Erreur lors de la sauvegarde de la photo:', error);
-        navigate('/dashboard/fournisseurs');
+        // Ne pas naviguer ici, laisser la fonction enregistrer gérer la navigation
       }
-    } else {
-      navigate('/dashboard/fournisseurs');
     }
   };
 
@@ -200,8 +199,8 @@ const NouveauFournisseur = () => {
                     id="email"
                     className="form-control"
                     placeholder="E-mail"
-                    value={fournisseur.email || ''}
-                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    value={fournisseur.mail || ''}
+                    onChange={(e) => handleInputChange('mail', e.target.value)}
                     required
                   />
                 </div>

@@ -30,9 +30,11 @@ const DetailCltFrs = ({ clientFournisseur, origin, onSuppressionResult }) => {
       if (result.success) {
         onSuppressionResult('success');
       } else {
-        // Afficher le message d'erreur spécifique
-          const errorMessage =  "Impossible de supprimer un client qui a deja des commande clients" ;
-          onSuppressionResult(errorMessage);
+        // Afficher le message d'erreur spécifique selon le type
+        const errorMessage = origin === 'fournisseur' 
+          ? "Impossible de supprimer un fournisseur qui a déjà des commandes fournisseurs"
+          : "Impossible de supprimer un client qui a déjà des commandes clients";
+        onSuppressionResult(errorMessage);
       }
     }
   };
@@ -71,7 +73,7 @@ const DetailCltFrs = ({ clientFournisseur, origin, onSuppressionResult }) => {
           </div>
           <div className="detail-clt-frs__info-item">
             <i className="fas fa-envelope detail-clt-frs__icon"></i>
-            <span>{clientFournisseur.email}</span>
+            <span>{clientFournisseur.mail || clientFournisseur.email || 'N/A'}</span>
           </div>
         </div>
 
@@ -123,36 +125,38 @@ const DetailCltFrs = ({ clientFournisseur, origin, onSuppressionResult }) => {
         </div>
       </div>
 
-      {/* Section détails supplémentaires */}
+      {/* Section détails supplémentaires - Show only personal info when details is clicked */}
       {showDetails && (
         <div className="detail-clt-frs__details-section">
           <div className="detail-clt-frs__details-header">
-            <h4>Informations détaillées</h4>
+            <h4>Informations personnelles</h4>
           </div>
           <div className="detail-clt-frs__details-content">
             <div className="detail-clt-frs__details-grid">
               <div className="detail-clt-frs__details-item">
-                <strong>ID:</strong> {clientFournisseur.id}
+                <strong>Nom:</strong> {clientFournisseur.nom}
               </div>
               <div className="detail-clt-frs__details-item">
-                <strong>Date de création:</strong> {clientFournisseur.dateCreation ? new Date(clientFournisseur.dateCreation).toLocaleDateString() : 'Non spécifiée'}
+                <strong>Prénom:</strong> {clientFournisseur.prenom}
               </div>
               <div className="detail-clt-frs__details-item">
-                <strong>Dernière modification:</strong> {clientFournisseur.dateModification ? new Date(clientFournisseur.dateModification).toLocaleDateString() : 'Non spécifiée'}
+                <strong>Email:</strong> {clientFournisseur.mail || clientFournisseur.email || 'N/A'}
               </div>
               <div className="detail-clt-frs__details-item">
-                <strong>Statut:</strong> {clientFournisseur.actif ? 'Actif' : 'Inactif'}
+                <strong>Téléphone:</strong> {clientFournisseur.numTel}
               </div>
-              {clientFournisseur.entreprise && (
-                <div className="detail-clt-frs__details-item">
-                  <strong>Entreprise:</strong> {clientFournisseur.entreprise.nom}
-                </div>
-              )}
-              {clientFournisseur.categorie && (
-                <div className="detail-clt-frs__details-item">
-                  <strong>Catégorie:</strong> {clientFournisseur.categorie.nom}
-                </div>
-              )}
+              <div className="detail-clt-frs__details-item">
+                <strong>Adresse:</strong> {clientFournisseur.adresse?.adresse1} {clientFournisseur.adresse?.adresse2}
+              </div>
+              <div className="detail-clt-frs__details-item">
+                <strong>Code postal:</strong> {clientFournisseur.adresse?.codePostale}
+              </div>
+              <div className="detail-clt-frs__details-item">
+                <strong>Ville:</strong> {clientFournisseur.adresse?.ville}
+              </div>
+              <div className="detail-clt-frs__details-item">
+                <strong>Pays:</strong> {clientFournisseur.adresse?.pays}
+              </div>
             </div>
           </div>
         </div>

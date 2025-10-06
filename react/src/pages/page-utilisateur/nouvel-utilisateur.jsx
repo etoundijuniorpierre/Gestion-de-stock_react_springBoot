@@ -100,7 +100,7 @@ const NouvelUtilisateur = () => {
       }
 
       if (isEdit && id) {
-        // Pour la modification, on utilise l'endpoint create avec l'ID
+        // Pour la modification, on utilise l'endpoint de mise à jour
         const utilisateurToUpdate = { ...utilisateurDto, id: parseInt(id) };
         if (!utilisateurDto.motDePasse) {
           delete utilisateurToUpdate.motDePasse;
@@ -138,7 +138,10 @@ const NouvelUtilisateur = () => {
     <div className="nouvel-utilisateur-form">
       {/* En-tête du formulaire */}
       <div className="form-header">
-        <h2>{isEdit ? 'Modifier l\'utilisateur' : 'Nouvel utilisateur'}</h2>
+        <h2>
+          <i className="fas fa-user-plus"></i>
+          {isEdit ? 'Modifier l\'utilisateur' : 'Nouvel utilisateur'}
+        </h2>
       </div>
       
       {/* Contenu du formulaire */}
@@ -155,192 +158,200 @@ const NouvelUtilisateur = () => {
         )}
         
         <form>
-          {/* Section Informations personnelles */}
-          <div className="form-section">
-            <div className="row">
-              <div className="col-md-6">
-                <div className="form-group">
-                  <label className="form-label">Nom</label>
-                  <input 
-                    type="text" 
-                    className="form-control" 
-                    placeholder="Nom" 
-                    name="nom" 
-                    value={utilisateurDto.nom}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="form-group">
-                  <label className="form-label">Prénom</label>
-                  <input 
-                    type="text" 
-                    className="form-control" 
-                    placeholder="Prénom" 
-                    name="prenom" 
-                    value={utilisateurDto.prenom}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
+        <div className="form-section">
+          <h3>Informations personnelles</h3>
+
+          <div className="row">
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="form-label">Nom</label>
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="Nom" 
+                  name="nom" 
+                  value={utilisateurDto.nom}
+                  onChange={handleInputChange}
+                  required
+                  autoComplete="off"
+                />
               </div>
             </div>
-            
-            <div className="row">
-              <div className="col-md-6">
-                <div className="form-group">
-                  <label className="form-label">Email</label>
-                  <input 
-                    type="email" 
-                    className="form-control" 
-                    placeholder="Email" 
-                    name="email" 
-                    value={utilisateurDto.email}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="form-group">
-                  <label className="form-label optional">Date de naissance</label>
-                  <input 
-                    type="date" 
-                    className="form-control" 
-                    name="dateDeNaissance" 
-                    value={utilisateurDto.dateDeNaissance}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-            </div>
-            
-            <div className="row">
-              <div className="col-md-6">
-                <div className="form-group">
-                  <label className={isEdit ? 'form-label optional' : 'form-label'}>
-                    {isEdit ? 'Nouveau mot de passe' : 'Mot de passe'}
-                  </label>
-                  <input 
-                    type="password" 
-                    className="form-control" 
-                    placeholder={isEdit ? 'Laissez vide pour ne pas changer' : 'Mot de passe'} 
-                    name="motDePasse" 
-                    value={utilisateurDto.motDePasse}
-                    onChange={handleInputChange}
-                    required={!isEdit}
-                  />
-                </div>
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="form-label">Prénom</label>
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="Prénom" 
+                  name="prenom" 
+                  value={utilisateurDto.prenom}
+                  onChange={handleInputChange}
+                  required
+                  autoComplete="off"
+                />
               </div>
             </div>
           </div>
           
-          {/* Section Adresse */}
-          <div className="form-section">
-            <h5 className="section-title">Adresse</h5>
-            
-            <div className="row">
-              <div className="col-md-6">
-                <div className="form-group">
-                  <label className="form-label optional">Adresse 1</label>
-                  <input 
-                    type="text" 
-                    className="form-control" 
-                    placeholder="Adresse 1" 
-                    name="adresse.adresse1" 
-                    value={utilisateurDto.adresse.adresse1}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="form-group">
-                  <label className="form-label optional">Adresse 2</label>
-                  <input 
-                    type="text" 
-                    className="form-control" 
-                    placeholder="Adresse 2" 
-                    name="adresse.adresse2" 
-                    value={utilisateurDto.adresse.adresse2}
-                    onChange={handleInputChange}
-                  />
-                </div>
+          <div className="row">
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="form-label">Email</label>
+                <input 
+                  type="email" 
+                  className="form-control" 
+                  placeholder="Email" 
+                  name="email" 
+                  value={utilisateurDto.email}
+                  onChange={handleInputChange}
+                  required
+                  autoComplete="off"
+                />
               </div>
             </div>
-            
-            <div className="row">
-              <div className="col-md-4">
-                <div className="form-group">
-                  <label className="form-label optional">Ville</label>
-                  <input 
-                    type="text" 
-                    className="form-control" 
-                    placeholder="Ville" 
-                    name="adresse.ville" 
-                    value={utilisateurDto.adresse.ville}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-              <div className="col-md-4">
-                <div className="form-group">
-                  <label className="form-label optional">Code postal</label>
-                  <input 
-                    type="text" 
-                    className="form-control" 
-                    placeholder="Code postal" 
-                    name="adresse.codePostale" 
-                    value={utilisateurDto.adresse.codePostale}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-              <div className="col-md-4">
-                <div className="form-group">
-                  <label className="form-label optional">Pays</label>
-                  <input 
-                    type="text" 
-                    className="form-control" 
-                    placeholder="Pays" 
-                    name="adresse.pays" 
-                    value={utilisateurDto.adresse.pays}
-                    onChange={handleInputChange}
-                  />
-                </div>
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="form-label optional">Date de naissance</label>
+                <input 
+                  type="date" 
+                  className="form-control" 
+                  name="dateDeNaissance" 
+                  value={utilisateurDto.dateDeNaissance}
+                  onChange={handleInputChange}
+                  autoComplete="off"
+                />
               </div>
             </div>
           </div>
+          
+          <div className="row">
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className={isEdit ? 'form-label optional' : 'form-label'}>
+                  {isEdit ? 'Nouveau mot de passe' : 'Mot de passe'}
+                </label>
+                <input 
+                  type="password" 
+                  className="form-control" 
+                  placeholder={isEdit ? 'Laissez vide pour conserver l\'actuel' : 'Mot de passe'} 
+                  name="motDePasse" 
+                  value={utilisateurDto.motDePasse}
+                  onChange={handleInputChange}
+                  required={!isEdit}
+                  autoComplete="new-password"
+                />
+                {isEdit && (
+                  <small className="form-text text-muted">
+                    Laissez ce champ vide pour conserver le mot de passe actuel
+                  </small>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="form-section adresse-section">
+          <h3>Adresse</h3>
+          
+          <div className="row">
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="form-label optional">Adresse 1</label>
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="Adresse 1" 
+                  name="adresse.adresse1" 
+                  value={utilisateurDto.adresse.adresse1}
+                  onChange={handleInputChange}
+                  autoComplete="off"
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="form-label optional">Adresse 2</label>
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="Adresse 2" 
+                  name="adresse.adresse2" 
+                  value={utilisateurDto.adresse.adresse2}
+                  onChange={handleInputChange}
+                  autoComplete="off"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-md-4">
+              <div className="form-group">
+                <label className="form-label optional">Ville</label>
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="Ville" 
+                  name="adresse.ville" 
+                  value={utilisateurDto.adresse.ville}
+                  onChange={handleInputChange}
+                  autoComplete="off"
+                />
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="form-group">
+                <label className="form-label optional">Code postal</label>
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="Code postal" 
+                  name="adresse.codePostale" 
+                  value={utilisateurDto.adresse.codePostale}
+                  onChange={handleInputChange}
+                  autoComplete="off"
+                />
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="form-group">
+                <label className="form-label optional">Pays</label>
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="Pays" 
+                  name="adresse.pays" 
+                  value={utilisateurDto.adresse.pays}
+                  onChange={handleInputChange}
+                  autoComplete="off"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
         </form>
       </div>
       
       {/* Actions du formulaire */}
       <div className="form-actions">
-        <button 
-          className="btn btn-danger" 
+        <button
+          type="button"
+          className="btn btn-secondary"
           onClick={cancel}
           disabled={loading}
         >
           <i className="fas fa-ban"></i>
           Annuler
         </button>
-        <button 
-          className="btn btn-primary" 
+        <button
+          type="button"
+          className="btn btn-primary"
           onClick={enregistrerUtilisateur}
           disabled={loading}
         >
-          {loading ? (
-            <>
-              <span className="spinner-border" role="status" aria-hidden="true"></span>
-              {isEdit ? 'Modifier' : 'Enregistrer'}
-            </>
-          ) : (
-            <>
-              <i className="fas fa-save"></i>
-              {isEdit ? 'Modifier' : 'Enregistrer'}
-            </>
-          )}
+          <i className="fas fa-save"></i>
+          {isEdit ? 'Modifier' : 'Enregistrer'}
         </button>
       </div>
     </div>

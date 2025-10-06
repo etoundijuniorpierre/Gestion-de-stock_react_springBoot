@@ -41,24 +41,62 @@ class AuthService {
       return false;
     } catch (error) {
       console.error('Erreur d\'authentification:', error);
+      // Make sure to properly set isAuthenticated to false on login failure
+      this.isAuthenticated = false;
       return false;
     }
   }
 
-  // Déconnexion
+  // Déconnexion - Updated to use the new dedicated logout endpoint
   async logout() {
     try {
+      // Get the current token before removing it
       const token = localStorage.getItem('token');
-      if (token) {
-        await httpInterceptor.post(API_CONFIG.ENDPOINTS.AUTH.LOGOUT);
-      }
-    } catch (error) {
-      console.error('Erreur lors de la déconnexion:', error);
-    } finally {
+      
+      // Remove all auth-related items from localStorage first
       if (typeof window !== 'undefined') {
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('user');
+        localStorage.removeItem('connectedUser');
+        localStorage.removeItem('id');
+        localStorage.removeItem('idUser');
+        localStorage.removeItem('entrepriseId');
+        localStorage.removeItem('username');
+        localStorage.removeItem('role');
+      }
+      
+      this.isAuthenticated = false;
+      
+      // Only try to call logout endpoint if we have a token
+      if (token) {
+        try {
+          // Call the new dedicated logout endpoint
+          await httpInterceptor.post('/api/gestionDeStock/logout', {}, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+          console.log('✅ Backend logout endpoint called successfully');
+        } catch (error) {
+          // If logout endpoint fails, it's not critical since we've already cleaned localStorage
+          console.log('⚠️ Backend logout endpoint call failed (but localStorage cleaned):', error.message);
+        }
+      }
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+      // Even if there's an error, make sure we still clean up
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('user');
+        localStorage.removeItem('connectedUser');
+        localStorage.removeItem('id');
+        localStorage.removeItem('idUser');
+        localStorage.removeItem('entrepriseId');
+        localStorage.removeItem('username');
+        localStorage.removeItem('role');
       }
       this.isAuthenticated = false;
     }
@@ -66,6 +104,11 @@ class AuthService {
 
   // Vérifier si l'utilisateur est connecté
   isLoggedIn() {
+    // Always check the current state of localStorage, not just the cached value
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('token');
+      this.isAuthenticated = !!token;
+    }
     return this.isAuthenticated;
   }
 

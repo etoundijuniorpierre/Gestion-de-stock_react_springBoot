@@ -40,7 +40,11 @@ const CommandesClients = () => {
   };
 
   const nouvelleCommande = () => {
-    navigate('/dashboard/nouvellecommandeclt');
+    navigate('/dashboard/nouvellecommandectl');
+  };
+
+  const modifierCommande = (id) => {
+    navigate(`/dashboard/nouvellecommandectl/${id}`);
   };
 
   const findLignesCommande = async (idCommande) => {
@@ -73,6 +77,27 @@ const CommandesClients = () => {
 
   const getLignesCommande = (id) => {
     return mapLignesCommande.get(id) || [];
+  };
+
+  const validerCommande = async (id) => {
+    try {
+      await cmdCltFrsService.updateEtatCommandeClient(id, 'VALIDEE');
+      // Refresh the command list
+      findAllCommandes();
+    } catch (error) {
+      console.error('Erreur lors de la validation de la commande:', error);
+      setErrorMsg('Erreur lors de la validation de la commande');
+    }
+  };
+
+  const isCommandeModifiable = (etatCommande) => {
+    // La commande peut être modifiée si elle n'est pas encore validée ou livrée
+    return etatCommande === 'EN_PREPARATION';
+  };
+
+  const isCommandeValidable = (etatCommande) => {
+    // La commande peut être validée si elle est en préparation
+    return etatCommande === 'EN_PREPARATION';
   };
 
   if (isLoading) {
@@ -145,6 +170,26 @@ const CommandesClients = () => {
                     </div>
                   </div>
                 )}
+                
+                {/* Boutons d'action */}
+                <div className="commandes-clients__actions">
+                  {isCommandeModifiable(cmd.etatCommande) && (
+                    <button 
+                      className="commandes-clients__btn commandes-clients__btn--secondary"
+                      onClick={() => modifierCommande(cmd.id)}
+                    >
+                      <i className="fas fa-edit"></i> Modifier
+                    </button>
+                  )}
+                  {isCommandeValidable(cmd.etatCommande) && (
+                    <button 
+                      className="commandes-clients__btn commandes-clients__btn--success"
+                      onClick={() => validerCommande(cmd.id)}
+                    >
+                      <i className="fas fa-check"></i> Valider
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           ))}
@@ -160,4 +205,4 @@ const CommandesClients = () => {
   );
 };
 
-export default CommandesClients; 
+export default CommandesClients;

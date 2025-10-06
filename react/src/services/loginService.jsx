@@ -1,5 +1,6 @@
 import httpInterceptor from "./http-interceptor";
 import { UserService } from "./user/user.service";
+import { AuthService } from "./auth.service";
 
 export const loginUser = async (credentials) => {
     // Endpoint principal identifié dans swagger.json
@@ -58,6 +59,16 @@ export const loginUser = async (credentials) => {
         };
     } catch (error) {
         console.log(`❌ Échec de connexion:`, error.message);
+        // Make sure to clear any potentially invalid tokens
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('connectedUser');
+        localStorage.removeItem('id');
+        localStorage.removeItem('idUser');
+        localStorage.removeItem('entrepriseId');
+        localStorage.removeItem('username');
+        localStorage.removeItem('role');
+        
         return {
             success: false,
             error: error.message || 'Erreur lors de la connexion',
@@ -68,39 +79,18 @@ export const loginUser = async (credentials) => {
 
 export const logoutUser = async () => {
     try {
-        // Note: Pas d'endpoint logout dans swagger.json, on nettoie juste le localStorage
-        console.log('🔓 Déconnexion - nettoyage du localStorage');
+        // Use AuthService for consistent logout handling with the new endpoint
+        const authService = new AuthService();
+        await authService.logout();
         
-        // Nettoyer toutes les clés du localStorage
-        localStorage.removeItem('token');
-        localStorage.removeItem('refreshToken');
-        localStorage.removeItem('user');
-        localStorage.removeItem('connectedUser');
-        localStorage.removeItem('id');
-        localStorage.removeItem('idUser');
-        localStorage.removeItem('entrepriseId');
-        localStorage.removeItem('username');
-        localStorage.removeItem('role');
-        
-        console.log('✅ localStorage nettoyé avec succès');
+        console.log('✅ Déconnexion réussie');
         
         return {
             success: true,
             message: 'Déconnexion réussie'
         };
     } catch (error) {
-        // Même en cas d'erreur, nettoyer le localStorage
-        localStorage.removeItem('token');
-        localStorage.removeItem('refreshToken');
-        localStorage.removeItem('user');
-        localStorage.removeItem('connectedUser');
-        localStorage.removeItem('id');
-        localStorage.removeItem('idUser');
-        localStorage.removeItem('entrepriseId');
-        localStorage.removeItem('username');
-        localStorage.removeItem('role');
-        
-        console.log('✅ localStorage nettoyé (mode de récupération)');
+        console.log('✅ Déconnexion effectuée (erreur lors du processus):', error.message);
         
         return {
             success: false,
@@ -108,4 +98,3 @@ export const logoutUser = async () => {
         };
     }
 };
-

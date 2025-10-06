@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { loginUser } from '../../services/loginService';
+import { AuthService } from '../../services/auth.service';
 import './login.scss';
 
 export default function Login() {
@@ -13,6 +14,7 @@ export default function Login() {
     const [message, setMessage] = useState({ type: '', text: '' });
     const [rememberMe, setRememberMe] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const authService = new AuthService();
 
     // Charger les données sauvegardées au montage du composant
     useEffect(() => {
@@ -27,7 +29,18 @@ export default function Login() {
             });
             setRememberMe(true);
         }
-    }, []);
+        
+        // Check if user is already authenticated
+        if (authService.isLoggedIn()) {
+            // Vérifier si l'utilisateur doit changer son mot de passe
+            const mustChangePassword = localStorage.getItem('mustChangePassword');
+            if (mustChangePassword === 'true') {
+                navigate('/dashboard/changer-mot-passe');
+            } else {
+                navigate('/dashboard');
+            }
+        }
+    }, [navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -45,6 +58,9 @@ export default function Login() {
         try {
             const result = await loginUser(formData);
             if (result.success) {
+                // Update AuthService state
+                authService.isAuthenticated = true;
+                
                 // Gérer le "Remember Me"
                 if (rememberMe) {
                     localStorage.setItem('rememberedEmail', formData.email);
@@ -56,11 +72,20 @@ export default function Login() {
                     localStorage.removeItem('rememberMe');
                 }
                 
-                setMessage({ type: 'success', text: result.message });
-                // Rediriger vers le dashboard après 1 seconde
-                setTimeout(() => {
-                    navigate('/dashboard');
-                }, 1000);
+                // Vérifier si l'utilisateur doit changer son mot de passe
+                const mustChangePassword = localStorage.getItem('mustChangePassword');
+                if (mustChangePassword === 'true') {
+                    setMessage({ type: 'success', text: 'Connexion réussie ! Redirection vers le changement de mot de passe...' });
+                    setTimeout(() => {
+                        navigate('/dashboard/changer-mot-passe');
+                    }, 1500);
+                } else {
+                    setMessage({ type: 'success', text: result.message });
+                    // Rediriger vers le dashboard après 1 seconde
+                    setTimeout(() => {
+                        navigate('/dashboard');
+                    }, 1000);
+                }
             } else {
                 setMessage({ type: 'error', text: result.error });
             }

@@ -39,9 +39,13 @@ class EntrepriseService {
 
   // Mettre à jour une entreprise
   async update(id, entreprise) {
-    // Note: update3 n'existe pas dans l'API, on simule pour l'instant
-    console.warn('Méthode update non implémentée dans l\'API, simulation en cours');
-    return { ...entreprise, id };
+    try {
+      const endpoint = API_CONFIG.ENDPOINTS.ENTREPRISES.UPDATE.replace('{id}', id);
+      return await httpInterceptor.put(endpoint, entreprise);
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour de l\'entreprise:', error);
+      throw error;
+    }
   }
 
   // Supprimer une entreprise

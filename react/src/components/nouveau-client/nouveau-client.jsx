@@ -1,17 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CltfrsService } from '../../services/cltfrs/cltfrs.service';
+import { PhotosService } from '../../services/photos.service';
 import './nouveau-client.scss';
 
 const NouveauClient = () => {
   const [client, setClient] = useState({});
   const [adresseDto, setAdresseDto] = useState({});
   const [errorMsg, setErrorMsg] = useState([]);
+  const [file, setFile] = useState(null);
+  const [imgUrl, setImgUrl] = useState('assets/product.png');
   const [isEditMode, setIsEditMode] = useState(false);
   
   const navigate = useNavigate();
   const { id } = useParams();
+  const fileInputRef = useRef();
   const cltFrsService = new CltfrsService();
+  const photoService = new PhotosService();
 
   useEffect(() => {
     findObject();
@@ -44,10 +49,12 @@ const NouveauClient = () => {
       if (isEditMode) {
         // Mode édition
         const updatedClient = await cltFrsService.updateClient(client.id, clientToSave);
+        await savePhoto(updatedClient.id, updatedClient.nom);
         navigate('/dashboard/clients');
       } else {
         // Mode création
         const newClient = await cltFrsService.saveClient(clientToSave);
+        await savePhoto(newClient.id, newClient.nom);
         navigate('/dashboard/clients');
       }
     } catch (error) {
@@ -59,6 +66,35 @@ const NouveauClient = () => {
     navigate('/dashboard/clients');
   };
 
+  const onFileInput = (event) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      setFile(files[0]);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImgUrl(e.target.result);
+      };
+      reader.readAsDataURL(files[0]);
+    }
+  };
+
+  const savePhoto = async (idObject, titre) => {
+    if (idObject && titre && file) {
+      const params = {
+        id: idObject,
+        file: file,
+        title: titre,
+        context: 'client'
+      };
+
+      try {
+        await photoService.savePhoto(params);
+      } catch (error) {
+        console.error('Erreur lors de la sauvegarde de la photo:', error);
+        // Ne pas naviguer ici, laisser la fonction enregistrer gérer la navigation
+      }
+    }
+  };
 
   const handleInputChange = (field, value) => {
     setClient(prev => ({ ...prev, [field]: value }));

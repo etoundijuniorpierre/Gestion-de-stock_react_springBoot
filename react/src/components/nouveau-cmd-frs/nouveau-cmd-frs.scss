@@ -334,7 +334,7 @@ $shadow-color: rgba(0, 0, 0, 0.1);
   .form-content {
     flex: 1;
     padding: 1.5rem;
-    overflow-y: hidden;
+    overflow-y: auto;
     
     // Scrollbar personnalisée
     &::-webkit-scrollbar {
@@ -582,7 +582,7 @@ $shadow-color: rgba(0, 0, 0, 0.1);
   }
 }
 
-// Responsive design
+// Responsive design - keeping buttons in row layout
 @media (max-width: 768px) {
   .nouvelle-commande-fournisseur-form {
     height: calc(100vh - 2rem);
@@ -623,14 +623,17 @@ $shadow-color: rgba(0, 0, 0, 0.1);
       }
     }
     
+    // Keep buttons in row layout even on mobile
     .form-actions {
       padding: 1rem;
-      flex-direction: column;
+      // Removed flex-direction: column to keep buttons in row
       gap: 0.75rem;
       
       .btn {
-        width: 100%;
+        // Allow buttons to shrink on small screens but stay in row
         min-width: auto;
+        padding: 0.625rem 1rem;
+        font-size: 0.85rem;
       }
     }
   }
@@ -667,12 +670,17 @@ $shadow-color: rgba(0, 0, 0, 0.1);
       }
     }
     
+    // Keep buttons in row layout even on very small screens
     .form-actions {
       padding: 0.75rem;
+      // Removed flex-direction: column to keep buttons in row
+      gap: 0.5rem;
       
       .btn {
-        padding: 0.625rem 1.25rem;
-        font-size: 0.85rem;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+        // Allow buttons to be smaller on very small screens
+        min-width: 80px;
       }
     }
   }

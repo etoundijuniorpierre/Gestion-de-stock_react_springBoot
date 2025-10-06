@@ -70,8 +70,14 @@ const MouvementsStocks = () => {
               console.log(`📊 Stock réel pour l'article ${article.id}:`, stockReel);
               
               // Récupérer l'historique des mouvements
-              const mouvements = await mouvementStockService.getHistoriqueMouvements(article.id);
-              console.log(`📈 Mouvements pour l'article ${article.id}:`, mouvements);
+              let mouvements = [];
+              try {
+                mouvements = await mouvementStockService.getHistoriqueMouvements(article.id);
+                console.log(`📈 Mouvements pour l'article ${article.id}:`, mouvements);
+              } catch (mvtError) {
+                console.warn(`⚠️ Aucun mouvement trouvé pour l'article ${article.id} ou erreur de récupération:`, mvtError.message);
+                // Continue with empty array
+              }
               
               // Transformer les mouvements pour correspondre au format attendu
               const mouvementsFormatted = Array.isArray(mouvements) ? mouvements.map(mvt => ({

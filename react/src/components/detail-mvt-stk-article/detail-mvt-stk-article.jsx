@@ -126,11 +126,23 @@ export default function DetailMvtStkArticle({ onToggleCollapse, isExpanded, arti
 
     } catch (error) {
       console.error('Erreur lors de la correction de stock:', error);
-      setErrorMessage(
-        error.response?.data?.message || 
-        error.message || 
-        'Une erreur est survenue lors de la correction de stock'
-      );
+      
+      // Provide more specific error messages based on error type
+      let errorMsg = 'Une erreur est survenue lors de la correction de stock';
+      
+      if (error.message?.includes('404')) {
+        errorMsg = 'Article non trouvé. Veuillez vérifier que l\'article existe.';
+      } else if (error.message?.includes('401') || error.message?.includes('403')) {
+        errorMsg = 'Votre session a expiré. Veuillez vous reconnecter.';
+      } else if (error.message?.includes('400')) {
+        errorMsg = 'Données invalides. Veuillez vérifier les informations saisies.';
+      } else if (error.response?.data?.message) {
+        errorMsg = error.response.data.message;
+      } else if (error.message) {
+        errorMsg = error.message;
+      }
+      
+      setErrorMessage(errorMsg);
     } finally {
       setIsLoading(false);
     }

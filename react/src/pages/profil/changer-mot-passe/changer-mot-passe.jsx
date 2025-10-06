@@ -8,6 +8,11 @@ const ChangerMotPasse = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  // State for password visibility
+  const [showPassword, setShowPassword] = useState({
+    motDePasse: false,
+    confirmMotDePasse: false
+  });
 
   const navigate = useNavigate();
   const userService = new UserService();
@@ -70,7 +75,25 @@ const ChangerMotPasse = () => {
       
       if (result.success) {
         setSuccessMessage('Mot de passe modifié avec succès !');
-        setTimeout(() => navigate('/dashboard/vue-ensemble'), 2000);
+        
+        // Marquer que le mot de passe a été changé
+        localStorage.setItem('mustChangePassword', 'false');
+        localStorage.setItem('passwordChanged', 'true');
+        
+        // Mettre à jour les informations de l'utilisateur si nécessaire
+        try {
+          const updatedUser = await userService.findById(changerMotDePasseDto.id);
+          if (updatedUser) {
+            localStorage.setItem('connectedUser', JSON.stringify(updatedUser));
+          }
+        } catch (error) {
+          console.warn('Impossible de mettre à jour les informations utilisateur:', error);
+        }
+        
+        // Rediriger vers le dashboard après un court délai
+        setTimeout(() => {
+          navigate('/dashboard/vue-ensemble');
+        }, 2000);
       } else {
         // Message d'erreur plus détaillé
         let errorMsg = 'Erreur lors de la modification du mot de passe. ';
@@ -102,7 +125,24 @@ const ChangerMotPasse = () => {
     }
   };
 
-  const cancel = () => navigate('/dashboard/vue-ensemble');
+  const cancel = () => {
+    // Vérifier si l'utilisateur vient de s'inscrire et n'a pas encore changé son mot de passe
+    const mustChangePassword = localStorage.getItem('mustChangePassword');
+    if (mustChangePassword === 'true') {
+      // Ne pas permettre l'annulation si c'est obligatoire
+      setErrorMessage('Vous devez changer votre mot de passe par défaut pour continuer.');
+      return;
+    }
+    navigate('/dashboard/vue-ensemble');
+  };
+
+  // Function to toggle password visibility
+  const togglePasswordVisibility = (field) => {
+    setShowPassword(prev => ({
+      ...prev,
+      [field]: !prev[field]
+    }));
+  };
 
   return (
     <div className="changer-mot-passe-form">
@@ -137,30 +177,46 @@ const ChangerMotPasse = () => {
               <div className="col-md-6">
                 <div className="form-group">
                   <label className="form-label" htmlFor="nouveaumotdepasse">Nouveau mot de passe</label>
-                  <input
-                    id="nouveaumotdepasse"
-                    type="password"
-                    className="form-control"
-                    placeholder="Nouveau mot de passe"
-                    value={changerMotDePasseDto.motDePasse || ''}
-                    onChange={e => setChangerMotDePasseDto(prev => ({ ...prev, motDePasse: e.target.value }))}
-                    required
-                  />
+                  <div className="password-input-container">
+                    <input
+                      id="nouveaumotdepasse"
+                      type={showPassword.motDePasse ? "text" : "password"}
+                      className="form-control password-input"
+                      placeholder="Nouveau mot de passe"
+                      value={changerMotDePasseDto.motDePasse || ''}
+                      onChange={e => setChangerMotDePasseDto(prev => ({ ...prev, motDePasse: e.target.value }))}
+                      required
+                    />
+                    <span 
+                      className="password-toggle-icon"
+                      onClick={() => togglePasswordVisibility('motDePasse')}
+                    >
+                      <i className={`fas ${showPassword.motDePasse ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                    </span>
+                  </div>
                 </div>
               </div>
               
               <div className="col-md-6">
                 <div className="form-group">
                   <label className="form-label" htmlFor="confirmmotdepasse">Confirmer le mot de passe</label>
-                  <input
-                    id="confirmmotdepasse"
-                    type="password"
-                    className="form-control"
-                    placeholder="Confirmer mot de passe"
-                    value={changerMotDePasseDto.confirmMotDePasse || ''}
-                    onChange={e => setChangerMotDePasseDto(prev => ({ ...prev, confirmMotDePasse: e.target.value }))}
-                    required
-                  />
+                  <div className="password-input-container">
+                    <input
+                      id="confirmmotdepasse"
+                      type={showPassword.confirmMotDePasse ? "text" : "password"}
+                      className="form-control password-input"
+                      placeholder="Confirmer mot de passe"
+                      value={changerMotDePasseDto.confirmMotDePasse || ''}
+                      onChange={e => setChangerMotDePasseDto(prev => ({ ...prev, confirmMotDePasse: e.target.value }))}
+                      required
+                    />
+                    <span 
+                      className="password-toggle-icon"
+                      onClick={() => togglePasswordVisibility('confirmMotDePasse')}
+                    >
+                      <i className={`fas ${showPassword.confirmMotDePasse ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

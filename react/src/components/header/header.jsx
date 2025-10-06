@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./header.scss";
 import ReactLogo from "../../assets/react.ico";
+import { AuthService } from '../../services/auth.service';
 
 export default function Header() {
     const [connectedUser, setConnectedUser] = useState(null);
     const navigate = useNavigate();
+    const authService = new AuthService();
 
     useEffect(() => {
         // Récupérer les informations de l'utilisateur connecté depuis le localStorage
@@ -15,14 +17,18 @@ export default function Header() {
         }
     }, []);
 
-    const handleLogout = () => {
-        // Supprimer les informations de l'utilisateur et le token
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
-        localStorage.removeItem('refreshToken');
-        
-        // Rediriger vers la page de connexion
-        navigate('/login');
+    const handleLogout = async () => {
+        try {
+            // Use the AuthService to properly handle logout with the new endpoint
+            await authService.logout();
+            
+            // Rediriger vers la page de connexion
+            navigate('/login');
+        } catch (error) {
+            console.error('Erreur lors de la déconnexion:', error);
+            // Even if there's an error, still redirect to login
+            navigate('/login');
+        }
     };
 
     const handleProfileClick = () => {
@@ -37,24 +43,21 @@ export default function Header() {
         return ReactLogo; // Photo par défaut React si pas de photo
     };
 
-    return(
+    return (
         <div className="header">
             <div className="header__search">
                 <div className="header__search-group">
                     <input 
                         type="text" 
-                        className="header__search-input" 
-                        placeholder="Rechercher..." 
-                        aria-label="Recherche" 
-                        aria-describedby="addon-wrapping"
+                        className="header__search-input"
+                        placeholder="Rechercher..."
                     />
-                    <div className="header__search-button">
-                        <span className="header__search-icon" id="addon-wrapping">
-                            <i className="fas fa-search"></i>
-                        </span>
-                    </div>
+                    <button className="header__search-icon">
+                        <i className="fas fa-search"></i>
+                    </button>
                 </div>
             </div>
+            
             <div className="header__user">
                 <div className="header__user-greeting">
                     <span className="greeting-text">Bonjour</span>

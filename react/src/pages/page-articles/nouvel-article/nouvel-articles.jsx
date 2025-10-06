@@ -33,6 +33,18 @@ const NouvelArticle = () => {
     initializeArticle();
   }, []);
 
+  // Auto-calculate prixUnitaireTtc when prixUnitaireHt or tauxTva changes
+  useEffect(() => {
+    if (article.prixUnitaireHt && article.tauxTva && article.prixUnitaireHt > 0) {
+      const tvaRate = Number(article.tauxTva) / 100; // Convert percentage to decimal
+      const calculatedTtc = Number(article.prixUnitaireHt) * (1 + tvaRate);
+      setArticle(prev => ({
+        ...prev,
+        prixUnitaireTtc: Math.round(calculatedTtc * 100) / 100 // Round to 2 decimal places
+      }));
+    }
+  }, [article.prixUnitaireHt, article.tauxTva]);
+
   const initializeArticle = () => {
     // Récupérer l'ID de l'utilisateur depuis le localStorage
     // Maintenant que loginService stocke directement l'ID, on peut le récupérer facilement
@@ -108,17 +120,22 @@ const NouvelArticle = () => {
       setErrorMsg('Veuillez remplir tous les champs obligatoires (Code, Désignation, Prix HT)');
       return false;
     }
-    
+
+    if (!article.categorie && categories.length === 0) {
+      setErrorMsg('Aucune catégorie disponible. Veuillez créer une catégorie d\'abord.');
+      return false;
+    }
+
     if (!article.categorie) {
       setErrorMsg('Veuillez sélectionner une catégorie');
       return false;
     }
-    
+
     if (!article.idEntreprise) {
       setErrorMsg('Erreur: ID de l\'entreprise non trouvé. Veuillez vous reconnecter.');
       return false;
     }
-    
+
     return true;
   };
 
@@ -139,12 +156,7 @@ const NouvelArticle = () => {
         tauxTva: article.tauxTva ? Number(article.tauxTva) : 0,
         prixUnitaireTtc: article.prixUnitaireTtc ? Number(article.prixUnitaireTtc) : 0,
         photo: article.photo || '',
-        categorie: article.categorie ? {
-          id: article.categorie.id,
-          code: article.categorie.code,
-          designation: article.categorie.designation,
-          idEntreprise: article.categorie.idEntreprise
-        } : article.categorie.id,
+        categorie: article.categorie, // Send the complete category object instead of just partial data
         idEntreprise: article.idEntreprise
       };
 
@@ -321,10 +333,15 @@ const NouvelArticle = () => {
                     id="prixUnitaireTtc"
                     className="form-control"
                     name="prixunitttc"
-                    placeholder="Prix unitaire TTC"
+                    placeholder="Calculé automatiquement"
                     value={article.prixUnitaireTtc || ''}
                     onChange={e => onChange('prixUnitaireTtc', e.target.value)}
+                    readOnly
                   />
+                  <small className="form-text text-muted">
+                    <i className="fas fa-calculator me-1"></i>
+                    Calculé automatiquement à partir du prix HT et du taux TVA
+                  </small>
                 </div>
               </div>
               
@@ -340,14 +357,29 @@ const NouvelArticle = () => {
                       const selectedCat = categories.find(cat => cat.id === Number(e.target.value));
                       onChange('categorie', selectedCat);
                     }}
+                    disabled={categories.length === 0}
                   >
-                    <option value="">Sélectionner une catégorie</option>
+                    <option value="">
+                      {categories.length === 0 ? 'Aucune catégorie disponible' : 'Sélectionner une catégorie'}
+                    </option>
                     {categories.map(cat => (
                       <option key={cat.id} value={cat.id}>
                         {cat.designation}
                       </option>
                     ))}
                   </select>
+                  {categories.length === 0 && (
+                    <small className="form-text text-muted">
+                      <button
+                        type="button"
+                        className="btn btn-link p-0"
+                        onClick={() => navigate('/dashboard/nouvellecategorie')}
+                        style={{ textDecoration: 'none', color: '#007bff' }}
+                      >
+                        Créer une catégorie
+                      </button>
+                    </small>
+                  )}
                 </div>
               </div>
             </div>

@@ -15,6 +15,10 @@ class MouvementStockService {
       return await httpInterceptor.post(endpoint, mvtStkDto);
     } catch (error) {
       console.error('Erreur lors de la correction positive:', error);
+      // Prevent automatic redirect to login by handling auth errors specifically
+      if (error.message?.includes('401') || error.message?.includes('403')) {
+        throw new Error('Votre session a expiré. Veuillez vous reconnecter.');
+      }
       throw error;
     }
   }
@@ -25,6 +29,10 @@ class MouvementStockService {
       return await httpInterceptor.post(API_CONFIG.ENDPOINTS.MOUVEMENTS_STOCK.CORRECTION_NEGATIVE, mvtStkDto);
     } catch (error) {
       console.error('Erreur lors de la correction négative:', error);
+      // Prevent automatic redirect to login by handling auth errors specifically
+      if (error.message?.includes('401') || error.message?.includes('403')) {
+        throw new Error('Votre session a expiré. Veuillez vous reconnecter.');
+      }
       throw error;
     }
   }
@@ -55,10 +63,12 @@ class MouvementStockService {
       throw new Error('ID de l\'article manquant');
     }
     try {
-      return await httpInterceptor.get(buildApiUrlWithParam(API_CONFIG.ENDPOINTS.MOUVEMENTS_STOCK.STOCK_REEL, idArticle));
+      const result = await httpInterceptor.get(buildApiUrlWithParam(API_CONFIG.ENDPOINTS.MOUVEMENTS_STOCK.STOCK_REEL, idArticle));
+      return result || 0;
     } catch (error) {
-      console.error('Erreur lors de la récupération du stock réel:', error);
-      throw error;
+      console.warn(`Stock réel non disponible pour l'article ${idArticle} (404) ou erreur de récupération:`, error.message);
+      // Return 0 instead of throwing error to allow UI to continue
+      return 0;
     }
   }
 
@@ -68,10 +78,12 @@ class MouvementStockService {
       throw new Error('ID de l\'article manquant');
     }
     try {
-      return await httpInterceptor.get(buildApiUrlWithParam(API_CONFIG.ENDPOINTS.MOUVEMENTS_STOCK.FILTER_ARTICLE, idArticle));
+      const result = await httpInterceptor.get(buildApiUrlWithParam(API_CONFIG.ENDPOINTS.MOUVEMENTS_STOCK.FILTER_ARTICLE, idArticle));
+      return result || [];
     } catch (error) {
-      console.error('Erreur lors de la récupération de l\'historique:', error);
-      throw error;
+      console.warn(`Aucun mouvement trouvé pour l'article ${idArticle} (404) ou erreur de récupération:`, error.message);
+      // Return empty array instead of throwing error to allow UI to continue
+      return [];
     }
   }
 
@@ -80,17 +92,7 @@ class MouvementStockService {
     return {
       dateMvt: new Date().toISOString(),
       quantite: parseFloat(quantite),
-      article: {
-        id: article.id,
-        codeArticle: article.codeArticle,
-        designation: article.designation,
-        prixUnitaireHt: article.prixUnitaireHt,
-        tauxTva: article.tauxTva,
-        prixUnitaireTtc: article.prixUnitaireTtc,
-        photo: article.photo,
-        categorie: article.categorie,
-        idEntreprise: article.idEntreprise
-      },
+      idArticle: article.id, // Only send the article ID instead of the complete article object
       typeMvt: typeCorrection === 'positive' ? 'CORRECTION_POS' : 'CORRECTION_NEG',
       sourceMvt: 'VENTE', // Par défaut pour les corrections manuelles
       idEntreprise: idEntreprise

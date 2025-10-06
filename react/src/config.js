@@ -1,7 +1,7 @@
 // Configuration de l'application
 export const config = {
   // URL de l'API Spring Boot
-  API_BASE_URL: 'http://localhost:8080',
+  API_BASE_URL: 'http://localhost:8085',
   
   // Configuration des endpoints
   API_ENDPOINTS: {

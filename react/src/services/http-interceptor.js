@@ -62,6 +62,21 @@ class HttpInterceptor {
     return this.makeRequest(url, config);
   }
 
+  // Méthode pour faire une requête PATCH
+  async patch(url, data, options = {}) {
+    console.log('PATCH method called with:', { url, data, options });
+    
+    const config = {
+      method: 'PATCH',
+      headers: { ...this.getAuthHeaders(), ...options.headers },
+      // Only include body if data is provided
+      ...(data !== undefined && { body: JSON.stringify(data) }),
+      ...options
+    };
+
+    return this.makeRequest(url, config);
+  }
+
   // Méthode pour faire une requête DELETE
   async delete(url, options = {}) {
     const config = {

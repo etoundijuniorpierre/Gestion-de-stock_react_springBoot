@@ -55,10 +55,13 @@ class UserService {
   // Mettre à jour un utilisateur
   async update(id, utilisateur) {
     try {
-      // D'après swagger.json, l'endpoint create peut être utilisé pour créer ET modifier
-      // On ajoute l'ID à l'utilisateur pour la modification
-      const utilisateurAvecId = { ...utilisateur, id };
-      const response = await httpInterceptor.post(API_CONFIG.ENDPOINTS.UTILISATEURS.CREATE, utilisateurAvecId);
+      // Utiliser la méthode PUT pour la mise à jour avec l'endpoint dédié
+      // L'ID est inclus dans l'URL
+      const endpoint = API_CONFIG.ENDPOINTS.UTILISATEURS.UPDATE.replace('{id}', id);
+      console.log(`[UserService] Updating user with ID: ${id} using endpoint: ${endpoint}`);
+      console.log(`[UserService] User data being sent:`, utilisateur);
+      const response = await httpInterceptor.put(endpoint, utilisateur);
+      console.log(`[UserService] Update response:`, response);
       return response;
     } catch (error) {
       console.error('Erreur lors de la mise à jour de l\'utilisateur:', error);
@@ -76,7 +79,9 @@ class UserService {
   // Supprimer un utilisateur
   async delete(id) {
     try {
+      console.log(`[UserService] Deleting user with ID: ${id}`);
       await httpInterceptor.delete(buildApiUrlWithParam(API_CONFIG.ENDPOINTS.UTILISATEURS.DELETE, id));
+      console.log(`[UserService] User with ID: ${id} deleted successfully`);
       return { success: true };
     } catch (error) {
       console.error('Erreur lors de la suppression de l\'utilisateur:', error);
@@ -90,7 +95,9 @@ class UserService {
   // Rechercher un utilisateur par email
   async findByEmail(email) {
     try {
+      console.log(`[UserService] Finding user by email: ${email}`);
       const response = await httpInterceptor.get(buildApiUrlWithParam(API_CONFIG.ENDPOINTS.UTILISATEURS.FIND_BY_EMAIL, email));
+      console.log(`[UserService] Found user:`, response);
       return response;
     } catch (error) {
       console.error('Erreur lors de la recherche par email:', error);
@@ -110,13 +117,13 @@ class UserService {
       // S'assurer que toutes les données requises sont présentes
       const dataToSend = {
         id: changerMotDePasseDto.id,
-        motDePasse: changerMotDePasseDto.motDePasse,
-        confirmMotDePasse: changerMotDePasseDto.confirmMotDePasse
+        ancienMotDePasse: changerMotDePasseDto.ancienMotDePasse,
+        nouveauMotDePasse: changerMotDePasseDto.nouveauMotDePasse
       };
       
       console.log('📤 Données envoyées à l\'API:', dataToSend);
       
-      // Utiliser l'endpoint correct selon swagger.json
+      // Utiliser l'endpoint correct selon la documentation API
       const result = await httpInterceptor.post('/api/gestionDeStock/utilisateurs/update/password', dataToSend);
       return { success: true, data: result };
     } catch (error) {

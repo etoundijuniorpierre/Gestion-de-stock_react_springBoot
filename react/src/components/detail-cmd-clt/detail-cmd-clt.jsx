@@ -56,7 +56,7 @@ const DetailCmdClt = ({ client, onSuppressionResult }) => {
           </div>
           <div className="detail-cmd-clt__info-item">
             <i className="fas fa-envelope detail-cmd-clt__icon"></i>
-            <span>{client.email}</span>
+            <span>{client.mail}</span>
           </div>
         </div>
 
@@ -95,9 +95,6 @@ const DetailCmdClt = ({ client, onSuppressionResult }) => {
             }}
           >
             <i className="fas fa-trash-alt"></i>&nbsp;Supprimer
-          </button>
-          <button type="button" className="detail-cmd-clt__btn detail-cmd-clt__btn--details">
-            <i className="far fa-list-alt"></i>&nbsp;Details
           </button>
         </div>
       </div>

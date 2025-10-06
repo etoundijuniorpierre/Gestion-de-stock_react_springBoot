@@ -55,7 +55,7 @@ const DetailCmdFrs = ({ commande }) => {
         </div>
         <div className="detail-cmd-frs__info-item">
           <i className="fas fa-envelope detail-cmd-frs__icon"></i>
-          <span>{commande.fournisseur?.email || 'N/A'}</span>
+          <span>{commande.fournisseur?.mail || 'N/A'}</span>
         </div>
         <div className="detail-cmd-frs__info-item">
           <i className="fas fa-map-marker-alt detail-cmd-frs__icon"></i>
@@ -65,9 +65,6 @@ const DetailCmdFrs = ({ commande }) => {
 
       {/* Boutons action */}
       <div className="detail-cmd-frs__actions">
-        <button type="button" className="detail-cmd-frs__btn detail-cmd-frs__btn--view">
-          <i className="fas fa-eye"></i>&nbsp;Voir
-        </button>
         <button type="button" className="detail-cmd-frs__btn detail-cmd-frs__btn--edit">
           <i className="fas fa-edit"></i>&nbsp;Modifier
         </button>

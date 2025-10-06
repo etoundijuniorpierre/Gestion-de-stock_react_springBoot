@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import useErrorHandler from '../../hooks/useErrorHandler';
 import ErrorHandler from '../error-handler/error-handler';
+import { CmdcltfrsService } from '../../services/cmdcltfrs.service';
+import { CltfrsService } from '../../services/cltfrs/cltfrs.service';
+import { ArticleService } from '../../services/article/article.service';
 import './nouveau-cmd-clt.scss';
 
 const NouveauCmdClt = () => {
@@ -11,28 +14,73 @@ const NouveauCmdClt = () => {
   
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [clients, setClients] = useState([]);
+  const [articles, setArticles] = useState([]);
   const [formData, setFormData] = useState({
     codeCommande: '',
-    dateCommande: '',
-    client: null,
+    dateCommande: new Date().toISOString().split('T')[0],
+    clientId: '',
     articles: [],
     totalHt: 0,
     totalTtc: 0,
-    statut: 'EN_COURS'
+    statut: 'EN_PREPARATION'
   });
 
+  const cmdCltFrsService = new CmdcltfrsService();
+  const cltFrsService = new CltfrsService();
+  const articleService = new ArticleService();
+
   useEffect(() => {
+    loadClients();
+    loadArticles();
+    
     if (id) {
       setIsEditing(true);
       loadCommande(id);
     }
   }, [id]);
 
+  const loadClients = async () => {
+    try {
+      const clientsData = await cltFrsService.findAllClients();
+      setClients(clientsData || []);
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
+  const loadArticles = async () => {
+    try {
+      const articlesData = await articleService.findAll();
+      setArticles(articlesData || []);
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
   const loadCommande = async (commandeId) => {
     try {
       setIsLoading(true);
-      // TODO: Implémenter le chargement de la commande existante
-      console.log('Chargement de la commande:', commandeId);
+      const commande = await cmdCltFrsService.findByIdCommandeClient(commandeId);
+      
+      if (commande) {
+        // Map ligneCommandeClients to the format expected by the form
+        const mappedArticles = (commande.ligneCommandeClients || []).map(ligne => ({
+          articleId: ligne.article?.id || '',
+          quantite: ligne.quantite || 0,
+          prixUnitaire: ligne.prixUnitaire || 0
+        }));
+        
+        setFormData({
+          codeCommande: commande.code || '',
+          dateCommande: commande.dateCommande ? new Date(commande.dateCommande).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+          clientId: commande.client?.id || '',
+          articles: mappedArticles,
+          totalHt: commande.totalPrixHt || 0,
+          totalTtc: commande.totalPrixTtc || 0,
+          statut: commande.etatCommande || 'EN_PREPARATION'
+        });
+      }
     } catch (error) {
       handleError(error);
     } finally {
@@ -48,20 +96,110 @@ const NouveauCmdClt = () => {
     }));
   };
 
+  const handleArticleChange = (index, field, value) => {
+    const updatedArticles = [...formData.articles];
+    updatedArticles[index] = { ...updatedArticles[index], [field]: value };
+    
+    // Recalculate totals when quantity or price changes
+    if (field === 'quantite' || field === 'prixUnitaire') {
+      const totalHt = updatedArticles.reduce((sum, article) => {
+        return sum + (article.quantite || 0) * (article.prixUnitaire || 0);
+      }, 0);
+      
+      // Assuming 20% VAT for TTC calculation
+      const totalTtc = totalHt * 1.2;
+      
+      setFormData(prev => ({
+        ...prev,
+        articles: updatedArticles,
+        totalHt: parseFloat(totalHt.toFixed(2)),
+        totalTtc: parseFloat(totalTtc.toFixed(2))
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        articles: updatedArticles
+      }));
+    }
+  };
+
+  const addArticle = () => {
+    setFormData(prev => ({
+      ...prev,
+      articles: [...prev.articles, { articleId: '', quantite: 1, prixUnitaire: 0 }]
+    }));
+  };
+
+  const removeArticle = (index) => {
+    const updatedArticles = [...formData.articles];
+    updatedArticles.splice(index, 1);
+    
+    // Recalculate totals
+    const totalHt = updatedArticles.reduce((sum, article) => {
+      return sum + (article.quantite || 0) * (article.prixUnitaire || 0);
+    }, 0);
+    
+    // Assuming 20% VAT for TTC calculation
+    const totalTtc = totalHt * 1.2;
+    
+    setFormData(prev => ({
+      ...prev,
+      articles: updatedArticles,
+      totalHt: parseFloat(totalHt.toFixed(2)),
+      totalTtc: parseFloat(totalTtc.toFixed(2))
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validation
+    if (!formData.codeCommande || !formData.dateCommande || !formData.clientId) {
+      handleError(new Error('Veuillez remplir tous les champs obligatoires'));
+      return;
+    }
+    
+    if (formData.articles.length === 0) {
+      handleError(new Error('Veuillez ajouter au moins un article'));
+      return;
+    }
+    
+    // Check if all articles have valid data
+    for (let i = 0; i < formData.articles.length; i++) {
+      const article = formData.articles[i];
+      if (!article.articleId || article.quantite <= 0 || article.prixUnitaire <= 0) {
+        handleError(new Error(`Veuillez remplir correctement les informations de l'article ${i + 1}`));
+        return;
+      }
+    }
     
     try {
       setIsLoading(true);
       
+      // Prepare data for submission
+      const commandeData = {
+        code: formData.codeCommande,
+        dateCommande: formData.dateCommande,
+        clientId: parseInt(formData.clientId),
+        etatCommande: formData.statut,
+        idEntreprise: 1, // Add enterprise ID at root level
+        ligneCommandeClients: formData.articles.map(article => ({
+          idArticle: parseInt(article.articleId), // Use idArticle instead of articleId
+          quantite: article.quantite,
+          prixUnitaire: article.prixUnitaire,
+          idEntreprise: 1 // Add enterprise ID in each line item
+        }))
+      };
+      
       if (isEditing) {
-        // TODO: Implémenter la mise à jour
-        console.log('Mise à jour de la commande:', formData);
+        // For editing, we need to include the ID
+        commandeData.id = parseInt(id);
+        await cmdCltFrsService.updateCommandeClient(id, commandeData);
       } else {
-        // TODO: Implémenter la création
-        console.log('Création de la commande:', formData);
+        await cmdCltFrsService.saveCommandeClient(commandeData);
       }
       
+      // Success message and redirection
       // Redirection après succès
       navigate('/dashboard/commandes-clients');
       
@@ -74,6 +212,11 @@ const NouveauCmdClt = () => {
 
   const handleCancel = () => {
     navigate('/dashboard/commandes-clients');
+  };
+
+  // Get article by ID for display
+  const getArticleById = (id) => {
+    return articles.find(article => article.id === parseInt(id)) || {};
   };
 
   if (isLoading) {
@@ -126,7 +269,7 @@ const NouveauCmdClt = () => {
         <form onSubmit={handleSubmit} className="nouveau-cmd-clt__form">
           <div className="form-row">
             <div className="form-group col-md-6">
-              <label htmlFor="codeCommande">Code Commande</label>
+              <label htmlFor="codeCommande">Code Commande *</label>
               <input
                 type="text"
                 id="codeCommande"
@@ -140,7 +283,7 @@ const NouveauCmdClt = () => {
             </div>
             
             <div className="form-group col-md-6">
-              <label htmlFor="dateCommande">Date Commande</label>
+              <label htmlFor="dateCommande">Date Commande *</label>
               <input
                 type="date"
                 id="dateCommande"
@@ -155,19 +298,21 @@ const NouveauCmdClt = () => {
 
           <div className="form-row">
             <div className="form-group col-md-6">
-              <label htmlFor="client">Client</label>
+              <label htmlFor="clientId">Client *</label>
               <select
-                id="client"
-                name="client"
+                id="clientId"
+                name="clientId"
                 className="form-control"
-                value={formData.client?.id || ''}
+                value={formData.clientId}
                 onChange={handleInputChange}
                 required
               >
                 <option value="">Sélectionner un client</option>
-                {/* TODO: Charger la liste des clients */}
-                <option value="1">Client 1</option>
-                <option value="2">Client 2</option>
+                {clients.map(client => (
+                  <option key={client.id} value={client.id}>
+                    {client.nom} {client.prenom}
+                  </option>
+                ))}
               </select>
             </div>
             
@@ -181,8 +326,9 @@ const NouveauCmdClt = () => {
                 onChange={handleInputChange}
                 required
               >
-                <option value="EN_COURS">En cours</option>
+                <option value="EN_PREPARATION">En préparation</option>
                 <option value="VALIDEE">Validée</option>
+                <option value="LIVREE_EN_COURS">Livraison en cours</option>
                 <option value="LIVREE">Livrée</option>
                 <option value="ANNULEE">Annulée</option>
               </select>
@@ -190,13 +336,90 @@ const NouveauCmdClt = () => {
           </div>
 
           <div className="form-group">
-            <label>Articles</label>
-            <div className="articles-list">
-              <p className="text-muted">
-                <i className="fas fa-info-circle"></i>
-                La gestion des articles sera implémentée dans une prochaine étape
-              </p>
+            <div className="d-flex justify-content-between align-items-center mb-2">
+              <label>Articles *</label>
+              <button 
+                type="button" 
+                className="btn btn-success btn-sm"
+                onClick={addArticle}
+              >
+                <i className="fas fa-plus"></i> Ajouter un article
+              </button>
             </div>
+            
+            {formData.articles.length > 0 ? (
+              <div className="articles-list">
+                <table className="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Article</th>
+                      <th>Quantité</th>
+                      <th>Prix unitaire (€)</th>
+                      <th>Total (€)</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {formData.articles.map((article, index) => (
+                      <tr key={index}>
+                        <td>
+                          <select
+                            className="form-control"
+                            value={article.articleId || ''}
+                            onChange={(e) => handleArticleChange(index, 'articleId', e.target.value)}
+                            required
+                          >
+                            <option value="">Sélectionner un article</option>
+                            {articles.map(art => (
+                              <option key={art.id} value={art.id}>
+                                {art.code} - {art.designation}
+                              </option>
+                            ))}
+                          </select>
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            className="form-control"
+                            value={article.quantite || 0}
+                            onChange={(e) => handleArticleChange(index, 'quantite', parseFloat(e.target.value) || 0)}
+                            min="1"
+                            required
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            className="form-control"
+                            value={article.prixUnitaire || 0}
+                            onChange={(e) => handleArticleChange(index, 'prixUnitaire', parseFloat(e.target.value) || 0)}
+                            min="0"
+                            step="0.01"
+                            required
+                          />
+                        </td>
+                        <td>
+                          {((article.quantite || 0) * (article.prixUnitaire || 0)).toFixed(2)} €
+                        </td>
+                        <td>
+                          <button
+                            type="button"
+                            className="btn btn-danger btn-sm"
+                            onClick={() => removeArticle(index)}
+                          >
+                            <i className="fas fa-trash"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="alert alert-info">
+                <i className="fas fa-info-circle"></i> Aucun article ajouté. Cliquez sur "Ajouter un article" pour commencer.
+              </div>
+            )}
           </div>
 
           <div className="form-row totals">

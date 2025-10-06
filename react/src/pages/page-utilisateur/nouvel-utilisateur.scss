@@ -21,7 +21,10 @@
       font-weight: 600;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
+
   }
+  
+
   
   .form-content {
     flex: 1;
@@ -74,6 +77,13 @@
         &.optional::after {
           content: "";
         }
+      }
+      
+      .optional-indicator {
+        font-size: 0.8em;
+        color: #6c757d;
+        margin-left: 0.5rem;
+        font-weight: normal;
       }
       
       .form-control {
@@ -188,6 +198,8 @@
           box-shadow: none;
         }
       }
+      
+
       
       .spinner-border {
         width: 0.875rem;

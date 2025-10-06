@@ -4,9 +4,10 @@
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid #f1f3f4;
   overflow: hidden;
-  height: calc(95vh - 8rem);
+  height: calc(100vh - 8rem);
   display: flex;
   flex-direction: column;
+  margin-top: 1rem;
   
   .form-header {
     background: linear-gradient(135deg, #007bff, #0056b3);

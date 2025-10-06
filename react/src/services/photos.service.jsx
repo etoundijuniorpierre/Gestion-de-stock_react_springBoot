@@ -1,4 +1,5 @@
 import httpInterceptor from './http-interceptor';
+import { API_CONFIG } from '../config/api.config.js';
 
 class PhotosService {
   async savePhoto(params) {
@@ -9,7 +10,13 @@ class PhotosService {
       formData.append('title', params.title);
       formData.append('context', params.context);
 
-      const response = await httpInterceptor.post('/api/gestionDeStock/photos/save', formData, {
+      // Construire l'URL avec les paramètres
+      const endpoint = API_CONFIG.ENDPOINTS.PHOTOS.SAVE
+        .replace('{id}', params.id)
+        .replace('{title}', params.title)
+        .replace('{context}', params.context);
+
+      const response = await httpInterceptor.post(endpoint, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -24,7 +31,9 @@ class PhotosService {
 
   async getPhoto(id, context) {
     try {
-      const response = await httpInterceptor.get(`/api/gestionDeStock/photos/${context}/${id}`);
+      // Construire l'URL avec les paramètres
+      const endpoint = API_CONFIG.ENDPOINTS.PHOTOS.GET.replace('{fileName}', `${context}_${id}`);
+      const response = await httpInterceptor.get(endpoint);
       return response;
     } catch (error) {
       console.error('Erreur lors de la récupération de la photo:', error);
@@ -34,7 +43,9 @@ class PhotosService {
 
   async deletePhoto(id, context) {
     try {
-      const response = await httpInterceptor.delete(`/api/gestionDeStock/photos/${context}/${id}`);
+      // Construire l'URL avec les paramètres
+      const endpoint = API_CONFIG.ENDPOINTS.PHOTOS.DELETE.replace('{id}', id);
+      const response = await httpInterceptor.delete(endpoint);
       return response;
     } catch (error) {
       console.error('Erreur lors de la suppression de la photo:', error);
@@ -44,3 +55,4 @@ class PhotosService {
 }
 
 export { PhotosService };
+
