@@ -1,6 +1,5 @@
 package com.example.Gestion.de.stock.dto.request;
 
-import com.example.Gestion.de.stock.dto.request.LigneCommandeFournisseurRequestDto;
 import com.example.Gestion.de.stock.model.enumElem.EtatCommande;
 import java.time.LocalDate;
 import java.util.List;

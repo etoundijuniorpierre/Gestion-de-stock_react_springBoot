@@ -96,17 +96,13 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 
     if (dto.getLigneCommandeClients() != null) {
       dto.getLigneCommandeClients().forEach(ligCmdClt -> {
-        if (ligCmdClt.getArticle()!= null) {
-          if (ligCmdClt.getIdArticle() != null) {
-            Optional<Article> article = articleRepository.findById(ligCmdClt.getIdArticle());
-            if (article.isEmpty()) {
-              articleErrors.add("L'article avec l'ID " + ligCmdClt.getIdArticle() + " n'existe pas");
-            }
-          } else {
-            articleErrors.add("Impossible d'enregistrer une commande avec un article NULL");
-          }
+        if (ligCmdClt.getIdArticle() == null) {
+          articleErrors.add("Impossible d'enregistrer une commande sans idArticle");
         } else {
-          articleErrors.add("Impossible d'enregistrer une commande avec un article NULL");
+          Optional<Article> article = articleRepository.findById(ligCmdClt.getIdArticle());
+          if (article.isEmpty()) {
+            articleErrors.add("L'article avec l'ID " + ligCmdClt.getIdArticle() + " n'existe pas");
+          }
         }
       });
     }

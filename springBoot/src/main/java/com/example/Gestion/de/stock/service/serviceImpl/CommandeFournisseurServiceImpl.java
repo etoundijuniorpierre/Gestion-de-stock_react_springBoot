@@ -91,17 +91,13 @@ public class CommandeFournisseurServiceImpl implements CommandeFournisseurServic
 
         if (dto.getLigneCommandeFournisseurs() != null) {
             dto.getLigneCommandeFournisseurs().forEach(ligCmdFrs -> {
-                LigneCommandeFournisseur ligneCommandeFournisseur = LigneCommandeFournisseurMapper.toEntity(ligCmdFrs);
-                ligneCommandeFournisseur.setCommandeFournisseur(savedCmdFrs);
-                ligneCommandeFournisseur.setIdEntreprise(dto.getIdEntreprise());
-
-                // Set the article from repository
-                if (ligCmdFrs.getIdArticle() != null) {
-                    articleRepository.findById(ligCmdFrs.getIdArticle())
-                        .ifPresent(ligneCommandeFournisseur::setArticle);
+                if (ligCmdFrs.getIdArticle() == null) {
+                    throw new InvalidEntityException("Impossible d'enregistrer une commande sans idArticle", ErrorCodes.ARTICLE_NOT_FOUND);
                 }
-
-                ligneCommandeFournisseurRepository.save(ligneCommandeFournisseur);
+                Optional<Article> article = articleRepository.findById(ligCmdFrs.getIdArticle());
+                if (article.isEmpty()) {
+                    throw new InvalidEntityException("L'article avec l'ID " + ligCmdFrs.getIdArticle() + " n'existe pas", ErrorCodes.ARTICLE_NOT_FOUND);
+                }
             });
         }
 

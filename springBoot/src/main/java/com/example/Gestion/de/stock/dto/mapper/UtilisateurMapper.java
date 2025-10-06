@@ -19,7 +19,12 @@ public class UtilisateurMapper {
         utilisateur.setDateDeNaissance(dto.getDateDeNaissance());
         utilisateur.setAdresse(AdresseMapper.toEntity(dto.getAdresse()));
         utilisateur.setPhoto(dto.getPhoto());
-        utilisateur.setEntreprise(EntrepriseMapper.toEntity(dto.getEntreprise()));
+        
+        // Gérer l'entreprise : soit par objet, soit par ID
+        if (dto.getEntreprise() != null) {
+            utilisateur.setEntreprise(EntrepriseMapper.toEntity(dto.getEntreprise()));
+        }
+        // Note: Si entrepriseId est fourni, l'entreprise sera récupérée dans le service
         
         return utilisateur;
     }

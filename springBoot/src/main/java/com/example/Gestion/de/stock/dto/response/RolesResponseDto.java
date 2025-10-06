@@ -33,6 +33,7 @@ public class RolesResponseDto {
     Roles roles = new Roles();
     roles.setId(dto.getId());
     roles.setRoleName(dto.getRoleName());
+    // Note: L'utilisateur sera assigné séparément dans le service
     return roles;
   }
 

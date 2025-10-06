@@ -18,4 +18,5 @@ public class UtilisateurRequestDto {
   private AdresseRequestDto adresse;
   private String photo;
   private EntrepriseRequestDto entreprise;
+  private Integer entrepriseId;
 }
